@@ -10,34 +10,35 @@ export default function WhatWeOfferSection() {
   const offerings = [
     {
       title: "Collaborative Community",
-      description: "Connect and grow with like minded peers.",
-      icon: <Users className="h-10 w-10 text-indigo-500" />
+      description: "Connect and grow with like-minded peers dedicated to mutual success.",
+      icon: <Users className="h-10 w-10 text-indigo-600" />
     },
     {
       title: "Skill-Building Workshops",
-      description: "Learn & develop new skills together.",
-      icon: <Settings className="h-10 w-10 text-indigo-500" />
+      description: "Learn practical skills through expert-led interactive workshops.",
+      icon: <Settings className="h-10 w-10 text-indigo-600" />
     },
     {
-      title: "Innovative Projects & Challenges",
-      description: "Solve problems & create exciting projects.",
-      icon: <Lightbulb className="h-10 w-10 text-indigo-500" />
+      title: "Innovative Projects",
+      description: "Solve real-world problems through exciting collaborative projects.",
+      icon: <Lightbulb className="h-10 w-10 text-indigo-600" />
     },
     {
       title: "Networking Opportunities",
-      description: "Meet professionals and expand your network.",
-      icon: <Network className="h-10 w-10 text-indigo-500" />
+      description: "Connect with professionals and expand your career network.",
+      icon: <Network className="h-10 w-10 text-indigo-600" />
     }
   ];
 
   return (
-    <section className="py-16 md:py-24 px-6 md:px-12 bg-blue-50">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-bold mb-12 text-center">What We Offer</h2>
+    <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-white to-blue-50">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-5xl font-bold mb-16 text-center">
+          What We <span className="text-indigo-600">Offer</span>
+        </h2>
         
         <div className="relative">
-          {/* Center image */}
-          <div className="w-52 h-52 md:w-64 md:h-64 bg-white rounded-full mx-auto mb-8 flex items-center justify-center overflow-hidden">
+          <div className="w-60 h-60 md:w-72 md:h-72 bg-white rounded-full mx-auto mb-12 flex items-center justify-center overflow-hidden shadow-lg border-4 border-indigo-100">
             <img 
               src="/lovable-uploads/e36d7fb0-9f91-4b74-857b-29bd5da502ea.png" 
               alt="Community of people" 
@@ -45,21 +46,20 @@ export default function WhatWeOfferSection() {
             />
           </div>
           
-          {/* Offerings with connecting lines */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-y-20 gap-x-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 md:gap-y-24 gap-x-8 mt-8">
             {offerings.map((item, index) => (
-              <div key={index} className={`flex ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} relative`}>
-                <div className={`max-w-xs flex ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start gap-4`}>
-                  <div className="flex-shrink-0 p-2 rounded-full bg-white border-2 border-indigo-100 shadow-md">
+              <div key={index} className={`flex ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} relative group`}>
+                <div className={`max-w-xs flex ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start gap-5 transition-all duration-300 transform hover:scale-105`}>
+                  <div className="flex-shrink-0 p-3 rounded-full bg-indigo-50 border-2 border-indigo-100 shadow-md group-hover:shadow-lg group-hover:bg-indigo-100 transition-all duration-300">
                     {item.icon}
                   </div>
                   <div className={`text-${index % 2 === 0 ? 'right' : 'left'} md:text-left`}>
-                    <h3 className="text-xl font-bold">{item.title}</h3>
-                    <p className="text-gray-600 mt-1">{item.description}</p>
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-gray-600">{item.description}</p>
                   </div>
                 </div>
                 {/* Connect lines visible only on md screens and up */}
-                <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-y-1/2 w-20 h-px bg-black"></div>
+                <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-y-1/2 w-24 h-px bg-indigo-200"></div>
               </div>
             ))}
           </div>
