@@ -3,6 +3,7 @@ import { HelpCircle, AlertTriangle, AlertCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import React from "react";
 
 export default function FeaturesSection() {
   const [activeFeeling, setActiveFeeling] = useState("");
@@ -115,34 +116,34 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="py-12 pt-10 md:pt-16 px-6 md:px-12 bg-gradient-to-b from-white to-purple-50 relative overflow-hidden">
+    <section className="py-12 pt-10 md:pt-16 px-4 md:px-12 bg-gradient-to-b from-white to-purple-50 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-64 h-64 bg-purple-200 rounded-full opacity-20 blur-3xl"></div>
       <div className="absolute bottom-20 right-10 w-80 h-80 bg-indigo-200 rounded-full opacity-20 blur-3xl"></div>
       
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full mb-20 animate-fade-in shadow-sm">
-            <AlertCircle className="h-5 w-5" />
+        <div className="text-center mb-16 md:mb-20">
+          <div className="inline-flex items-center gap-2 bg-red-100 text-red-800 px-3 py-1 md:px-4 md:py-2 rounded-full mb-12 md:mb-20 animate-fade-in shadow-sm text-sm md:text-base">
+            <AlertCircle className="h-4 w-4 md:h-5 md:w-5" />
             <span className="font-medium">Common Challenges</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-24 text-center flex flex-wrap justify-center items-center gap-4 leading-relaxed">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-16 md:mb-24 text-center flex flex-wrap justify-center items-center gap-2 md:gap-4 leading-relaxed">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-800 to-indigo-600 px-1">WAIT! Do you feel</span>
-            <span className="relative inline-block min-w-[280px] pb-2 px-2 text-center">
+            <span className="relative inline-block min-w-[200px] md:min-w-[280px] pb-2 px-2 text-center">
               <span className={activeFeeling ? `${activeColor} block font-extrabold` : "opacity-0 block"} aria-hidden={!activeFeeling}>
                 {activeFeeling || "placeholder"}
               </span>
-              <span className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-3 bg-purple-600 rounded-full shadow-md transition-all duration-300 ${lineWidth}`}></span>
+              <span className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-2 md:h-3 bg-purple-600 rounded-full shadow-md transition-all duration-300 ${lineWidth}`}></span>
             </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-800 to-indigo-600 px-1 relative z-10 pb-4">in your journey?</span>
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
           {challengeCards.map((card, index) => (
             <div 
               key={index} 
-              className={`h-full group transition-all duration-500 ${activeIndex === index ? 'scale-105' : 'scale-100'}`}
+              className={`h-full group transition-all duration-500 ${activeIndex === index ? 'scale-102 md:scale-105' : 'scale-100'}`}
               onMouseEnter={() => {
                 setActiveFeeling(card.title.toLowerCase());
                 setActiveIndex(index);
@@ -155,19 +156,33 @@ export default function FeaturesSection() {
                 setActiveColor("text-indigo-600");
                 setLineWidth("w-[220px]");
               }}
+              onClick={() => {
+                // Add touch functionality for mobile
+                if (activeIndex !== index) {
+                  setActiveFeeling(card.title.toLowerCase());
+                  setActiveIndex(index);
+                  setActiveColor(card.textColor);
+                  setLineWidth(card.lineWidth);
+                } else {
+                  setActiveFeeling("");
+                  setActiveIndex(null);
+                  setActiveColor("text-indigo-600");
+                  setLineWidth("w-[220px]");
+                }
+              }}
             >
               <Card 
                 className={`overflow-hidden border-2 h-full transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer
                   ${activeIndex === index ? card.activeColor : card.color} ${card.hoverColor}`}
               >
-                <CardContent className="p-10 flex flex-col items-center text-center">
-                  <div className={`mb-6 transform transition-all duration-300 group-hover:scale-110 bg-white/50 p-4 rounded-full shadow-md ${activeIndex === index ? 'scale-110' : ''}`}>
-                    {card.icon}
+                <CardContent className="p-5 md:p-10 flex flex-col items-center text-center">
+                  <div className={`mb-4 md:mb-6 transform transition-all duration-300 group-hover:scale-110 bg-white/50 p-3 md:p-4 rounded-full shadow-md ${activeIndex === index ? 'scale-110' : ''}`}>
+                    {React.cloneElement(card.icon, { className: `h-8 w-8 md:h-12 md:w-12 ${card.icon.props.className.split(' ').filter(c => c.startsWith('text-')).join(' ')}` })}
                   </div>
-                  <h3 className={`text-2xl font-bold mb-4 transition-all duration-300 ${activeIndex === index ? card.iconColor : 'text-gray-800'}`}>
+                  <h3 className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-all duration-300 ${activeIndex === index ? card.iconColor : 'text-gray-800'}`}>
                     {card.title}
                   </h3>
-                  <p className="text-gray-700 text-lg">{card.description}</p>
+                  <p className="text-base md:text-lg text-gray-700">{card.description}</p>
                 </CardContent>
               </Card>
             </div>
