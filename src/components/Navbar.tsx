@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Brain, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -20,7 +20,11 @@ export default function Navbar() {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2"
           >
-            <Brain className="h-7 w-7 text-purple-600" />
+            <img 
+              src="/lovable-uploads/e36d7fb0-9f91-4b74-857b-29bd5da502ea.png" 
+              alt="Orielix Logo" 
+              className="h-10 w-auto"
+            />
             <span className="text-2xl font-bold">Orielix</span>
           </motion.div>
           
@@ -31,8 +35,8 @@ export default function Navbar() {
             className="hidden md:flex items-center gap-8"
           >
             <Link to="/" className="text-lg font-medium border-b-2 border-purple-600 text-purple-900">Home</Link>
-            <Link to="/about" className="text-lg font-medium hover:text-purple-600 transition-colors">About</Link>
-            <Link to="/team" className="text-lg font-medium hover:text-purple-600 transition-colors">Team</Link>
+            <Link to="/about" className="text-lg font-medium hover:text-purple-600 transition-colors">Community</Link>
+            <Link to="/team" className="text-lg font-medium hover:text-purple-600 transition-colors">Sessions</Link>
           </motion.nav>
           
           <motion.div 
@@ -77,14 +81,14 @@ export default function Navbar() {
               className="text-lg font-medium px-2 py-1 rounded hover:bg-purple-50"
               onClick={() => setIsMenuOpen(false)}
             >
-              About
+              Community
             </Link>
             <Link 
               to="/team" 
               className="text-lg font-medium px-2 py-1 rounded hover:bg-purple-50"
               onClick={() => setIsMenuOpen(false)}
             >
-              Team
+              Sessions
             </Link>
             <div className="flex flex-col space-y-2 pt-2">
               <Button variant="outline" className="border-2 w-full justify-center">

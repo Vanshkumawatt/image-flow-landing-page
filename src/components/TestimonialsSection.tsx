@@ -2,6 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { StarIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function TestimonialsSection() {
   const testimonials = [
@@ -110,38 +111,27 @@ export default function TestimonialsSection() {
         >
           Frequently Asked Questions
         </motion.h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-8">
-            {faqs.slice(0, 3).map((faq, index) => (
-              <motion.div 
-                key={index} 
-                className="border-b pb-6"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15, duration: 0.6 }}
-              >
-                <h4 className="text-lg md:text-xl font-bold mb-3">{index + 1}. {faq.question}</h4>
-                <p className="text-gray-700">{faq.answer}</p>
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="space-y-8">
-            {faqs.slice(3).map((faq, index) => (
-              <motion.div 
-                key={index} 
-                className="border-b pb-6"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15, duration: 0.6 }}
-              >
-                <h4 className="text-lg md:text-xl font-bold mb-3">{index + 4}. {faq.question}</h4>
-                <p className="text-gray-700">{faq.answer}</p>
-              </motion.div>
-            ))}
-          </div>
+        
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-lg font-semibold">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
         </div>
       </div>
     </section>

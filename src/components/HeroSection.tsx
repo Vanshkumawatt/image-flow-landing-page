@@ -45,23 +45,11 @@ export default function HeroSection() {
         transition={{ delay: 0.8, duration: 0.8 }}
         className="mt-16 w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-2xl transform hover:scale-[1.01] hover:shadow-3xl transition-all duration-500"
       >
-        <div className="bg-gray-900 py-2 px-3 flex items-center gap-2">
-          <div className="flex gap-1">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          </div>
-          <div className="bg-gray-700 text-center py-1 px-4 rounded text-xs text-white mx-auto max-w-xs">
-            https://orielix.com/
-          </div>
-        </div>
-        <div className="w-full bg-gray-100">
-          <img 
-            src="/lovable-uploads/20fc66c3-bab1-4f40-9029-c8596cc15948.png" 
-            alt="Orielix Platform Screenshot" 
-            className="w-full h-auto object-cover"
-          />
-        </div>
+        <img 
+          src="/lovable-uploads/20fc66c3-bab1-4f40-9029-c8596cc15948.png" 
+          alt="Orielix Platform" 
+          className="w-full h-auto object-cover"
+        />
       </motion.div>
     </section>
   );
