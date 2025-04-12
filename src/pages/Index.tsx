@@ -2,6 +2,9 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import SecondImageSection from "@/components/SecondImageSection";
+import WhatWeOfferSection from "@/components/WhatWeOfferSection";
+import ThirdImageSection from "@/components/ThirdImageSection";
+import FourthImageSection from "@/components/FourthImageSection";
 
 const Index = () => {
   return (
@@ -9,6 +12,9 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <SecondImageSection />
+      <WhatWeOfferSection />
+      <ThirdImageSection />
+      <FourthImageSection />
     </div>
   );
 };
