@@ -1,10 +1,7 @@
-
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
-import WhatWeOfferSection from "@/components/WhatWeOfferSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
 
@@ -20,9 +17,7 @@ const Index = () => {
       <div className="pt-16"> {/* Add padding top to account for fixed navbar */}
         <HeroSection />
         <FeaturesSection />
-        <WhatWeOfferSection />
         <TestimonialsSection />
-        <CtaSection />
         <Footer />
       </div>
     </div>
