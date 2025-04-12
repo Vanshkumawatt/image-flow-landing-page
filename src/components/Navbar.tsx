@@ -61,12 +61,12 @@ export default function Navbar() {
                 window.scrollTo({top: 0, behavior: 'smooth'});
                 setIsMenuOpen(false);
               }}
-              className="cursor-pointer transform hover:scale-105 transition-all duration-300"
+              className="cursor-pointer transition-all duration-300 flex items-center justify-center overflow-visible"
             >
               <img 
                 src="/lovable-uploads/orielixlogo.png" 
                 alt="Orielix Logo" 
-                className={`transition-all duration-300 ${isScrolled ? 'h-[60px] -mt-1' : 'h-[80px] md:h-[110px] -mt-1'}`}
+                className={`transition-all duration-300 transform hover:scale-110 ${isScrolled ? 'h-[60px] -mt-1' : 'h-[80px] md:h-[110px] -mt-1'}`}
               />
             </Link>
           </div>
