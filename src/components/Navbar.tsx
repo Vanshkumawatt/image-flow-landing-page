@@ -55,11 +55,20 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto w-full">
         <div className="flex items-center justify-between h-full">
           <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
-            <img 
-              src="/lovable-uploads/orielixlogo.png" 
-              alt="Orielix Logo" 
-              className={`transition-all duration-300 ${isScrolled ? 'h-[60px] -mt-1' : 'h-[80px] md:h-[110px] -mt-1'}`}
-            />
+            <Link 
+              to="/" 
+              onClick={() => {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                setIsMenuOpen(false);
+              }}
+              className="cursor-pointer transform hover:scale-105 transition-all duration-300"
+            >
+              <img 
+                src="/lovable-uploads/orielixlogo.png" 
+                alt="Orielix Logo" 
+                className={`transition-all duration-300 ${isScrolled ? 'h-[60px] -mt-1' : 'h-[80px] md:h-[110px] -mt-1'}`}
+              />
+            </Link>
           </div>
           
           <div className="hidden md:flex flex-1 justify-center pl-10 lg:pl-20">
