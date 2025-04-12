@@ -1,0 +1,13 @@
+/* Favicon styling with rounded corners */
+link[rel="icon"] {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* This makes the favicon appear round in browsers that support it */
+@supports (-webkit-mask-image: url('')) or (mask-image: url('')) {
+  link[rel="icon"] {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');
+  }
+} 
