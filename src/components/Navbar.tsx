@@ -112,11 +112,25 @@ export default function Navbar() {
           </div>
           
           <button 
-            className="md:hidden text-gray-700 mr-4 p-2 rounded-lg hover:bg-gray-100"
-            onClick={toggleMenu}
+            className="md:hidden text-gray-700 mr-4 p-4 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 touch-manipulation relative z-50 flex items-center justify-center min-w-[50px] min-h-[50px]"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleMenu();
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleMenu();
+            }}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <div className="w-full h-full absolute inset-0" aria-hidden="true"></div>
+            {isMenuOpen ? <X className="h-8 w-8 pointer-events-none" /> : <Menu className="h-8 w-8 pointer-events-none" />}
           </button>
         </div>
         
@@ -128,21 +142,21 @@ export default function Navbar() {
           <nav className="flex flex-col space-y-4 px-6 py-6">
             <Link 
               to="/" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 ${location.pathname === '/' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/about" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 ${location.pathname === '/about' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/about' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Community
             </Link>
             <Link 
               to="/team" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 ${location.pathname === '/team' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/team' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Session
