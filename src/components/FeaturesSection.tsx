@@ -10,6 +10,7 @@ export default function FeaturesSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeColor, setActiveColor] = useState("text-indigo-600");
   const [lineWidth, setLineWidth] = useState("w-[220px]");
+  const [autoFillIndex, setAutoFillIndex] = useState<number | null>(null);
   
   // AURA counter animation ref and state
   const [auraCount, setAuraCount] = useState(1000);
@@ -35,6 +36,39 @@ export default function FeaturesSection() {
     return () => {
       if (countTimer.current) clearInterval(countTimer.current);
     };
+  }, []);
+
+  // Mobile only auto-fill animation
+  useEffect(() => {
+    // Only run on mobile devices
+    if (window.innerWidth < 768) {
+      let currentIndex = 0;
+      const feelings = ["Lost", "Distracted", "Inconsistent"];
+      const colors = ["text-red-500", "text-amber-500", "text-blue-500"];
+      const widths = ["w-[100px]", "w-[180px]", "w-[220px]"];
+      
+      // Function to update the active feeling
+      const updateFeeling = () => {
+        setActiveFeeling(feelings[currentIndex].toLowerCase());
+        setActiveColor(colors[currentIndex]);
+        setLineWidth(widths[currentIndex]);
+        setAutoFillIndex(currentIndex);
+        
+        currentIndex = (currentIndex + 1) % feelings.length;
+      };
+      
+      // Start with the first feeling
+      updateFeeling();
+      
+      // Set up the interval for continuous loop
+      const interval = setInterval(() => {
+        updateFeeling();
+      }, 1600);
+      
+      return () => {
+        clearInterval(interval);
+      };
+    }
   }, []);
 
   // Animation classes for the middle circle
@@ -143,37 +177,43 @@ export default function FeaturesSection() {
           {challengeCards.map((card, index) => (
             <div 
               key={index} 
-              className={`h-full group transition-all duration-500 ${activeIndex === index ? 'scale-102 md:scale-105' : 'scale-100'}`}
+              className={`h-full group transition-all duration-500 ${(activeIndex === index || autoFillIndex === index) ? 'scale-102 md:scale-105' : 'scale-100'}`}
               onMouseEnter={() => {
-                setActiveFeeling(card.title.toLowerCase());
-                setActiveIndex(index);
-                setActiveColor(card.textColor);
-                setLineWidth(card.lineWidth);
-              }}
-              onMouseLeave={() => {
-                setActiveFeeling("");
-                setActiveIndex(null);
-                setActiveColor("text-indigo-600");
-                setLineWidth("w-[220px]");
-              }}
-              onClick={() => {
-                // Add touch functionality for mobile
-                if (activeIndex !== index) {
+                if (window.innerWidth >= 768) { // Only apply on desktop
                   setActiveFeeling(card.title.toLowerCase());
                   setActiveIndex(index);
                   setActiveColor(card.textColor);
                   setLineWidth(card.lineWidth);
-                } else {
+                }
+              }}
+              onMouseLeave={() => {
+                if (window.innerWidth >= 768) { // Only apply on desktop
                   setActiveFeeling("");
                   setActiveIndex(null);
                   setActiveColor("text-indigo-600");
                   setLineWidth("w-[220px]");
                 }
               }}
+              onClick={() => {
+                // Add touch functionality for mobile
+                if (window.innerWidth >= 768) { // Only apply on desktop
+                  if (activeIndex !== index) {
+                    setActiveFeeling(card.title.toLowerCase());
+                    setActiveIndex(index);
+                    setActiveColor(card.textColor);
+                    setLineWidth(card.lineWidth);
+                  } else {
+                    setActiveFeeling("");
+                    setActiveIndex(null);
+                    setActiveColor("text-indigo-600");
+                    setLineWidth("w-[220px]");
+                  }
+                }
+              }}
             >
               <Card 
                 className={`overflow-hidden border-2 h-full transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer
-                  ${activeIndex === index ? card.activeColor : card.color} ${card.hoverColor}`}
+                  ${(activeIndex === index || autoFillIndex === index) ? card.activeColor : card.color} ${card.hoverColor}`}
               >
                 <CardContent className="p-5 md:p-10 flex flex-col items-center text-center">
                   <div className={`mb-4 md:mb-6 transform transition-all duration-300 group-hover:scale-110 bg-white/50 p-3 md:p-4 rounded-full shadow-md ${activeIndex === index ? 'scale-110' : ''}`}>
@@ -195,7 +235,8 @@ export default function FeaturesSection() {
             What We <span className="text-purple-600">Offer</span> <span className="text-black">You!</span>
           </h2>
           
-          <div className="relative h-[650px]">
+          {/* Desktop version - visible only on md screens and above */}
+          <div className="relative h-[650px] hidden md:block">
             {/* Middle circle with people image */}
             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-80 md:h-80 rounded-full z-30 flex items-center justify-center group">
               <div className={`w-full h-full rounded-full overflow-hidden border-[6px] border-purple-100 shadow-xl transition-all duration-300 group-hover:shadow-purple-200/50 group-hover:scale-105 backdrop-blur-sm`}>
@@ -269,7 +310,7 @@ export default function FeaturesSection() {
               <circle cx="62%" cy="62%" r="4" fill="#8B5CF6" />
             </svg>
             
-            {/* Offering cards in a grid layout */}
+            {/* Offering cards in a grid layout - DESKTOP */}
             <div className="grid grid-cols-2 gap-y-36 gap-x-16 h-full">
               {/* Top Left - Collaborative Community */}
               <div className="self-start flex justify-start" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.1s forwards"}}>
@@ -328,6 +369,89 @@ export default function FeaturesSection() {
                     <h3 className="text-xl font-bold group-hover:text-blue-600 transition-colors duration-300">Real Networking</h3>
                   </div>
                   <p className="text-gray-600 relative z-10">Collaborate with people on projects, discussions and workshops to expand network.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Mobile version - visible only on small screens */}
+          <div className="md:hidden">
+            {/* Middle circle with people image - Mobile */}
+            <div className="mx-auto w-64 h-64 rounded-full z-30 flex items-center justify-center group mb-12 relative">
+              <div className={`w-full h-full rounded-full overflow-hidden border-[6px] border-purple-100 shadow-xl transition-all duration-300 group-hover:shadow-purple-200/50 group-hover:scale-105 backdrop-blur-sm`}>
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-indigo-500/10 rounded-full animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-bl from-pink-500/10 to-purple-500/10 rounded-full animate-pulse delay-1000"></div>
+                <div className={`absolute inset-0 border-[3px] border-purple-200/50 rounded-full ${animationClasses.spinSlow}`}></div>
+                <img 
+                  src="/images/offerings/people-center.png"
+                  alt="Community of people" 
+                  className="w-full h-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-transparent rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </div>
+              <div className={`absolute -inset-4 border-2 border-dashed border-purple-300/50 rounded-full ${animationClasses.spinSlower}`}></div>
+              <div className={`absolute -inset-8 border-2 border-dotted border-indigo-300/30 rounded-full ${animationClasses.spinReverseSlower}`}></div>
+            </div>
+            
+            {/* Offering cards in a grid layout - MOBILE */}
+            <div className="flex flex-col gap-6">
+              {/* Collaborative Community */}
+              <div className="mx-auto w-full max-w-sm" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.1s forwards"}}>
+                <div className="bg-gradient-to-br from-white to-yellow-100 rounded-2xl shadow-md p-5 border-2 border-yellow-300 transition-all duration-300 hover:shadow-xl hover:shadow-yellow-200/50 hover:-translate-y-2 group relative overflow-hidden">
+                  <div className={`absolute -right-12 -top-12 w-24 h-24 bg-yellow-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
+                  <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-yellow-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "1s"}}></div>
+                  <div className="flex items-center gap-3 mb-2 relative z-10">
+                    <div className="w-16 h-16 rounded-xl bg-yellow-200 flex items-center justify-center p-3 shadow-sm border border-yellow-300 transition-all duration-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-yellow-200 group-hover:to-yellow-100 group-hover:scale-110 group-hover:rotate-6">
+                      <img src="/images/offerings/community-icon.png" alt="Collaborative Community" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold group-hover:text-yellow-600 transition-colors duration-300">Collaborative Community</h3>
+                  </div>
+                  <p className="text-gray-600 relative z-10 text-sm">Join and explore communities from 10+ different domains.</p>
+                </div>
+              </div>
+              
+              {/* Innovative Workshops */}
+              <div className="mx-auto w-full max-w-sm" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.3s forwards"}}>
+                <div className="bg-gradient-to-br from-white to-green-100 rounded-2xl shadow-md p-5 border-2 border-green-300 transition-all duration-300 hover:shadow-xl hover:shadow-green-200/50 hover:-translate-y-2 group relative overflow-hidden">
+                  <div className={`absolute -right-12 -top-12 w-24 h-24 bg-green-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
+                  <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-green-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "1.5s"}}></div>
+                  <div className="flex items-center gap-3 mb-2 relative z-10">
+                    <div className="w-16 h-16 rounded-xl bg-green-200 flex items-center justify-center p-3 shadow-sm border border-green-300 transition-all duration-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-green-200 group-hover:to-green-100 group-hover:scale-110 group-hover:rotate-6">
+                      <img src="/images/offerings/workshop-icon.png" alt="Innovative Workshops" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold group-hover:text-green-600 transition-colors duration-300">Innovative Workshops</h3>
+                  </div>
+                  <p className="text-gray-600 relative z-10 text-sm">Real practical workshop from present industry curriculum.</p>
+                </div>
+              </div>
+              
+              {/* Rewarding Events */}
+              <div className="mx-auto w-full max-w-sm" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.5s forwards"}}>
+                <div className="bg-gradient-to-br from-white to-purple-100 rounded-2xl shadow-md p-5 border-2 border-purple-300 transition-all duration-300 hover:shadow-xl hover:shadow-purple-200/50 hover:-translate-y-2 group relative overflow-hidden">
+                  <div className={`absolute -right-12 -top-12 w-24 h-24 bg-purple-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
+                  <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-purple-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "2s"}}></div>
+                  <div className="flex items-center gap-3 mb-2 relative z-10">
+                    <div className="w-16 h-16 rounded-xl bg-purple-200 flex items-center justify-center p-3 shadow-sm border border-purple-300 transition-all duration-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-purple-200 group-hover:to-purple-100 group-hover:scale-110 group-hover:rotate-6">
+                      <img src="/images/offerings/innovative-icon.png" alt="Rewarding Events" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold group-hover:text-purple-600 transition-colors duration-300">Rewarding Events</h3>
+                  </div>
+                  <p className="text-gray-600 relative z-10 text-sm">Solve, build and win through top industry events.</p>
+                </div>
+              </div>
+              
+              {/* Real Networking */}
+              <div className="mx-auto w-full max-w-sm" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.7s forwards"}}>
+                <div className="bg-gradient-to-br from-white to-blue-100 rounded-2xl shadow-md p-5 border-2 border-blue-300 transition-all duration-300 hover:shadow-xl hover:shadow-blue-200/50 hover:-translate-y-2 group relative overflow-hidden">
+                  <div className={`absolute -right-12 -top-12 w-24 h-24 bg-blue-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
+                  <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-blue-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "2.5s"}}></div>
+                  <div className="flex items-center gap-3 mb-2 relative z-10">
+                    <div className="w-16 h-16 rounded-xl bg-blue-200 flex items-center justify-center p-3 shadow-sm border border-blue-300 transition-all duration-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-blue-200 group-hover:to-blue-100 group-hover:scale-110 group-hover:rotate-6">
+                      <img src="/images/offerings/networking-icon.png" alt="Real Networking" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold group-hover:text-blue-600 transition-colors duration-300">Real Networking</h3>
+                  </div>
+                  <p className="text-gray-600 relative z-10 text-sm">Collaborate with people on projects, discussions and workshops to expand network.</p>
                 </div>
               </div>
             </div>
