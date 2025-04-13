@@ -190,14 +190,14 @@ export default function FeaturesSection() {
         </div>
 
         {/* What We Offer Section */}
-        <div className="mt-20 sm:mt-32 md:mt-40 mb-16 sm:mb-24 md:mb-32">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 sm:mb-16 md:mb-24 text-center">
+        <div className="mt-40 mb-32">
+          <h2 className="text-4xl md:text-5xl font-bold mb-24 text-center">
             What We <span className="text-purple-600">Offer</span> <span className="text-black">You!</span>
           </h2>
           
-          <div className="relative h-[500px] sm:h-[600px] md:h-[650px]">
+          <div className="relative h-[650px]">
             {/* Middle circle with people image */}
-            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full z-30 flex items-center justify-center group">
+            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-80 md:h-80 rounded-full z-30 flex items-center justify-center group">
               <div className={`w-full h-full rounded-full overflow-hidden border-[6px] border-purple-100 shadow-xl transition-all duration-300 group-hover:shadow-purple-200/50 group-hover:scale-105 backdrop-blur-sm`}>
                 <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-indigo-500/10 rounded-full animate-pulse"></div>
                 <div className="absolute inset-0 bg-gradient-to-bl from-pink-500/10 to-purple-500/10 rounded-full animate-pulse delay-1000"></div>
@@ -206,9 +206,6 @@ export default function FeaturesSection() {
                   src="/images/offerings/people-center.png"
                   alt="Community of people" 
                   className="w-full h-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.currentTarget.src = "/lovable-uploads/e36d7fb0-9f91-4b74-857b-29bd5da502ea.png";
-                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-transparent rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
@@ -216,18 +213,56 @@ export default function FeaturesSection() {
               <div className={`absolute -inset-8 border-2 border-dotted border-indigo-300/30 rounded-full ${animationClasses.spinReverseSlower}`}></div>
             </div>
             
-            {/* Connection lines */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <line x1="38%" y1="38%" x2="20%" y2="20%" stroke="#DDD6FE" strokeWidth="0.2" />
-              <line x1="62%" y1="38%" x2="80%" y2="20%" stroke="#DDD6FE" strokeWidth="0.2" />
-              <line x1="38%" y1="62%" x2="20%" y2="80%" stroke="#DDD6FE" strokeWidth="0.2" />
-              <line x1="62%" y1="62%" x2="80%" y2="80%" stroke="#DDD6FE" strokeWidth="0.2" />
+            {/* SVG connections */}
+            <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#EC4899" stopOpacity="0.8" />
+                </linearGradient>
+              </defs>
               
-              <circle cx="20%" cy="20%" r="2" fill="#C4B5FD" />
-              <circle cx="80%" cy="20%" r="2" fill="#C4B5FD" />
-              <circle cx="20%" cy="80%" r="2" fill="#C4B5FD" />
-              <circle cx="80%" cy="80%" r="2" fill="#C4B5FD" />
+              {/* Connection to top-left card */}
+              <line 
+                x1="38%" y1="38%" 
+                x2="28%" y2="25%" 
+                stroke="url(#lineGradient1)" 
+                strokeWidth="2" 
+                strokeDasharray="5,5"
+                strokeLinecap="round"
+              />
               
+              {/* Connection to top-right card */}
+              <line 
+                x1="62%" y1="38%" 
+                x2="72%" y2="25%" 
+                stroke="url(#lineGradient1)" 
+                strokeWidth="2" 
+                strokeDasharray="5,5"
+                strokeLinecap="round"
+              />
+              
+              {/* Connection to bottom-left card */}
+              <line 
+                x1="38%" y1="62%" 
+                x2="28%" y2="75%" 
+                stroke="url(#lineGradient1)" 
+                strokeWidth="2" 
+                strokeDasharray="5,5"
+                strokeLinecap="round"
+              />
+              
+              {/* Connection to bottom-right card */}
+              <line 
+                x1="62%" y1="62%" 
+                x2="72%" y2="75%" 
+                stroke="url(#lineGradient1)" 
+                strokeWidth="2" 
+                strokeDasharray="5,5"
+                strokeLinecap="round"
+              />
+              
+              {/* Boundary dots */}
               <circle cx="38%" cy="38%" r="4" fill="#8B5CF6" />
               <circle cx="62%" cy="38%" r="4" fill="#8B5CF6" />
               <circle cx="38%" cy="62%" r="4" fill="#8B5CF6" />
@@ -235,64 +270,64 @@ export default function FeaturesSection() {
             </svg>
             
             {/* Offering cards in a grid layout */}
-            <div className="grid grid-cols-2 gap-y-20 sm:gap-y-28 md:gap-y-36 gap-x-4 sm:gap-x-8 md:gap-x-16 h-full">
+            <div className="grid grid-cols-2 gap-y-36 gap-x-16 h-full">
               {/* Top Left - Collaborative Community */}
               <div className="self-start flex justify-start" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.1s forwards"}}>
-                <div className="max-w-[150px] sm:max-w-[200px] md:max-w-xs bg-gradient-to-br from-white to-yellow-100 rounded-2xl shadow-md p-3 sm:p-4 md:p-6 border-2 border-yellow-300 hover:shadow-xl hover:shadow-yellow-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                <div className="max-w-xs bg-gradient-to-br from-white to-yellow-100 rounded-2xl shadow-md p-6 border-2 border-yellow-300 hover:shadow-xl hover:shadow-yellow-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
                   <div className={`absolute -right-12 -top-12 w-24 h-24 bg-yellow-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
                   <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-yellow-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "1s"}}></div>
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 relative z-10">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl bg-yellow-200 flex items-center justify-center p-2 sm:p-3 shadow-sm border border-yellow-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-yellow-200 group-hover:to-yellow-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <div className="flex items-center gap-4 mb-3 relative z-10">
+                    <div className="w-20 h-20 rounded-xl bg-yellow-200 flex items-center justify-center p-3 shadow-sm border border-yellow-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-yellow-200 group-hover:to-yellow-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <img src="/images/offerings/community-icon.png" alt="Collaborative Community" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <h3 className="text-sm sm:text-base md:text-xl font-bold group-hover:text-yellow-600 transition-colors duration-300 text-center sm:text-left">Collaborative Community</h3>
+                    <h3 className="text-xl font-bold group-hover:text-yellow-600 transition-colors duration-300">Collaborative Community</h3>
                   </div>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-600 relative z-10">Join and explore communities from 10+ different domains.</p>
+                  <p className="text-gray-600 relative z-10">Join and explore communities from 10+ different domains.</p>
                 </div>
               </div>
               
               {/* Top Right - Skill-Building Workshops */}
               <div className="self-start flex justify-end" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.3s forwards"}}>
-                <div className="max-w-[150px] sm:max-w-[200px] md:max-w-xs bg-gradient-to-br from-white to-green-100 rounded-2xl shadow-md p-3 sm:p-4 md:p-6 border-2 border-green-300 hover:shadow-xl hover:shadow-green-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                <div className="max-w-xs bg-gradient-to-br from-white to-green-100 rounded-2xl shadow-md p-6 border-2 border-green-300 hover:shadow-xl hover:shadow-green-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
                   <div className={`absolute -right-12 -top-12 w-24 h-24 bg-green-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
                   <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-green-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "1.5s"}}></div>
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 relative z-10">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl bg-green-200 flex items-center justify-center p-2 sm:p-3 shadow-sm border border-green-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-green-200 group-hover:to-green-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <div className="flex items-center gap-4 mb-3 relative z-10">
+                    <div className="w-20 h-20 rounded-xl bg-green-200 flex items-center justify-center p-3 shadow-sm border border-green-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-green-200 group-hover:to-green-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <img src="/images/offerings/workshop-icon.png" alt="Innovative Workshops" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <h3 className="text-sm sm:text-base md:text-xl font-bold group-hover:text-green-600 transition-colors duration-300 text-center sm:text-left">Innovative Workshops</h3>
+                    <h3 className="text-xl font-bold group-hover:text-green-600 transition-colors duration-300">Innovative Workshops</h3>
                   </div>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-600 relative z-10">Real practical workshop from present industry curriculum.</p>
+                  <p className="text-gray-600 relative z-10">Real practical workshop from present industry curriculum.</p>
                 </div>
               </div>
               
               {/* Bottom Left - Rewarding Events */}
               <div className="self-end flex justify-start" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.5s forwards"}}>
-                <div className="max-w-[150px] sm:max-w-[200px] md:max-w-xs bg-gradient-to-br from-white to-purple-100 rounded-2xl shadow-md p-3 sm:p-4 md:p-6 border-2 border-purple-300 hover:shadow-xl hover:shadow-purple-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                <div className="max-w-xs bg-gradient-to-br from-white to-purple-100 rounded-2xl shadow-md p-6 border-2 border-purple-300 hover:shadow-xl hover:shadow-purple-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
                   <div className={`absolute -right-12 -top-12 w-24 h-24 bg-purple-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
                   <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-purple-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "2s"}}></div>
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 relative z-10">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl bg-purple-200 flex items-center justify-center p-2 sm:p-3 shadow-sm border border-purple-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-purple-200 group-hover:to-purple-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <div className="flex items-center gap-4 mb-3 relative z-10">
+                    <div className="w-20 h-20 rounded-xl bg-purple-200 flex items-center justify-center p-3 shadow-sm border border-purple-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-purple-200 group-hover:to-purple-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <img src="/images/offerings/innovative-icon.png" alt="Rewarding Events" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <h3 className="text-sm sm:text-base md:text-xl font-bold group-hover:text-purple-600 transition-colors duration-300 text-center sm:text-left">Rewarding Events</h3>
+                    <h3 className="text-xl font-bold group-hover:text-purple-600 transition-colors duration-300">Rewarding Events</h3>
                   </div>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-600 relative z-10">Solve, build and win through top industry events.</p>
+                  <p className="text-gray-600 relative z-10">Solve, build and win through top industry events.</p>
                 </div>
               </div>
               
               {/* Bottom Right - Real Networking */}
               <div className="self-end flex justify-end" style={{opacity: 0, animation: "fadeInUp 0.8s ease-out 0.7s forwards"}}>
-                <div className="max-w-[150px] sm:max-w-[200px] md:max-w-xs bg-gradient-to-br from-white to-blue-100 rounded-2xl shadow-md p-3 sm:p-4 md:p-6 border-2 border-blue-300 hover:shadow-xl hover:shadow-blue-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                <div className="max-w-xs bg-gradient-to-br from-white to-blue-100 rounded-2xl shadow-md p-6 border-2 border-blue-300 hover:shadow-xl hover:shadow-blue-200/50 transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
                   <div className={`absolute -right-12 -top-12 w-24 h-24 bg-blue-100/50 rounded-full blur-xl ${animationClasses.blobPulse}`}></div>
                   <div className={`absolute -left-12 -bottom-12 w-24 h-24 bg-blue-200/50 rounded-full blur-xl ${animationClasses.blobPulse}`} style={{animationDelay: "2.5s"}}></div>
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 relative z-10">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl bg-blue-200 flex items-center justify-center p-2 sm:p-3 shadow-sm border border-blue-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-blue-200 group-hover:to-blue-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <div className="flex items-center gap-4 mb-3 relative z-10">
+                    <div className="w-20 h-20 rounded-xl bg-blue-200 flex items-center justify-center p-3 shadow-sm border border-blue-300 group-hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-blue-200 group-hover:to-blue-100 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <img src="/images/offerings/networking-icon.png" alt="Real Networking" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <h3 className="text-sm sm:text-base md:text-xl font-bold group-hover:text-blue-600 transition-colors duration-300 text-center sm:text-left">Real Networking</h3>
+                    <h3 className="text-xl font-bold group-hover:text-blue-600 transition-colors duration-300">Real Networking</h3>
                   </div>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-600 relative z-10">Collaborate with people on projects, discussions and workshops to expand network.</p>
+                  <p className="text-gray-600 relative z-10">Collaborate with people on projects, discussions and workshops to expand network.</p>
                 </div>
               </div>
             </div>
@@ -417,7 +452,7 @@ export default function FeaturesSection() {
                     </svg>
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Button>
+            </Button>
               </Link>
             </div>
           </div>

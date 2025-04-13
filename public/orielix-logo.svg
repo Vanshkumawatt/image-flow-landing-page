@@ -1,9 +1,0 @@
-<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M250 130C250 105.147 229.853 85 205 85C180.147 85 160 105.147 160 130C160 154.853 180.147 175 205 175C229.853 175 250 154.853 250 130Z" stroke="black" stroke-width="8"/>
-  <path d="M180 130C180 105.147 159.853 85 135 85C110.147 85 90 105.147 90 130C90 154.853 110.147 175 135 175C159.853 175 180 154.853 180 130Z" stroke="black" stroke-width="8"/>
-  <path d="M170 180C170 155.147 149.853 135 125 135C100.147 135 80 155.147 80 180C80 204.853 100.147 225 125 225C149.853 225 170 204.853 170 180Z" stroke="black" stroke-width="8"/>
-  <path d="M210 200L230 250" stroke="black" stroke-width="8"/>
-  <path d="M100 110L80 60" stroke="black" stroke-width="8"/>
-  <path d="M140 110L130 70" stroke="black" stroke-width="8"/>
-  <path d="M220 150L260 140" stroke="black" stroke-width="8"/>
-</svg> 
