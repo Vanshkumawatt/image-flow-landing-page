@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,12 +65,7 @@ const Login = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">Password</Label>
-                      <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-800 font-medium">
-                        Forgot password?
-                      </Link>
-                    </div>
+                    <Label htmlFor="password">Password</Label>
                     <Input
                       id="password"
                       type="password"
@@ -81,6 +75,11 @@ const Login = () => {
                       required
                       className="h-12 px-4 rounded-xl"
                     />
+                    <div className="flex justify-end mt-1">
+                      <Link to="/forgot-password" className="text-xs text-purple-600 hover:text-purple-800 font-medium">
+                        Forgot password?
+                      </Link>
+                    </div>
                   </div>
                   <Button 
                     type="submit" 
@@ -126,20 +125,8 @@ const Login = () => {
               </p>
             </CardFooter>
           </Card>
-          
-          <div className="mt-8 text-center text-sm text-gray-500">
-            By signing in, you agree to our{" "}
-            <Link to="/terms" className="text-purple-600 hover:text-purple-800">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link to="/privacy" className="text-purple-600 hover:text-purple-800">
-              Privacy Policy
-            </Link>
-          </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

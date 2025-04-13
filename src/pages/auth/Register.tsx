@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,13 +23,21 @@ const Register = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       // Handle password mismatch
-      console.error("Passwords don't match");
+      toast({
+        title: "Passwords don't match",
+        description: "Please make sure your passwords match.",
+        variant: "destructive",
+      });
       return;
     }
     
     if (!acceptTerms) {
       // Handle terms not accepted
-      console.error("Please accept terms and conditions");
+      toast({
+        title: "Terms not accepted",
+        description: "Please accept the terms and conditions to continue.",
+        variant: "destructive",
+      });
       return;
     }
     
@@ -38,13 +48,32 @@ const Register = () => {
     
     setTimeout(() => {
       setIsLoading(false);
-      // Redirect or authenticate user
+      // Redirect to email verification page with email as state
+      navigate("/email-verification", { state: { email } });
+      
+      toast({
+        title: "Registration successful!",
+        description: "Please verify your email to continue.",
+        variant: "default",
+      });
     }, 1500);
   };
 
   const handleGoogleRegister = () => {
     // Handle Google registration logic here
     console.log("Registering with Google");
+    // After successful registration with Google, redirect to email verification
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate("/email-verification", { state: { email: "google-user@gmail.com" } });
+      
+      toast({
+        title: "Google registration successful!",
+        description: "Please verify your email to continue.",
+        variant: "default",
+      });
+    }, 1500);
   };
 
   return (
@@ -63,7 +92,6 @@ const Register = () => {
               </div>
               <CardTitle className="text-2xl font-bold tracking-tight">Create an account</CardTitle>
               <CardDescription className="text-gray-500">
-                Register to join our community
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -184,13 +212,8 @@ const Register = () => {
               </p>
             </CardFooter>
           </Card>
-          
-          <div className="mt-8 text-center text-sm text-gray-500">
-            By signing up, you'll get update to new events, courses,<br />opportunities, and our community.
-          </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
