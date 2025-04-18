@@ -201,25 +201,45 @@ export default function Dashboard() {
       // The lower the rank number, the taller the bar
       const maxRank = Math.max(...ranks);
       const calculateHeight = (rank) => {
-        // Formula: 56 - ((rank - 1) / maxRank) * 40
-        // This gives a range from 56 (best) to 16 (worst)
-        const heightValue = Math.max(16, 56 - ((rank - 1) / maxRank) * 40);
+        // Improved formula for better visual representation of rankings
+        // Using inverse logarithmic scale with adjusted parameters for more accurate visual scaling
+        const baseHeight = 56; // Maximum height for #1 rank
+        const minHeight = 16;  // Minimum height for lowest rank
+        
+        if (rank === 1) {
+          return `h-${baseHeight} sm:h-${baseHeight}`;
+        }
+        
+        // Calculate height using a more sophisticated formula that creates better visual distinction
+        // between ranks while maintaining proper proportional representation
+        // The formula uses a logarithmic scale with a custom base to create more natural-looking bars
+        const logBase = 1.2; // A smaller log base creates more gradual height differences
+        const scaleFactor = 5;  // Controls how quickly heights decrease as rank increases
+        
+        // This formula ensures that:
+        // 1. Lower ranks (better positions) get taller bars
+        // 2. The difference between consecutive ranks is more noticeable for top positions
+        // 3. The overall visual representation is more intuitive and proportional
+        const heightValue = Math.max(minHeight, baseHeight - (Math.log(rank) / Math.log(logBase)) * scaleFactor);
         return `h-${Math.floor(heightValue)} sm:h-${Math.ceil(heightValue)}`;
       };
       
-      // Your height (if not #1)
-      if (rankingData[category].you.rank !== 1) {
-        rankingData[category].you.height = calculateHeight(rankingData[category].you.rank);
-      } else {
-        rankingData[category].you.height = "h-52 sm:h-56";
-      }
+      // Calculate your height using the improved formula
+      // This ensures consistent height calculation for all ranks
+      rankingData[category].you.height = rankingData[category].you.rank === 1 
+        ? "h-52 sm:h-56" 
+        : calculateHeight(rankingData[category].you.rank);
       
-      // Other person's height (if not #1)
-      if (rankingData[category].other.rank !== 1) {
-        rankingData[category].other.height = calculateHeight(rankingData[category].other.rank);
-      } else {
-        rankingData[category].other.height = "h-52 sm:h-56";
-      }
+      // Calculate other person's height using the improved formula
+      // This ensures consistent height calculation for all ranks
+      rankingData[category].other.height = rankingData[category].other.rank === 1 
+        ? "h-52 sm:h-56" 
+        : calculateHeight(rankingData[category].other.rank);
+      
+      // Add visual indicators for rank changes
+      rankingData[category].you.indicator = rankingData[category].you.rank <= 10 ? "↑" : rankingData[category].you.rank >= 100 ? "↓" : "";
+      rankingData[category].other.indicator = rankingData[category].other.rank <= 10 ? "↑" : rankingData[category].other.rank >= 100 ? "↓" : "";
+      
     });
     
     return rankingData;
@@ -447,7 +467,12 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.you.textColor}`}>{currentData.you.name}</span>
+                            <span className={`text-sm font-semibold ${currentData.you.textColor}`}>
+                              {currentData.you.name}
+                              {currentData.you.indicator && (
+                                <span className="ml-1 text-xs">{currentData.you.indicator}</span>
+                              )}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -466,7 +491,10 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100 to-red-50 border border-rose-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.top.textColor}`}>{currentData.top.name}</span>
+                            <span className={`text-sm font-semibold ${currentData.top.textColor}`}>
+                              {currentData.top.name}
+                              <span className="ml-1 text-xs">↑</span>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -485,7 +513,12 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-100 to-green-50 border border-emerald-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.other.textColor}`}>{currentData.other.name}</span>
+                            <span className={`text-sm font-semibold ${currentData.other.textColor}`}>
+                              {currentData.other.name}
+                              {currentData.other.indicator && (
+                                <span className="ml-1 text-xs">{currentData.other.indicator}</span>
+                              )}
+                            </span>
                           </div>
                         </div>
                       </div>

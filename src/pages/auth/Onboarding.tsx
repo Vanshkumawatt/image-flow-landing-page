@@ -57,14 +57,14 @@ const CountryCodeDropdown = ({ selectedCode, setSelectedCode, disabled = false }
     <Popover>
       <PopoverTrigger asChild>
         <Button 
-          variant="ghost" 
-          className="absolute left-0 top-0 h-full pl-4 pr-3 flex items-center justify-center border-r"
+          variant="outline" 
+          className={`h-12 px-3 flex items-center justify-center rounded-l-xl rounded-r-none border-r-0 focus:ring-0 focus:ring-offset-0 transition-all duration-300 ${disabled ? 'border-purple-500 bg-purple-50/70 border-r-0' : 'border-gray-200'}`}
           disabled={disabled}
         >
           <div className="flex items-center gap-2">
-            <span>{selectedCountry.flag}</span>
-            <span className="text-xs">{selectedCode}</span>
-            <ChevronDown className="h-3 w-3" />
+            <span className="text-base">{selectedCountry.flag}</span>
+            <span className="text-sm font-medium">{selectedCode}</span>
+            <ChevronDown className="h-3.5 w-3.5 opacity-70" />
           </div>
         </Button>
       </PopoverTrigger>
@@ -264,6 +264,21 @@ const Onboarding = () => {
       setIsVerifying(false);
       setPhoneVerified(true);
       setShowVerificationInput(false);
+      
+      // Add a subtle success animation to the document
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes successPulse {
+          0% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4); }
+          70% { box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+        @keyframes fadeIn {
+          0% { opacity: 0; transform: scale(0.8); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `;
+      document.head.appendChild(style);
     }, 1500);
   };
 
@@ -403,24 +418,29 @@ const Onboarding = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="phoneNumber">Phone Number</Label>
-                    <div className="flex-shrink-0 flex gap-2 relative z-20">
-                      <div className="relative">
+                    <div className="flex items-center gap-0 relative z-20">
+                      <CountryCodeDropdown
+                        selectedCode={countryCode}
+                        setSelectedCode={setCountryCode}
+                        disabled={phoneVerified}
+                      />
+                      <div className="flex-1 relative">
                         <Input
                           type="tel"
+                          id="phoneNumber"
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
-                          className={`pl-[80px] ${phoneVerified ? 'border-purple-500 bg-purple-50' : ''}`}
+                          className={`h-12 rounded-l-none rounded-r-xl border-l-0 pl-3 transition-all duration-300 ${phoneVerified ? 'border-purple-500 bg-purple-50/70 shadow-[0_0_0_1px_rgba(147,51,234,0.3),0_0_0_4px_rgba(147,51,234,0.1)]' : 'border-gray-200'}`}
                           disabled={phoneVerified}
-                        />
-                        <CountryCodeDropdown
-                          selectedCode={countryCode}
-                          setSelectedCode={setCountryCode}
-                          disabled={phoneVerified}
+                          placeholder="Enter phone number"
                         />
                         
                         {phoneVerified && (
-                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-600">
-                            <CheckCircle className="h-5 w-5" />
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-600 animate-[fadeIn_0.5s_ease-in-out]">
+                            <div className="relative">
+                              <div className="absolute -inset-1 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
+                              <CheckCircle className="h-5 w-5 relative z-10" />
+                            </div>
                           </div>
                         )}
                       </div>
@@ -431,12 +451,12 @@ const Onboarding = () => {
                           variant="outline"
                           onClick={handleSendVerificationCode}
                           disabled={isVerifying || phoneNumber.length < 5}
-                          className="whitespace-nowrap"
+                          className="h-12 ml-2 px-4 whitespace-nowrap rounded-xl border-gray-200 font-medium hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700 transition-all duration-300"
                         >
                           {isVerifying ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            "Verify Phone"
+                            <span className="flex items-center gap-1">Verify Phone</span>
                           )}
                         </Button>
                       )}
@@ -473,7 +493,7 @@ const Onboarding = () => {
                                 value={input}
                                 onChange={(e) => handleVerificationInputChange(index, e.target.value)}
                                 onKeyDown={(e) => handleVerificationKeyDown(index, e)}
-                                className="w-12 h-12 text-center text-xl"
+                                className="w-12 h-12 text-center text-xl font-semibold rounded-xl border-2 focus:border-purple-500 focus:ring-purple-200 focus:ring-4 transition-all duration-200"
                                 maxLength={1}
                               />
                             ))}
@@ -483,12 +503,12 @@ const Onboarding = () => {
                             type="button"
                             onClick={handleVerifyPhone}
                             disabled={isVerifying || verificationCode.length !== 4}
-                            className="ml-2"
+                            className="ml-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-xl transition-all duration-300"
                           >
                             {isVerifying ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                              "Verify"
+                              <span className="flex items-center gap-1">Verify <CheckCircle className="h-4 w-4 ml-1" /></span>
                             )}
                           </Button>
                         </div>
