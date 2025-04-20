@@ -105,30 +105,32 @@ interface NavItemProps {
   text: string;
   active?: boolean;
   badge?: string;
+  onClick?: () => void;
 }
 
-const NavItem = ({ icon, text, active, badge }: NavItemProps) => (
+const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
   <button
-    className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left transition-all duration-300 ease-out group relative overflow-hidden ${
+    onClick={onClick}
+    className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left transition-all duration-200 ease-in-out group relative overflow-hidden ${
       active 
-        ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-500/30 scale-[1.02]' 
-        : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50/80 text-indigo-800 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.01]'
+        ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-500/30 scale-[1.01]' 
+        : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50/80 text-indigo-800 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.005]'
     }`}
   >
     {/* Background glow effect */}
     {!active && (
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/0 via-indigo-400/0 to-purple-400/0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 ease-in-out"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/0 via-indigo-400/0 to-purple-400/0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 ease-in-out"></div>
     )}
     {active && (
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-purple-400/20 to-indigo-400/20 opacity-30 blur-md animate-pulse-slow"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-purple-400/20 to-indigo-400/20 opacity-30 blur-md"></div>
     )}
     
-    <div className={`relative z-10 ${active ? 'text-white' : 'text-indigo-600'} transition-all duration-300 ease-out ${active ? 'scale-110' : 'group-hover:scale-125 group-hover:rotate-3'}`}>
+    <div className={`relative z-10 ${active ? 'text-white' : 'text-indigo-600'} transition-all duration-200 ease-in-out ${active ? 'scale-110' : 'group-hover:scale-110'}`}>
       {icon}
     </div>
-    <span className="relative z-10 text-base font-medium tracking-tight group-hover:translate-x-1 transition-all duration-300 ease-out">{text}</span>
+    <span className="relative z-10 text-base font-medium tracking-tight group-hover:translate-x-0.5 transition-all duration-200 ease-in-out">{text}</span>
     {badge && (
-      <div className="relative z-10 ml-auto bg-white/90 backdrop-blur-sm text-indigo-600 min-w-6 h-6 px-1.5 rounded-full flex items-center justify-center text-xs font-bold shadow-sm border border-indigo-100/50 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-md group-hover:border-indigo-200/70 group-hover:bg-white">
+      <div className="relative z-10 ml-auto bg-white/90 backdrop-blur-sm text-indigo-600 min-w-6 h-6 px-1.5 rounded-full flex items-center justify-center text-xs font-bold shadow-sm border border-indigo-100/50 transition-all duration-200 ease-in-out group-hover:scale-105 group-hover:shadow-md group-hover:border-indigo-200/70 group-hover:bg-white">
         {badge}
       </div>
     )}
@@ -201,45 +203,25 @@ export default function Dashboard() {
       // The lower the rank number, the taller the bar
       const maxRank = Math.max(...ranks);
       const calculateHeight = (rank) => {
-        // Improved formula for better visual representation of rankings
-        // Using inverse logarithmic scale with adjusted parameters for more accurate visual scaling
-        const baseHeight = 56; // Maximum height for #1 rank
-        const minHeight = 16;  // Minimum height for lowest rank
-        
-        if (rank === 1) {
-          return `h-${baseHeight} sm:h-${baseHeight}`;
-        }
-        
-        // Calculate height using a more sophisticated formula that creates better visual distinction
-        // between ranks while maintaining proper proportional representation
-        // The formula uses a logarithmic scale with a custom base to create more natural-looking bars
-        const logBase = 1.2; // A smaller log base creates more gradual height differences
-        const scaleFactor = 5;  // Controls how quickly heights decrease as rank increases
-        
-        // This formula ensures that:
-        // 1. Lower ranks (better positions) get taller bars
-        // 2. The difference between consecutive ranks is more noticeable for top positions
-        // 3. The overall visual representation is more intuitive and proportional
-        const heightValue = Math.max(minHeight, baseHeight - (Math.log(rank) / Math.log(logBase)) * scaleFactor);
+        // Formula: 56 - (Math.log(rank) / Math.log(maxRank)) * 40
+        // This gives a more logarithmic scale for better visual representation
+        const heightValue = Math.max(16, 56 - (Math.log(rank) / Math.log(maxRank)) * 40);
         return `h-${Math.floor(heightValue)} sm:h-${Math.ceil(heightValue)}`;
       };
       
-      // Calculate your height using the improved formula
-      // This ensures consistent height calculation for all ranks
-      rankingData[category].you.height = rankingData[category].you.rank === 1 
-        ? "h-52 sm:h-56" 
-        : calculateHeight(rankingData[category].you.rank);
+      // Your height (if not #1)
+      if (rankingData[category].you.rank !== 1) {
+        rankingData[category].you.height = calculateHeight(rankingData[category].you.rank);
+      } else {
+        rankingData[category].you.height = "h-52 sm:h-56";
+      }
       
-      // Calculate other person's height using the improved formula
-      // This ensures consistent height calculation for all ranks
-      rankingData[category].other.height = rankingData[category].other.rank === 1 
-        ? "h-52 sm:h-56" 
-        : calculateHeight(rankingData[category].other.rank);
-      
-      // Add visual indicators for rank changes
-      rankingData[category].you.indicator = rankingData[category].you.rank <= 10 ? "↑" : rankingData[category].you.rank >= 100 ? "↓" : "";
-      rankingData[category].other.indicator = rankingData[category].other.rank <= 10 ? "↑" : rankingData[category].other.rank >= 100 ? "↓" : "";
-      
+      // Other person's height (if not #1)
+      if (rankingData[category].other.rank !== 1) {
+        rankingData[category].other.height = calculateHeight(rankingData[category].other.rank);
+      } else {
+        rankingData[category].other.height = "h-52 sm:h-56";
+      }
     });
     
     return rankingData;
@@ -288,19 +270,19 @@ export default function Dashboard() {
           
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
-              <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" active />
-              <NavItem icon={<PencilIcon className="h-5 w-5" />} text="Discussion Forum" />
-              <NavItem icon={<ListIcon className="h-5 w-5" />} text="Events" />
-              <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" />
-              <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" badge="1" />
-              <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" />
-              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Find a Job" />
-              <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" />
+              <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" active onClick={() => navigate('/dashboard')} />
+              <NavItem icon={<PencilIcon className="h-5 w-5" />} text="Discussion Forum" onClick={() => navigate('/discussion-forum')} />
+              <NavItem icon={<ListIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
+              <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" onClick={() => navigate('/path-finder')} />
+              <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
+              <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
+              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Find a Job" onClick={() => navigate('/find-job')} />
+              <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" onClick={() => navigate('/collab-projects')} />
             </div>
             
             <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
               <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-              <NavItem icon={<Settings className="h-5 w-5" />} text="Settings" />
+              <NavItem icon={<Settings className="h-5 w-5" />} text="Settings" onClick={() => navigate('/settings')} />
             </div>
           </div>
         </div>
@@ -467,12 +449,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.you.textColor}`}>
-                              {currentData.you.name}
-                              {currentData.you.indicator && (
-                                <span className="ml-1 text-xs">{currentData.you.indicator}</span>
-                              )}
-                            </span>
+                            <span className={`text-sm font-semibold ${currentData.you.textColor}`}>{currentData.you.name}</span>
                           </div>
                         </div>
                       </div>
@@ -491,10 +468,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100 to-red-50 border border-rose-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.top.textColor}`}>
-                              {currentData.top.name}
-                              <span className="ml-1 text-xs">↑</span>
-                            </span>
+                            <span className={`text-sm font-semibold ${currentData.top.textColor}`}>{currentData.top.name}</span>
                           </div>
                         </div>
                       </div>
@@ -513,12 +487,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col items-center mt-3">
                           <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-100 to-green-50 border border-emerald-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className={`text-sm font-semibold ${currentData.other.textColor}`}>
-                              {currentData.other.name}
-                              {currentData.other.indicator && (
-                                <span className="ml-1 text-xs">{currentData.other.indicator}</span>
-                              )}
-                            </span>
+                            <span className={`text-sm font-semibold ${currentData.other.textColor}`}>{currentData.other.name}</span>
                           </div>
                         </div>
                       </div>
