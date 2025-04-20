@@ -95,7 +95,7 @@ export default function FindJob() {
               <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" onClick={() => navigate('/path-finder')} />
               <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
               <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Find a Job" active />
+              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Internships and Jobs" active />
               <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" onClick={() => navigate('/collab-projects')} />
             </div>
             
@@ -139,7 +139,7 @@ export default function FindJob() {
                 <div className="relative">
                   <h1 className="text-xl font-extrabold bg-white px-7 py-3 rounded-full shadow-2xl border border-white/20 flex items-center space-x-2">
                     <span className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      Find a Job
+                      Internships and Jobs
                     </span>
                     <span className="h-2 w-2 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full animate-pulse"></span>
                   </h1>
@@ -179,7 +179,7 @@ export default function FindJob() {
             <Card className="border-0 shadow-xl bg-gradient-to-br from-purple-100 via-indigo-100 to-purple-200 text-gray-800 backdrop-blur-sm rounded-2xl overflow-hidden relative">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-center bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 bg-clip-text text-transparent">
-                  Find a Job
+                  Internships and Jobs
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center p-8 text-center">

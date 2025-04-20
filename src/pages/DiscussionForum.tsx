@@ -23,15 +23,17 @@ interface NavItemProps {
   text: string;
   active?: boolean;
   badge?: string;
+  onClick?: () => void;  // Add onClick prop to the interface
 }
 
-const NavItem = ({ icon, text, active, badge }: NavItemProps) => (
+const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
   <button
     className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left transition-all duration-200 ease-in-out group relative overflow-hidden ${
       active 
         ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-500/30 scale-[1.01]' 
         : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50/80 text-indigo-800 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.005]'
     }`}
+    onClick={onClick}  // Add onClick handler to the button
   >
     {/* Background glow effect */}
     {!active && (

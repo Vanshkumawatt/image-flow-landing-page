@@ -95,7 +95,7 @@ export default function Community() {
               <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" onClick={() => navigate('/path-finder')} />
               <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" active />
               <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Find a Job" onClick={() => navigate('/find-job')} />
+              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Internships and Jobs" onClick={() => navigate('/find-job')} />
               <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" onClick={() => navigate('/collab-projects')} />
             </div>
             
