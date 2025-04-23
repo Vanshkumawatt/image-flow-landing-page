@@ -1,20 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { 
-  HomeIcon,
-  PencilIcon,
-  ListIcon,
-  MapIcon,
-  Settings,
-  BriefcaseIcon,
-  Users as UserGroupIcon,
   X,
-  MessageSquareIcon,
-  LayoutGridIcon
-} from "lucide-react";
+  HomeIcon,
+  CalendarIcon,
+  BookOpenIcon,
+  UsersIcon,
+  Users as UserGroupIcon
+} from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 // NavItem component for sidebar
@@ -57,6 +53,30 @@ const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
 
 export default function Community() {
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        if (window.scrollY > lastScrollY && window.scrollY > 100) { // Scrolling down & past 100px
+          setVisible(false);
+        } else { // Scrolling up
+          setVisible(true);
+        }
+        setLastScrollY(window.scrollY);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+      
+      // Cleanup function
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   return (
@@ -90,82 +110,69 @@ export default function Community() {
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
               <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" onClick={() => navigate('/dashboard')} />
-              <NavItem icon={<PencilIcon className="h-5 w-5" />} text="Discussion Forum" onClick={() => navigate('/discussion-forum')} />
-              <NavItem icon={<ListIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
-              <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" onClick={() => navigate('/path-finder')} />
-              <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" active />
-              <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Internships and Jobs" onClick={() => navigate('/find-job')} />
-              <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" onClick={() => navigate('/collab-projects')} />
+              <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
+              <NavItem icon={<BookOpenIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
+              <NavItem icon={<UsersIcon className="h-5 w-5" />} text="Community" active />
             </div>
             
             <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
               <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-              <NavItem icon={<Settings className="h-5 w-5" />} text="Settings" onClick={() => navigate('/settings')} />
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between py-4">
-            <div className="flex items-center">
-              <button 
-                className="p-3.5 pl-2.5 mr-4 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-300 ease-out text-gray-600 hover:text-gray-800 shadow-sm hover:shadow-md hover:scale-105 group"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 transition-transform duration-300 ease-out group-hover:scale-110">
-                  <line x1="3" x2="21" y1="12" y2="12"/>
-                  <line x1="3" x2="21" y1="6" y2="6"/>
-                  <line x1="3" x2="21" y1="18" y2="18"/>
-                </svg>
-                <span className="sr-only">Toggle sidebar</span>
-              </button>
-              <div className="flex-shrink-0 flex items-center overflow-visible">
+
+      {/* Header - Modern User-Friendly Design */}
+      <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-md border-b border-indigo-100 h-20 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="grid grid-cols-3 items-center h-full w-full">
+            <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
+              <div className="cursor-pointer transition-all duration-300 flex items-center justify-center overflow-visible">
                 <img 
                   src="/lovable-uploads/orielixlogo.png" 
                   alt="Orielix Logo" 
-                  className="h-[120px] -mt-4 -mb-4 transition-all duration-300 transform hover:scale-110"
+                  className="h-[85px] -mt-2 transition-all duration-300 transform hover:scale-105"
                 />
               </div>
             </div>
             
-            {/* Page Label */}
-            <div className="hidden md:flex items-center justify-center absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full opacity-70 group-hover:opacity-100 blur-lg group-hover:blur-xl transition-all duration-300 animate-gradient-x"></div>
-                <div className="relative">
-                  <h1 className="text-xl font-extrabold bg-white px-7 py-3 rounded-full shadow-2xl border border-white/20 flex items-center space-x-2">
-                    <span className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      Community
-                    </span>
-                    <span className="h-2 w-2 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full animate-pulse"></span>
-                  </h1>
+            {/* Center Navigation */}
+            <div className="hidden md:flex justify-center items-center">
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-full p-1 shadow-sm border border-indigo-100">
+                <div className="flex space-x-1">
+                  <button onClick={() => navigate('/dashboard')} className="px-5 py-2 rounded-full text-indigo-700 font-medium text-sm transition-all duration-300 hover:bg-white/80 hover:shadow-sm transform hover:-translate-y-0.5">
+                    Dashboard
+                  </button>
+                  <button onClick={() => navigate('/events')} className="px-5 py-2 rounded-full text-indigo-700 font-medium text-sm transition-all duration-300 hover:bg-white/80 hover:shadow-sm transform hover:-translate-y-0.5">
+                    Events
+                  </button>
+                  <button onClick={() => navigate('/sessions')} className="px-5 py-2 rounded-full text-indigo-700 font-medium text-sm transition-all duration-300 hover:bg-white/80 hover:shadow-sm transform hover:-translate-y-0.5">
+                    Sessions
+                  </button>
+                  <button onClick={() => navigate('/community')} className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-purple-600 transform hover:-translate-y-0.5">
+                    Community
+                  </button>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-6">
-              <button className="p-2.5 rounded-full text-gray-400 hover:text-gray-500 relative bg-gray-50 hover:bg-gray-100 transition-all duration-300 ease-out hover:shadow-md hover:scale-105 group">
+            <div className="hidden md:flex items-center justify-end flex-shrink-0 gap-2 lg:gap-4 mr-3 lg:mr-5">
+              <button className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative">
                 <span className="sr-only">View notifications</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 transition-transform duration-300 ease-out group-hover:rotate-12 group-hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                   <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
                   <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
                 </svg>
-                <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white group-hover:animate-pulse"></span>
+                <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
               </button>
-              <div className="relative flex-shrink-0">
-                <div>
-                  <button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-2 border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:scale-110 hover:border-purple-300 group">
-                    <span className="sr-only">Open user menu</span>
-                    <Avatar className="h-10 w-10 transition-all duration-300 ease-out group-hover:shadow-lg">
-                      <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                  </button>
-                </div>
+              <div className="relative">
+                <button className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200">
+                  <Avatar className="h-8 w-8 ring-2 ring-white shadow-sm">
+                    <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium">John Doe</span>
+                </button>
               </div>
             </div>
           </div>
