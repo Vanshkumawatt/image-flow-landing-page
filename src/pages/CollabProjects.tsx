@@ -13,7 +13,10 @@ import {
   Users as UserGroupIcon,
   X,
   MessageSquareIcon,
-  LayoutGridIcon
+  LayoutGridIcon,
+  CalendarIcon,
+  BookOpenIcon,
+  UsersIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -90,18 +93,13 @@ export default function CollabProjects() {
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
               <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" onClick={() => navigate('/dashboard')} />
-              <NavItem icon={<PencilIcon className="h-5 w-5" />} text="Discussion Forum" onClick={() => navigate('/discussion-forum')} />
-              <NavItem icon={<ListIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
-              <NavItem icon={<MapIcon className="h-5 w-5" />} text="Path Finder" onClick={() => navigate('/path-finder')} />
-              <NavItem icon={<MessageSquareIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
-              <NavItem icon={<LayoutGridIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<BriefcaseIcon className="h-5 w-5" />} text="Internships and Jobs" onClick={() => navigate('/find-job')} />
-              <NavItem icon={<UserGroupIcon className="h-5 w-5" />} text="Collab on Projects" active />
+              <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
+              <NavItem icon={<BookOpenIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
+              <NavItem icon={<UsersIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
             </div>
             
             <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
               <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-              <NavItem icon={<Settings className="h-5 w-5" />} text="Settings" onClick={() => navigate('/settings')} />
             </div>
           </div>
         </div>

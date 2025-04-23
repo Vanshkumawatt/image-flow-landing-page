@@ -19,6 +19,8 @@ import Events from "./pages/Events";
 import PathFinder from "./pages/PathFinder";
 import Community from "./pages/Community";
 import Sessions from "./pages/Sessions";
+import UserProfile from "./pages/UserProfile";
+import Notifications from "./pages/Notifications";
 import FindJob from "./pages/FindJob";
 import CollabProjects from "./pages/CollabProjects";
 import Settings from "./pages/Settings";
@@ -52,6 +54,8 @@ const App = () => {
               <Route path="/find-job" element={<FindJob />} />
               <Route path="/collab-projects" element={<CollabProjects />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/user-profile" element={<UserProfile />} />
+              <Route path="/notifications" element={<Notifications />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

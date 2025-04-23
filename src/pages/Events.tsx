@@ -4,12 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { 
-  X,
+  CalendarIcon, 
+  BellIcon, 
+  ImageIcon, 
+  UsersIcon, 
+  MessageSquareIcon, 
+  TrendingUpIcon, 
+  BookOpenIcon, 
+  LayoutGridIcon, 
+  CheckCircleIcon, 
+  Clock as ClockIcon,
   HomeIcon,
-  CalendarIcon,
-  BookOpenIcon,
-  UsersIcon
-} from 'lucide-react';
+  X,
+  ChevronRight as ChevronRightIcon,
+  ChevronLeft as ChevronLeftIcon,
+  Pencil as PencilIcon,
+  Users as UserGroupIcon,
+  Map as MapIcon,
+  Briefcase as BriefcaseIcon
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // NavItem component for sidebar
@@ -156,7 +169,10 @@ export default function Events() {
             </div>
 
             <div className="hidden md:flex items-center justify-end flex-shrink-0 gap-2 lg:gap-4 mr-3 lg:mr-5">
-              <button className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                onClick={() => navigate('/notifications')}
+              >
                 <span className="sr-only">View notifications</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                   <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
@@ -165,7 +181,10 @@ export default function Events() {
                 <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
               </button>
               <div className="relative">
-                <button className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200">
+                <button 
+                  className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200"
+                  onClick={() => navigate('/user-profile')}
+                >
                   <Avatar className="h-8 w-8 ring-2 ring-white shadow-sm">
                     <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
                     <AvatarFallback>JD</AvatarFallback>
@@ -181,29 +200,223 @@ export default function Events() {
       {/* Main content */}
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8">
-            <Card className="border-0 shadow-xl bg-gradient-to-br from-purple-100 via-indigo-100 to-purple-200 text-gray-800 backdrop-blur-sm rounded-2xl overflow-hidden relative">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-center bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 bg-clip-text text-transparent">
-                  Events
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center p-8 text-center">
-                <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                  <CalendarIcon className="h-12 w-12 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Coming Soon</h3>
-                <p className="text-gray-600 max-w-md mb-6">
-                  Our events page is under development. Soon you'll be able to discover and join exciting events, workshops, and meetups.
+          {/* Hero Section */}
+          <div className="relative mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 p-8 shadow-xl">
+            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-purple-300/20 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-indigo-300/20 blur-3xl"></div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="max-w-2xl">
+                <h1 className="mb-4 text-4xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
+                  Discover Amazing Events
+                </h1>
+                <p className="mb-6 text-lg text-gray-700">
+                  Connect with creators, learn new skills, and expand your creative network through our curated events, workshops, and meetups.
                 </p>
-                <Button 
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  Back to Dashboard
+                <div className="flex flex-wrap gap-3">
+                  <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all duration-300">
+                    Browse All Events
+                  </Button>
+                  <Button variant="outline" className="border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-300">
+                    Create Event
+                  </Button>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="w-64 h-64 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full flex items-center justify-center p-3 border border-indigo-200/50 backdrop-blur-sm">
+                  <div className="w-full h-full rounded-full bg-white/80 flex items-center justify-center shadow-inner">
+                    <CalendarIcon className="h-24 w-24 text-indigo-500/80" />
+                  </div>
+                </div>
+                <div className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">23</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Featured Events */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Events</h2>
+              <Button variant="ghost" className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50">
+                View All <ChevronRightIcon className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Event Card 1 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                    alt="Photography Workshop" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    May 15, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Advanced Photography Techniques</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Learn professional photography techniques from industry experts. Perfect for intermediate photographers looking to enhance their skills.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/32.jpg" />
+                        <AvatarFallback>SJ</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">Sarah Johnson</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">24 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Event Card 2 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80" 
+                    alt="Design Meetup" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    May 22, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-purple-100 text-purple-700 hover:bg-purple-200">Meetup</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Creative Design Showcase</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Join fellow designers for an evening of inspiration, networking, and showcasing your latest creative projects.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/men/45.jpg" />
+                        <AvatarFallback>DL</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">David Lee</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">56 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Event Card 3 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                    alt="AI Art Workshop" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    June 5, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">AI-Powered Art Creation</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Explore the intersection of AI and creativity. Learn how to use cutting-edge AI tools to enhance your artistic process.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/68.jpg" />
+                        <AvatarFallback>MP</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">Maya Patel</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">132 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          
+          {/* Upcoming Events Calendar */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Event Calendar</h2>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 border-indigo-200 text-indigo-700">
+                  <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
+                <span className="text-sm font-medium">May 2025</span>
+                <Button variant="outline" size="sm" className="h-8 border-indigo-200 text-indigo-700">
+                  <ChevronRightIcon className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            <Card className="border-0 shadow-lg overflow-hidden">
+              <CardContent className="p-0">
+                <div className="grid grid-cols-7 text-center border-b border-gray-100">
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                    <div key={day} className="py-3 font-medium text-sm text-gray-500 bg-gray-50">{day}</div>
+                  ))}
+                </div>
+                
+                <div className="grid grid-cols-7 text-center">
+                  {/* Previous month days - grayed out */}
+                  {[28, 29, 30].map((day) => (
+                    <div key={`prev-${day}`} className="py-4 text-gray-400 border-b border-r border-gray-100">{day}</div>
+                  ))}
+                  
+                  {/* Current month days */}
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                    <div 
+                      key={day} 
+                      className={`py-4 border-b border-r border-gray-100 relative ${[1, 5, 15, 22].includes(day) ? 'bg-indigo-50' : ''}`}
+                    >
+                      <span className={`text-sm ${[1, 5, 15, 22].includes(day) ? 'font-medium text-indigo-700' : 'text-gray-700'}`}>{day}</span>
+                      {day === 15 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-indigo-500"></div>}
+                      {day === 22 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-purple-500"></div>}
+                      {day === 5 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-indigo-500"></div>}
+                      {day === 1 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-purple-500"></div>}
+                    </div>
+                  ))}
+                  
+                  {/* Next month days - grayed out */}
+                  {[1, 2, 3, 4].map((day) => (
+                    <div key={`next-${day}`} className="py-4 text-gray-400 border-b border-r border-gray-100">{day}</div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
+          </div>
+          
+          {/* Event Categories */}
+          <div>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">Browse by Category</h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { name: 'Photography', icon: <ImageIcon className="h-6 w-6" />, color: 'from-blue-500 to-indigo-500', count: 24 },
+                { name: 'Design', icon: <PencilIcon className="h-6 w-6" />, color: 'from-purple-500 to-pink-500', count: 18 },
+                { name: 'AI & Technology', icon: <LayoutGridIcon className="h-6 w-6" />, color: 'from-indigo-500 to-purple-500', count: 32 },
+                { name: 'Workshops', icon: <UsersIcon className="h-6 w-6" />, color: 'from-green-500 to-teal-500', count: 15 },
+                { name: 'Meetups', icon: <UserGroupIcon className="h-6 w-6" />, color: 'from-orange-500 to-amber-500', count: 9 },
+                { name: 'Online Events', icon: <MapIcon className="h-6 w-6" />, color: 'from-cyan-500 to-blue-500', count: 27 },
+                { name: 'Exhibitions', icon: <ImageIcon className="h-6 w-6" />, color: 'from-rose-500 to-red-500', count: 12 },
+                { name: 'Conferences', icon: <BriefcaseIcon className="h-6 w-6" />, color: 'from-violet-500 to-purple-500', count: 7 },
+              ].map((category) => (
+                <Card key={category.name} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden">
+                  <CardContent className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
+                        {category.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">{category.name}</h3>
+                        <p className="text-xs text-gray-500">{category.count} events</p>
+                      </div>
+                    </div>
+                    <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-300" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </main>

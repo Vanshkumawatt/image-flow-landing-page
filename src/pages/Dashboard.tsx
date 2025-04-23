@@ -342,7 +342,10 @@ export default function Dashboard() {
             </div>
 
             <div className="hidden md:flex items-center justify-end flex-shrink-0 gap-2 lg:gap-4 mr-3 lg:mr-5">
-              <button className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                onClick={() => navigate('/notifications')}
+              >
                 <span className="sr-only">View notifications</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                   <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
@@ -351,7 +354,10 @@ export default function Dashboard() {
                 <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
               </button>
               <div className="relative">
-                <button className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200">
+                <button 
+                  className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200"
+                  onClick={() => navigate('/user-profile')}
+                >
                   <Avatar className="h-8 w-8 ring-2 ring-white shadow-sm">
                     <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
                     <AvatarFallback>JD</AvatarFallback>
@@ -540,22 +546,6 @@ export default function Dashboard() {
                   
                   <CardContent className="px-6 py-5 relative z-10">
                     <div className="grid grid-cols-2 gap-6">
-                      {/* Projects Completed */}
-                      <div className="relative p-5 bg-gradient-to-br from-white/90 to-purple-50 rounded-2xl backdrop-blur-sm border border-purple-100 hover:border-[#A288E3]/50 hover:shadow-[0_0_20px_rgba(162,136,227,0.2)] transition-all duration-300 overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#A288E3]/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8 group-hover:bg-[#A288E3]/20 transition-all duration-500"></div>
-                        
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A288E3]/20 to-[#A288E3]/5 border border-[#A288E3]/20 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                            <CheckCircleIcon className="h-5 w-5 text-[#A288E3]" />
-                          </div>
-                          <span className="text-base font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Projects</span>
-                        </div>
-                        <div className="flex flex-col items-center mt-2">
-                          <span className="text-5xl font-bold text-gray-800 group-hover:text-[#A288E3] transition-colors duration-300">12</span>
-                          <span className="text-sm font-medium text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300 bg-white/50 px-2.5 py-1 rounded-full">Completed</span>
-                        </div>
-                      </div>
-                      
                       {/* Events Participated */}
                       <div className="relative p-5 bg-gradient-to-br from-white/90 to-purple-50 rounded-2xl backdrop-blur-sm border border-purple-100 hover:border-[#58C7F3]/50 hover:shadow-[0_0_20px_rgba(88,199,243,0.2)] transition-all duration-300 overflow-hidden group">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-[#58C7F3]/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8 group-hover:bg-[#58C7F3]/20 transition-all duration-500"></div>
@@ -585,22 +575,6 @@ export default function Dashboard() {
                         <div className="flex flex-col items-center mt-2">
                           <span className="text-5xl font-bold text-gray-800 group-hover:text-[#62DDBD] transition-colors duration-300">24</span>
                           <span className="text-sm font-medium text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300 bg-white/50 px-2.5 py-1 rounded-full">Attended</span>
-                        </div>
-                      </div>
-                      
-                      {/* Collaborations */}
-                      <div className="relative p-5 bg-gradient-to-br from-white/90 to-purple-50 rounded-2xl backdrop-blur-sm border border-purple-100 hover:border-[#FF6B8A]/50 hover:shadow-[0_0_20px_rgba(255,107,138,0.2)] transition-all duration-300 overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF6B8A]/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8 group-hover:bg-[#FF6B8A]/20 transition-all duration-500"></div>
-                        
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B8A]/20 to-[#FF6B8A]/5 border border-[#FF6B8A]/20 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                            <MessageSquareIcon className="h-5 w-5 text-[#FF6B8A]" />
-                          </div>
-                          <span className="text-base font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Collaborations</span>
-                        </div>
-                        <div className="flex flex-col items-center mt-2">
-                          <span className="text-5xl font-bold text-gray-800 group-hover:text-[#FF6B8A] transition-colors duration-300">5</span>
-                          <span className="text-sm font-medium text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300 bg-white/50 px-2.5 py-1 rounded-full">Collaborated</span>
                         </div>
                       </div>
                     </div>
