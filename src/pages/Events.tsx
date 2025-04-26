@@ -232,6 +232,39 @@ export default function Events() {
             </div>
           </div>
           
+          {/* Browse by Category */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">Browse by Category</h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { name: 'Photography', icon: <ImageIcon className="h-6 w-6" />, color: 'from-blue-500 to-indigo-500', count: 24 },
+                { name: 'Design', icon: <PencilIcon className="h-6 w-6" />, color: 'from-purple-500 to-pink-500', count: 18 },
+                { name: 'AI & Technology', icon: <LayoutGridIcon className="h-6 w-6" />, color: 'from-indigo-500 to-purple-500', count: 32 },
+                { name: 'Workshops', icon: <UsersIcon className="h-6 w-6" />, color: 'from-green-500 to-teal-500', count: 15 },
+                { name: 'Meetups', icon: <UserGroupIcon className="h-6 w-6" />, color: 'from-orange-500 to-amber-500', count: 9 },
+                { name: 'Online Events', icon: <MapIcon className="h-6 w-6" />, color: 'from-cyan-500 to-blue-500', count: 27 },
+                { name: 'Exhibitions', icon: <ImageIcon className="h-6 w-6" />, color: 'from-rose-500 to-red-500', count: 12 },
+                { name: 'Conferences', icon: <BriefcaseIcon className="h-6 w-6" />, color: 'from-violet-500 to-purple-500', count: 7 },
+              ].map((category) => (
+                <Card key={category.name} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden">
+                  <CardContent className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
+                        {category.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">{category.name}</h3>
+                        <p className="text-xs text-gray-500">{category.count} events</p>
+                      </div>
+                    </div>
+                    <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-300" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+          
           {/* Featured Events */}
           <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
@@ -331,91 +364,6 @@ export default function Events() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </div>
-          
-          {/* Upcoming Events Calendar */}
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Event Calendar</h2>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="h-8 border-indigo-200 text-indigo-700">
-                  <ChevronLeftIcon className="h-4 w-4" />
-                </Button>
-                <span className="text-sm font-medium">May 2025</span>
-                <Button variant="outline" size="sm" className="h-8 border-indigo-200 text-indigo-700">
-                  <ChevronRightIcon className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            
-            <Card className="border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-0">
-                <div className="grid grid-cols-7 text-center border-b border-gray-100">
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                    <div key={day} className="py-3 font-medium text-sm text-gray-500 bg-gray-50">{day}</div>
-                  ))}
-                </div>
-                
-                <div className="grid grid-cols-7 text-center">
-                  {/* Previous month days - grayed out */}
-                  {[28, 29, 30].map((day) => (
-                    <div key={`prev-${day}`} className="py-4 text-gray-400 border-b border-r border-gray-100">{day}</div>
-                  ))}
-                  
-                  {/* Current month days */}
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <div 
-                      key={day} 
-                      className={`py-4 border-b border-r border-gray-100 relative ${[1, 5, 15, 22].includes(day) ? 'bg-indigo-50' : ''}`}
-                    >
-                      <span className={`text-sm ${[1, 5, 15, 22].includes(day) ? 'font-medium text-indigo-700' : 'text-gray-700'}`}>{day}</span>
-                      {day === 15 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-indigo-500"></div>}
-                      {day === 22 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-purple-500"></div>}
-                      {day === 5 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-indigo-500"></div>}
-                      {day === 1 && <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-purple-500"></div>}
-                    </div>
-                  ))}
-                  
-                  {/* Next month days - grayed out */}
-                  {[1, 2, 3, 4].map((day) => (
-                    <div key={`next-${day}`} className="py-4 text-gray-400 border-b border-r border-gray-100">{day}</div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* Event Categories */}
-          <div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">Browse by Category</h2>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { name: 'Photography', icon: <ImageIcon className="h-6 w-6" />, color: 'from-blue-500 to-indigo-500', count: 24 },
-                { name: 'Design', icon: <PencilIcon className="h-6 w-6" />, color: 'from-purple-500 to-pink-500', count: 18 },
-                { name: 'AI & Technology', icon: <LayoutGridIcon className="h-6 w-6" />, color: 'from-indigo-500 to-purple-500', count: 32 },
-                { name: 'Workshops', icon: <UsersIcon className="h-6 w-6" />, color: 'from-green-500 to-teal-500', count: 15 },
-                { name: 'Meetups', icon: <UserGroupIcon className="h-6 w-6" />, color: 'from-orange-500 to-amber-500', count: 9 },
-                { name: 'Online Events', icon: <MapIcon className="h-6 w-6" />, color: 'from-cyan-500 to-blue-500', count: 27 },
-                { name: 'Exhibitions', icon: <ImageIcon className="h-6 w-6" />, color: 'from-rose-500 to-red-500', count: 12 },
-                { name: 'Conferences', icon: <BriefcaseIcon className="h-6 w-6" />, color: 'from-violet-500 to-purple-500', count: 7 },
-              ].map((category) => (
-                <Card key={category.name} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden">
-                  <CardContent className="p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
-                        {category.icon}
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">{category.name}</h3>
-                        <p className="text-xs text-gray-500">{category.count} events</p>
-                      </div>
-                    </div>
-                    <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-300" />
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         </div>

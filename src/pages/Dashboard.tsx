@@ -23,7 +23,9 @@ import {
   Settings,
   BriefcaseIcon,
   Users as UserGroupIcon,
-  X
+  X,
+  ChevronRightIcon,
+  StarIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,30 +34,6 @@ const recentProjects = [
   { id: 1, title: "Product Photography", date: "Today", progress: 75, image: "/images/projects/project1.jpg" },
   { id: 2, title: "Summer Collection", date: "Yesterday", progress: 90, image: "/images/projects/project2.jpg" },
   { id: 3, title: "AI-Enhanced Portraits", date: "3 days ago", progress: 40, image: "/images/projects/project3.jpg" },
-];
-
-const upcomingEvents = [
-  { 
-    id: 1, 
-    title: "Photography Basics Workshop",
-    date: "Tomorrow, 2:00 PM",
-    participants: 24, 
-    joined: true 
-  },
-  { 
-    id: 2, 
-    title: "Photoshop Advanced Techniques",
-    date: "May 15, 5:30 PM",
-    participants: 56, 
-    joined: false 
-  },
-  { 
-    id: 3, 
-    title: "Community Photo Challenge",
-    date: "May 18, All day",
-    participants: 132, 
-    joined: true 
-  },
 ];
 
 const notifications = [
@@ -69,34 +47,6 @@ const communities = [
   { id: 1, name: "Portrait Photographers", members: 1243, newPosts: 5, avatar: "/images/communities/portrait.jpg" },
   { id: 2, name: "Digital Designers", members: 856, newPosts: 12, avatar: "/images/communities/designers.jpg" },
   { id: 3, name: "AI Art Enthusiasts", members: 2135, newPosts: 28, avatar: "/images/communities/ai-art.jpg" },
-];
-
-// Add new data for sessions and workshops after the upcomingEvents array
-const upcomingSessions = [
-  { 
-    id: 1, 
-    title: "Mastering Portrait Lighting",
-    date: "May 20, 3:00 PM",
-    instructor: "Sarah Johnson",
-    duration: "90 min",
-    level: "Intermediate" 
-  },
-  { 
-    id: 2, 
-    title: "Composition Techniques",
-    date: "May 22, 4:30 PM",
-    instructor: "David Lee",
-    duration: "60 min",
-    level: "Beginner" 
-  },
-  { 
-    id: 3, 
-    title: "Advanced Photo Editing",
-    date: "May 25, 6:00 PM",
-    instructor: "Maya Patel",
-    duration: "120 min",
-    level: "Advanced" 
-  },
 ];
 
 // NavItem component for sidebar
@@ -581,182 +531,10 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
               </div>
-              
-              {/* Upcoming Events Section - Clean Design */}
-              <Card className="border-0 rounded-3xl overflow-hidden shadow-md relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50/90 to-indigo-50/90"></div>
-                
-                <CardHeader className="relative z-10 pb-4 border-b border-indigo-100/30">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-white p-2 rounded-lg shadow-sm">
-                        <CalendarIcon className="h-5 w-5 text-indigo-600" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg font-semibold text-gray-800">
-                          Upcoming Events
-                        </CardTitle>
-                        <CardDescription className="text-sm text-gray-500">
-                          Join workshops and community challenges
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline" className="h-9 rounded-lg border-indigo-200 text-indigo-600 hover:bg-indigo-50">
-                      View Calendar
-                    </Button>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="p-4 relative z-10">
-                  <div className="space-y-3">
-                    {upcomingEvents.map((event) => (
-                      <div key={event.id} className="bg-white rounded-xl p-4 shadow-sm hover:shadow transition-all duration-200 flex items-center gap-4">
-                        {/* Date Circle */}
-                        <div className="relative min-w-[60px] h-[60px] flex flex-col items-center justify-center bg-indigo-50 rounded-xl border border-indigo-100">
-                          <span className="text-xs font-medium text-indigo-600 uppercase">
-                            {event.date.split(',')[0]?.substring(0, 3)}
-                          </span>
-                          <span className="text-xl font-bold text-indigo-700">
-                            {event.date.match(/\d+/)?.[0] || "15"}
-                          </span>
-                        </div>
-                        
-                        {/* Event Info */}
-                        <div className="flex-grow min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h3 className="text-base font-medium text-gray-800 truncate">
-                              {event.title}
-                            </h3>
-                            {event.joined && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                                Registered
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-5 mt-1 text-sm text-gray-500">
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="h-3.5 w-3.5 text-indigo-400" />
-                              <span>{event.date.split(',')[1]?.trim()}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <UsersIcon className="h-3.5 w-3.5 text-indigo-400" />
-                              <span>{event.participants} participants</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Action Button */}
-                        <Button 
-                          size="sm" 
-                          className={event.joined 
-                            ? "rounded-lg bg-white border-gray-200 text-gray-700 hover:bg-gray-50" 
-                            : "rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"}
-                        >
-                          {event.joined ? 'Details' : 'Join'}
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-4 text-center">
-                    <Button variant="ghost" className="text-sm text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg">
-                      View all events
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Upcoming Sessions & Workshops Section */}
-              <Card className="border-0 rounded-3xl overflow-hidden shadow-md relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-50/90 to-fuchsia-50/90"></div>
-                
-                <CardHeader className="relative z-10 pb-4 border-b border-purple-100/30">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-white p-2 rounded-lg shadow-sm">
-                        <BookOpenIcon className="h-5 w-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg font-semibold text-gray-800">
-                          Upcoming Sessions & Workshops
-                        </CardTitle>
-                        <CardDescription className="text-sm text-gray-500">
-                          Learn from experts and improve your skills
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline" className="h-9 rounded-lg border-purple-200 text-purple-600 hover:bg-purple-50">
-                      All Sessions
-                    </Button>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="p-4 relative z-10">
-                  <div className="space-y-3">
-                    {upcomingSessions.map((session) => (
-                      <div key={session.id} className="bg-white rounded-xl p-4 shadow-sm hover:shadow transition-all duration-200 flex items-center gap-4">
-                        {/* Date Circle */}
-                        <div className="relative min-w-[60px] h-[60px] flex flex-col items-center justify-center bg-purple-50 rounded-xl border border-purple-100">
-                          <span className="text-xs font-medium text-purple-600 uppercase">
-                            {session.date.split(',')[0]?.substring(0, 3)}
-                          </span>
-                          <span className="text-xl font-bold text-purple-700">
-                            {session.date.match(/\d+/)?.[0] || "15"}
-                          </span>
-                        </div>
-                        
-                        {/* Session Info */}
-                        <div className="flex-grow min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h3 className="text-base font-medium text-gray-800 truncate">
-                              {session.title}
-                            </h3>
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                              session.level === "Beginner" 
-                                ? "bg-green-100 text-green-800" 
-                                : session.level === "Intermediate"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-purple-100 text-purple-800"
-                            }`}>
-                              {session.level}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-5 mt-1 text-sm text-gray-500">
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="h-3.5 w-3.5 text-purple-400" />
-                              <span>{session.date.split(',')[1]?.trim()} ({session.duration})</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <UsersIcon className="h-3.5 w-3.5 text-purple-400" />
-                              <span>{session.instructor}</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Action Button */}
-                        <Button 
-                          size="sm" 
-                          className="rounded-lg bg-purple-600 text-white hover:bg-purple-700"
-                        >
-                          Register
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-4 text-center">
-                    <Button variant="ghost" className="text-sm text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded-lg">
-                      View all sessions
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Right Column */}
             <div className="space-y-8">
-
-
               {/* Mini Calendar */}
               <Card className="border-0 shadow-md bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden">
                 <CardHeader className="pb-2 border-b border-gray-100">
