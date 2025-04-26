@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import Navbar from "@/components/Navbar";
 import { useToast } from "@/components/ui/use-toast";
 
 const EmailVerification = () => {
@@ -126,85 +125,82 @@ const EmailVerification = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      <Navbar />
-      <div className="pt-36 pb-20 px-6">
-        <div className="max-w-md mx-auto">
-          <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden">
-            <CardHeader className="space-y-1 text-center pb-6">
-              <div className="flex justify-center mb-2">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                  </svg>
-                </div>
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white overflow-hidden">
+      <div className="max-w-md w-full px-6 overflow-y-auto max-h-screen py-6">
+        <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm rounded-2xl">
+          <CardHeader className="space-y-1 text-center pb-6">
+            <div className="flex justify-center mb-2">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
               </div>
-              <CardTitle className="text-2xl font-bold tracking-tight">Verify your email</CardTitle>
-              <CardDescription className="text-gray-500">
-                We've sent a verification code to {maskEmail(email)}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex justify-center space-x-2">
-                {inputs.map((value, index) => (
-                  <Input
-                    key={index}
-                    id={`verification-${index}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    autoComplete="one-time-code"
-                    value={value}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="h-14 w-14 text-center text-xl font-semibold rounded-xl focus:border-purple-500 focus:ring-purple-500"
-                  />
-                ))}
-              </div>
-              
-              <Button 
-                onClick={handleVerify}
-                disabled={verificationCode.length !== 6 || isVerifying}
-                className="w-full py-6 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl text-base font-medium"
+            </div>
+            <CardTitle className="text-2xl font-bold tracking-tight">Verify your email</CardTitle>
+            <CardDescription className="text-gray-500">
+              We've sent a verification code to {maskEmail(email)}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex justify-center space-x-2">
+              {inputs.map((value, index) => (
+                <Input
+                  key={index}
+                  id={`verification-${index}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={1}
+                  autoComplete="one-time-code"
+                  value={value}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className="h-14 w-14 text-center text-xl font-semibold rounded-xl focus:border-purple-500 focus:ring-purple-500"
+                />
+              ))}
+            </div>
+            
+            <Button 
+              onClick={handleVerify}
+              disabled={verificationCode.length !== 6 || isVerifying}
+              className="w-full py-6 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl text-base font-medium"
+            >
+              {isVerifying ? (
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : "Verify Email"}
+            </Button>
+            
+            <div className="text-center">
+              <p className="text-sm text-gray-500 mb-2">Didn't receive the code?</p>
+              <Button
+                variant="link"
+                onClick={handleResendCode}
+                disabled={countdown > 0 || isLoading}
+                className="p-0 h-auto text-purple-600 hover:text-purple-800 font-medium"
               >
-                {isVerifying ? (
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                ) : "Verify Email"}
+                {isLoading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </span>
+                ) : countdown > 0 ? (
+                  `Resend code in ${countdown}s`
+                ) : (
+                  "Resend code"
+                )}
               </Button>
-              
-              <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">Didn't receive the code?</p>
-                <Button
-                  variant="link"
-                  onClick={handleResendCode}
-                  disabled={countdown > 0 || isLoading}
-                  className="p-0 h-auto text-purple-600 hover:text-purple-800 font-medium"
-                >
-                  {isLoading ? (
-                    <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
-                  ) : countdown > 0 ? (
-                    `Resend code in ${countdown}s`
-                  ) : (
-                    "Resend code"
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 };
 
-export default EmailVerification; 
+export default EmailVerification;

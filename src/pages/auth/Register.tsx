@@ -95,10 +95,10 @@ const Register = () => {
             <form onSubmit={handleRegister}>
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Create username</Label>
                   <Input
                     id="name"
-                    placeholder="John Doe"
+                    placeholder="username"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
