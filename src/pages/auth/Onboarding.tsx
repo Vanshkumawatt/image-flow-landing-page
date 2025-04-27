@@ -14,6 +14,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 
+// Custom animation styles
+const fadeInAnimation = "transition-all duration-300 ease-in-out opacity-100 transform-none";
+const initialHiddenState = "opacity-0 transform translate-y-2";
+
 // Create a range of years for the year dropdown
 const currentYear = new Date().getFullYear();
 const startYear = 1920;
@@ -162,6 +166,18 @@ const Onboarding = () => {
   const [institution, setInstitution] = useState("");
   const [fieldOfStudy, setFieldOfStudy] = useState("");
   const [role, setRole] = useState("");
+  const [otherRole, setOtherRole] = useState("");
+  
+  // Prevent scrolling when selecting role
+  const handleRoleSelect = (selectedRole: string) => {
+    // Prevent default scrolling behavior
+    const currentScrollPosition = window.scrollY;
+    setRole(selectedRole);
+    // Maintain scroll position
+    setTimeout(() => {
+      window.scrollTo(0, currentScrollPosition);
+    }, 0);
+  };
 
   // Step 4: Preferences and Notifications
   const [interests, setInterests] = useState<string[]>([]);
@@ -244,6 +260,16 @@ const Onboarding = () => {
         toast({
           title: "Please fill in all required fields",
           description: "All fields marked with * are required to proceed.",
+          variant: "destructive",
+        });
+        return;
+      }
+    } else if (step === 4) {
+      // Validate that at least 3 interests are selected
+      if (interests.length < 3) {
+        toast({
+          title: "Please select at least 3 interests",
+          description: "You need to select a minimum of 3 interests to continue.",
           variant: "destructive",
         });
         return;
@@ -808,81 +834,147 @@ const Onboarding = () => {
               )}
 
               {step === 3 && (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="institution" className="flex items-center">
-                      Institution <span className="text-red-500 ml-1">*</span>
-                    </Label>
-                    <Input
-                      id="institution"
-                      placeholder="Enter your school, college, or company name"
-                      value={institution}
-                      onChange={(e) => setInstitution(e.target.value)}
-                      required
-                      className={`h-12 px-4 rounded-xl ${errors.institution ? 'border-red-500 focus:ring-red-500' : ''}`}
-                    />
-                    {errors.institution && (
-                      <p className="text-red-500 text-xs flex items-center mt-1">
-                        <AlertCircle className="h-3 w-3 mr-1" />
-                        {errors.institution}
-                      </p>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="fieldOfStudy">Field of Study</Label>
-                    <Input
-                      id="fieldOfStudy"
-                      placeholder="E.g. Computer Science, Design, Mathematics"
-                      value={fieldOfStudy}
-                      onChange={(e) => setFieldOfStudy(e.target.value)}
-                      className="h-12 px-4 rounded-xl"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="role">What best describes your role?</Label>
-                    <Select value={role} onValueChange={setRole}>
-                      <SelectTrigger className="h-12 rounded-xl">
-                        <SelectValue placeholder="Select a role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="designer">Designer</SelectItem>
-                        <SelectItem value="developer">Developer</SelectItem>
-                        <SelectItem value="product-manager">Product Manager</SelectItem>
-                        <SelectItem value="marketer">Marketer</SelectItem>
-                        <SelectItem value="student">Student</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                <div>
+                  <div className="space-y-6">
+                    <div>
+                      <Label htmlFor="institution" className="flex items-center mb-2">
+                        Institution <span className="text-red-500 ml-1">*</span>
+                      </Label>
+                      <Input
+                        id="institution"
+                        placeholder="Enter your school, college, or company name"
+                        value={institution}
+                        onChange={(e) => setInstitution(e.target.value)}
+                        required
+                        className={`h-12 px-4 rounded-xl ${errors.institution ? 'border-red-500 focus:ring-red-500' : ''}`}
+                      />
+                      {errors.institution && (
+                        <p className="text-red-500 text-xs flex items-center mt-1">
+                          <AlertCircle className="h-3 w-3 mr-1" />
+                          {errors.institution}
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="fieldOfStudy" className="mb-2 block">Field of Study</Label>
+                      <Input
+                        id="fieldOfStudy"
+                        placeholder="E.g. Computer Science, Design, Mathematics"
+                        value={fieldOfStudy}
+                        onChange={(e) => setFieldOfStudy(e.target.value)}
+                        className="h-12 px-4 rounded-xl"
+                      />
+                    </div>
+                    
+                    <div>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="h-8 w-1 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full"></div>
+                        <Label className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What best describes your role?</Label>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-2">
+                        {["Student", "Entrepreneur", "Developer", "Designer", "Marketer", "Other"].map((roleOption) => {
+                          const isSelected = role === roleOption.toLowerCase();
+                          return (
+                            <Button
+                              key={roleOption}
+                              type="button"
+                              variant={isSelected ? "default" : "outline"}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleRoleSelect(roleOption.toLowerCase());
+                              }}
+                              className={`
+                                relative overflow-hidden group transition-all duration-300 
+                                rounded-xl py-3 px-4 z-10
+                                ${isSelected 
+                                  ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 border-0" 
+                                  : "border border-indigo-100"}
+                              `}
+                            >
+                              <span className={`
+                                relative z-10 font-medium
+                                ${isSelected ? "text-white" : "text-gray-700"}
+                              `}>
+                                {roleOption}
+                              </span>
+                            </Button>
+                          );
+                        })}
+                      </div>
+                      
+                      {role === "other" && (
+                        <div className="mt-3">
+                          <Input
+                            placeholder="Please specify your role"
+                            value={otherRole}
+                            onChange={(e) => setOtherRole(e.target.value)}
+                            className="h-12 px-4 rounded-xl border-indigo-100 focus:border-purple-300 focus:ring-purple-200"
+                            autoFocus
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
 
               {step === 4 && (
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What are you interested in?</Label>
-                    <p className="text-sm text-gray-500 mb-4">Select all that apply to personalize your experience</p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {["Photography", "Design", "Development", "AI", "Graphics", "Animation"].map((interest) => (
-                        <Button
-                          key={interest}
-                          type="button"
-                          variant={interests.includes(interest) ? "default" : "outline"}
-                          onClick={() => handleInterestToggle(interest)}
-                          className={`rounded-xl h-auto py-4 relative overflow-hidden group transition-all duration-300 ${
-                            interests.includes(interest)
-                              ? "bg-gradient-to-r from-purple-600 to-indigo-600 border-0 hover:from-purple-700 hover:to-indigo-700 shadow-md"
-                              : "border-2 hover:border-purple-200 hover:bg-purple-50/50"
-                          }`}
-                        >
-                          {interests.includes(interest) && (
-                            <div className="absolute -top-5 -right-5 bg-white/20 w-10 h-10 rotate-12 transform scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-                          )}
-                          <span className={`relative z-10 font-medium ${interests.includes(interest) ? "text-white" : ""}`}>{interest}</span>
-                        </Button>
-                      ))}
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-1.5 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full shadow-sm"></div>
+                        <Label className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What are you interested in?</Label>
+                      </div>
+                      <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full shadow-sm border border-indigo-100">
+                        <div className={`text-sm font-medium ${interests.length >= 3 ? 'text-emerald-600' : 'text-indigo-500'} transition-colors duration-300`}>
+                          {interests.length}/3 selected
+                        </div>
+                        {interests.length >= 3 ? (
+                          <CheckCircle className="h-4 w-4 text-emerald-500" />
+                        ) : (
+                          <div className="h-4 w-4 rounded-full border-2 border-dashed border-indigo-300 animate-pulse"></div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 relative">
+                      {/* Simple decorative elements */}
+                      <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-300/10 rounded-full blur-3xl z-0"></div>
+                      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-300/10 rounded-full blur-3xl z-0"></div>
+                      
+                      {["Technology", "Startup", "Graphic Design", "UI/UX", "Editing", "Content Writing", "Game Development", "Marketing", "Animation"].map((interest) => {
+                        const isSelected = interests.includes(interest);
+                        return (
+                          <Button
+                            key={interest}
+                            type="button"
+                            variant={isSelected ? "default" : "outline"}
+                            onClick={() => handleInterestToggle(interest)}
+                            className={`
+                              relative overflow-hidden group transition-all duration-300 
+                              rounded-2xl h-auto py-5 px-4 z-10
+                              ${isSelected 
+                                ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 border-0 hover:shadow-xl hover:shadow-indigo-200/40 hover:translate-y-[-2px]" 
+                                : "border border-indigo-100 hover:border-purple-300 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50/80 hover:shadow-lg hover:translate-y-[-2px]"}
+                            `}
+                          >
+                            {/* Subtle hover effect element */}
+                            <div className="absolute inset-0 w-full h-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-2xl"></div>
+                            
+                            <span className={`
+                              relative z-10 font-medium
+                              ${isSelected ? "text-white" : "text-gray-700"}
+                              group-hover:${isSelected ? "text-white" : "text-indigo-700"}
+                              transition-all duration-300 group-hover:font-semibold
+                            `}>
+                              {interest}
+                            </span>
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
