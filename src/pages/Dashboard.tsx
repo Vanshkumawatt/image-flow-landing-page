@@ -1031,6 +1031,285 @@ export default function Dashboard() {
               </Card>
             </div>
           </div>
+          
+          {/* Featured Events - Full Width Section */}
+          <div className="mt-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Events</h2>
+              <Button variant="ghost" className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50">
+                View All <ChevronRightIcon className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Event Card 1 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                    alt="Photography Workshop" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    May 15, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Advanced Photography Techniques</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Learn professional photography techniques from industry experts. Perfect for intermediate photographers looking to enhance their skills.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/32.jpg" />
+                        <AvatarFallback>SJ</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">Sarah Johnson</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">24 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Event Card 2 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80" 
+                    alt="Design Meetup" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    May 22, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-purple-100 text-purple-700 hover:bg-purple-200">Meetup</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Creative Design Showcase</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Join fellow designers for an evening of inspiration, networking, and showcasing your latest creative projects.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/men/45.jpg" />
+                        <AvatarFallback>DL</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">David Lee</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">56 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Event Card 3 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative h-48 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                    alt="AI Art Workshop" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
+                    June 5, 2025
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">AI-Powered Art Creation</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Explore the intersection of AI and creativity. Learn how to use cutting-edge AI tools to enhance your artistic process.</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Avatar className="h-6 w-6 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/68.jpg" />
+                        <AvatarFallback>MP</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-gray-600">Maya Patel</span>
+                    </div>
+                    <div className="text-xs text-indigo-600 font-medium">132 Attending</div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          
+          {/* Featured Sessions - Full Width Section */}
+          <div className="mt-16 mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Sessions</h2>
+              <Button variant="ghost" className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50">
+                View All <ChevronRightIcon className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Session Card 1 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80" 
+                      alt="Portrait Lighting Session" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="absolute top-3 left-3 bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-medium z-20">
+                    Live
+                  </div>
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20 flex items-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    90 min
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Intermediate</Badge>
+                    <div className="flex items-center">
+                      <StarIcon className="h-4 w-4 text-amber-400 fill-amber-400" />
+                      <span className="text-xs font-medium ml-1">4.8</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Mastering Portrait Lighting</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Learn professional lighting techniques to create stunning portrait photography in any environment.</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="h-8 w-8 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/32.jpg" />
+                        <AvatarFallback>SJ</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">Sarah Johnson</div>
+                        <div className="text-xs text-gray-500">Portrait Photographer</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center text-gray-500 text-xs">
+                      <CalendarIcon className="h-3.5 w-3.5 mr-1" />
+                      <span>May 20, 3:00 PM</span>
+                    </div>
+                    <div className="flex items-center text-indigo-600 text-xs font-medium">
+                      <Users className="h-3.5 w-3.5 mr-1" />
+                      <span>24 Enrolled</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Session Card 2 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                      alt="Composition Techniques" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="absolute top-3 left-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium z-20">
+                    Upcoming
+                  </div>
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20 flex items-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    60 min
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge className="bg-green-100 text-green-700 hover:bg-green-200">Beginner</Badge>
+                    <div className="flex items-center">
+                      <StarIcon className="h-4 w-4 text-amber-400 fill-amber-400" />
+                      <span className="text-xs font-medium ml-1">4.6</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Composition Techniques</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Master the fundamentals of composition to create visually compelling and balanced photographs.</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="h-8 w-8 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/men/45.jpg" />
+                        <AvatarFallback>DL</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">David Lee</div>
+                        <div className="text-xs text-gray-500">Visual Artist</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center text-gray-500 text-xs">
+                      <CalendarIcon className="h-3.5 w-3.5 mr-1" />
+                      <span>May 22, 4:30 PM</span>
+                    </div>
+                    <div className="flex items-center text-indigo-600 text-xs font-medium">
+                      <Users className="h-3.5 w-3.5 mr-1" />
+                      <span>18 Enrolled</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Session Card 3 */}
+              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1593720219276-0b1eacd0aef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2061&q=80" 
+                      alt="Advanced Photo Editing" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="absolute top-3 left-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium z-20">
+                    Upcoming
+                  </div>
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20 flex items-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    120 min
+                  </div>
+                </div>
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge className="bg-rose-100 text-rose-700 hover:bg-rose-200">Advanced</Badge>
+                    <div className="flex items-center">
+                      <StarIcon className="h-4 w-4 text-amber-400 fill-amber-400" />
+                      <span className="text-xs font-medium ml-1">4.9</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Advanced Photo Editing</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Take your editing skills to the next level with advanced techniques for color grading, retouching, and creative effects.</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="h-8 w-8 border-2 border-white">
+                        <AvatarImage src="https://randomuser.me/api/portraits/women/68.jpg" />
+                        <AvatarFallback>MP</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">Maya Patel</div>
+                        <div className="text-xs text-gray-500">Professional Retoucher</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center text-gray-500 text-xs">
+                      <CalendarIcon className="h-3.5 w-3.5 mr-1" />
+                      <span>May 25, 6:00 PM</span>
+                    </div>
+                    <div className="flex items-center text-indigo-600 text-xs font-medium">
+                      <Users className="h-3.5 w-3.5 mr-1" />
+                      <span>32 Enrolled</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </main>
     </div>
