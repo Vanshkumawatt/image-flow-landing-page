@@ -121,6 +121,7 @@ const Onboarding = () => {
     dob?: string;
     phoneNumber?: string;
     bio?: string;
+    institution?: string;
   }>({});
 
   // Step 2: Profile Information
@@ -186,6 +187,25 @@ const Onboarding = () => {
       
       if (!bio.trim()) {
         newErrors.bio = "Please tell us about yourself";
+      }
+      
+      // If there are validation errors, show toast and return
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        toast({
+          title: "Please fill in all required fields",
+          description: "All fields marked with * are required to proceed.",
+          variant: "destructive",
+        });
+        return;
+      }
+    } else if (step === 3) {
+      const newErrors: {
+        institution?: string;
+      } = {};
+      
+      if (!institution.trim()) {
+        newErrors.institution = "Institution is required";
       }
       
       // If there are validation errors, show toast and return
@@ -569,7 +589,7 @@ const Onboarding = () => {
                       Phone Number <span className="text-red-500 ml-1">*</span>
                     </Label>
                     <div className="flex items-center gap-0 relative">
-                      <div className="flex rounded-lg overflow-hidden border border-gray-200 w-full">
+                      <div className="flex rounded-lg border border-gray-200 w-full">
                         <Popover>
                           <PopoverTrigger asChild>
                             <button className="flex items-center px-3 h-10 border-r border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -605,7 +625,7 @@ const Onboarding = () => {
                           id="phoneNumber"
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
-                          className={`border-0 h-10 flex-1 ${errors.phoneNumber ? 'focus:ring-red-500' : ''}`}
+                          className={`border-0 h-10 flex-1 z-10 relative ${errors.phoneNumber ? 'focus:ring-red-500' : ''}`}
                           disabled={phoneVerified}
                           placeholder="Enter phone number"
                         />
@@ -760,14 +780,23 @@ const Onboarding = () => {
               {step === 3 && (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="institution">Institution</Label>
+                    <Label htmlFor="institution" className="flex items-center">
+                      Institution <span className="text-red-500 ml-1">*</span>
+                    </Label>
                     <Input
                       id="institution"
-                      placeholder="Enter your school, college or university name"
+                      placeholder="Enter your school, college, or company name"
                       value={institution}
                       onChange={(e) => setInstitution(e.target.value)}
-                      className="h-12 px-4 rounded-xl"
+                      required
+                      className={`h-12 px-4 rounded-xl ${errors.institution ? 'border-red-500 focus:ring-red-500' : ''}`}
                     />
+                    {errors.institution && (
+                      <p className="text-red-500 text-xs flex items-center mt-1">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.institution}
+                      </p>
+                    )}
                   </div>
                   
                   <div className="space-y-2">
