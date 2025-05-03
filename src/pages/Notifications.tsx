@@ -26,7 +26,8 @@ import {
   BellOff,
   Filter,
   MoreHorizontal,
-  ChevronRight
+  ChevronRight,
+  Menu
 } from "lucide-react";
 
 // NavItem component for sidebar
@@ -359,6 +360,12 @@ export default function Notifications() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="grid grid-cols-3 items-center h-full w-full">
             <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden p-2 mr-2 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
               <div className="cursor-pointer transition-all duration-300 flex items-center justify-center overflow-visible">
                 <img 
                   src="/lovable-uploads/orielixlogo.png" 
@@ -394,10 +401,7 @@ export default function Notifications() {
                 onClick={() => navigate('/notifications')}
               >
                 <span className="sr-only">View notifications</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                </svg>
+                <BellIcon className="h-5 w-5" />
                 {unreadCount > 0 && (
                   <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
                 )}
@@ -414,6 +418,18 @@ export default function Notifications() {
                   <span className="text-sm font-medium">John Doe</span>
                 </button>
               </div>
+            </div>
+            
+            {/* Mobile View */}
+            <div className="flex md:hidden items-center justify-end">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+              >
+                <BellIcon className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
+                )}
+              </button>
             </div>
           </div>
         </div>
