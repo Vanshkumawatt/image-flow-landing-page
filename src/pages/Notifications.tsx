@@ -70,7 +70,7 @@ const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
 // Notification type definition
 interface Notification {
   id: string;
-  type: 'message' | 'like' | 'mention' | 'follow' | 'event' | 'achievement' | 'system';
+  type: 'message' | 'like' | 'mention' | 'follow' | 'event' | 'achievement' | 'system' | 'session';
   title: string;
   description: string;
   time: string;
@@ -91,110 +91,147 @@ export default function Notifications() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState("all");
   
-  // Sample notifications data
+  // Notifications data related to sessions and events
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: "1",
-      type: "message",
-      title: "New message from Sarah Johnson",
-      description: "Hey, I wanted to discuss the project proposal. Do you have time for a quick call?",
-      time: "5 minutes ago",
+      type: "event",
+      title: "Event Registration Confirmed",
+      description: "You're now registered for 'Advanced Photography Techniques' on May 15, 2025. We've added it to your calendar.",
+      time: "Just now",
       read: false,
       user: {
         name: "Sarah Johnson",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        avatar: "https://randomuser.me/api/portraits/women/32.jpg",
         fallback: "SJ"
       },
-      action: "Reply",
-      actionUrl: "/messages/1"
+      action: "View Event",
+      actionUrl: "/events/1"
     },
     {
       id: "2",
-      type: "like",
-      title: "Michael Chen liked your post",
-      description: "Your post 'Advanced Techniques in AI Image Generation' received a like",
+      type: "event",
+      title: "Event Reminder",
+      description: "'Creative Design Showcase' starts tomorrow at 6:00 PM. Don't forget to bring your portfolio!",
+      time: "10 minutes ago",
+      read: false,
+      user: {
+        name: "David Lee",
+        avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+        fallback: "DL"
+      },
+      action: "View Details",
+      actionUrl: "/events/2"
+    },
+    {
+      id: "3",
+      type: "event",
+      title: "New Event Added",
+      description: "'AI-Powered Art Creation' has been added to the upcoming events. It might interest you based on your preferences.",
       time: "30 minutes ago",
       read: false,
+      user: {
+        name: "Emily Martinez",
+        avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+        fallback: "EM"
+      },
+      action: "Register Now",
+      actionUrl: "/events/3"
+    },
+    {
+      id: "4",
+      type: "event",
+      title: "Event Location Changed",
+      description: "The venue for 'Photography Exhibition Workshop' has changed to Central Art Gallery, 123 Main Street.",
+      time: "1 hour ago",
+      read: true,
       user: {
         name: "Michael Chen",
         avatar: "https://randomuser.me/api/portraits/men/22.jpg",
         fallback: "MC"
       },
-      action: "View Post",
-      actionUrl: "/posts/123"
-    },
-    {
-      id: "3",
-      type: "event",
-      title: "Upcoming Event Reminder",
-      description: "AI Summit 2025 starts in 2 days. You're registered as an attendee.",
-      time: "1 hour ago",
-      read: true,
-      action: "View Details",
-      actionUrl: "/events/456"
-    },
-    {
-      id: "4",
-      type: "mention",
-      title: "Emma Wilson mentioned you",
-      description: "Emma mentioned you in a comment: '@johndoe what do you think about this approach?'",
-      time: "3 hours ago",
-      read: true,
-      user: {
-        name: "Emma Wilson",
-        avatar: "https://randomuser.me/api/portraits/women/63.jpg",
-        fallback: "EW"
-      },
-      action: "View Comment",
-      actionUrl: "/comments/789"
+      action: "View Updated Details",
+      actionUrl: "/events/4"
     },
     {
       id: "5",
-      type: "achievement",
-      title: "Achievement Unlocked!",
-      description: "You've completed 10 courses. You've earned the 'Learning Enthusiast' badge!",
-      time: "Yesterday",
+      type: "event",
+      title: "Limited Spots Available",
+      description: "Only 5 spots left for 'Motion Graphics Essentials' workshop. Secure your place now!",
+      time: "3 hours ago",
       read: true,
-      action: "View Achievements",
-      actionUrl: "/achievements"
+      action: "Register Now",
+      actionUrl: "/events/8"
     },
     {
       id: "6",
-      type: "follow",
-      title: "New Follower",
-      description: "Dr. Robert Kim started following you",
-      time: "Yesterday",
-      read: true,
+      type: "session",
+      title: "Session Starting Soon",
+      description: "Your enrolled session 'Mastering Portrait Lighting' with Sarah Johnson starts in 30 minutes.",
+      time: "30 minutes ago",
+      read: false,
       user: {
-        name: "Robert Kim",
-        avatar: "https://randomuser.me/api/portraits/men/42.jpg",
-        fallback: "RK"
+        name: "Sarah Johnson",
+        avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+        fallback: "SJ"
       },
-      action: "View Profile",
-      actionUrl: "/profile/robert-kim"
+      action: "Join Now",
+      actionUrl: "/sessions/1"
     },
     {
       id: "7",
-      type: "system",
-      title: "System Maintenance",
-      description: "The platform will be undergoing maintenance on April 25th from 2AM to 4AM UTC.",
-      time: "2 days ago",
-      read: true
+      type: "session",
+      title: "New Session Available",
+      description: "'Composition Techniques' with David Lee has been added to the schedule. Perfect for beginners!",
+      time: "2 hours ago",
+      read: true,
+      user: {
+        name: "David Lee",
+        avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+        fallback: "DL"
+      },
+      action: "Enroll Now",
+      actionUrl: "/sessions/2"
     },
     {
       id: "8",
-      type: "message",
-      title: "New message from David Martinez",
-      description: "I've reviewed your latest submission and have some feedback to share.",
+      type: "session",
+      title: "Session Materials Available",
+      description: "The resources for 'Advanced Photo Editing' have been uploaded. You can access them now.",
+      time: "Yesterday",
+      read: true,
+      user: {
+        name: "Alex Rodriguez",
+        avatar: "https://randomuser.me/api/portraits/men/67.jpg",
+        fallback: "AR"
+      },
+      action: "View Materials",
+      actionUrl: "/sessions/3/materials"
+    },
+    {
+      id: "9",
+      type: "session",
+      title: "Session Feedback Request",
+      description: "Please share your feedback on 'Character Animation Workshop' to help us improve future sessions.",
+      time: "2 days ago",
+      read: true,
+      action: "Give Feedback",
+      actionUrl: "/sessions/7/feedback"
+    },
+    {
+      id: "10",
+      type: "session",
+      title: "Session Rescheduled",
+      description: "'Animation Principles for UI' has been rescheduled to June 15, 2025 at 5:00 PM due to presenter availability.",
       time: "3 days ago",
       read: true,
       user: {
-        name: "David Martinez",
-        avatar: "https://randomuser.me/api/portraits/men/67.jpg",
-        fallback: "DM"
+        name: "Sophia Wang",
+        avatar: "https://randomuser.me/api/portraits/women/75.jpg",
+        fallback: "SW"
       },
-      action: "Reply",
-      actionUrl: "/messages/2"
+      action: "View Updated Schedule",
+      actionUrl: "/sessions/13"
     }
   ]);
 
