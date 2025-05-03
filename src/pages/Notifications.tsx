@@ -425,43 +425,8 @@ export default function Notifications() {
             </div>
           </div>
           
-          {/* Tabs */}
-          <Tabs defaultValue="all" className="mb-8" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-gradient-to-r from-indigo-50 to-purple-50 p-1 border border-indigo-100 rounded-full w-full justify-start overflow-x-auto">
-              <TabsTrigger 
-                value="all" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                All
-              </TabsTrigger>
-              <TabsTrigger 
-                value="unread" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Unread {unreadCount > 0 && `(${unreadCount})`}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="messages" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Messages
-              </TabsTrigger>
-              <TabsTrigger 
-                value="mentions" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Mentions
-              </TabsTrigger>
-              <TabsTrigger 
-                value="system" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                System
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Notifications Content */}
-            <TabsContent value={activeTab} className="mt-6">
+          {/* Notifications Content */}
+          <div className="mt-6">
               <Card className="shadow-md border-indigo-100">
                 <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
                   <CardTitle className="flex items-center gap-2 text-indigo-800">
@@ -554,8 +519,7 @@ export default function Notifications() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+          </div>
         </div>
       </main>
     </div>

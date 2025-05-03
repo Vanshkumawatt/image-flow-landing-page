@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,6 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 import { 
   HomeIcon,
   CalendarIcon,
@@ -22,19 +25,61 @@ import {
   Award,
   BookOpen,
   Calendar,
-  GraduationCap,
-  Briefcase,
   MapPin,
   Mail,
   Phone,
   Globe,
-  Twitter,
   Linkedin,
   Github,
   Camera,
   Plus,
-  ChevronRight
+  ChevronRight,
+  MessageCircle,
+  Share2,
+  Heart,
+  Image,
+  Link,
+  Menu,
+  Check,
+  Home,
+  Users
 } from "lucide-react";
+
+// StatCard component for profile statistics
+interface StatCardProps {
+  icon: React.ReactNode;
+  value: number;
+  label: string;
+  color: string;
+}
+
+const StatCard = ({ icon, value, label, color }: StatCardProps) => (
+  <div className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+    <div className={`p-3 rounded-full ${color} mb-2 text-white`}>
+      {icon}
+    </div>
+    <div className="text-2xl font-bold">{value.toLocaleString()}</div>
+    <div className="text-sm opacity-80">{label}</div>
+  </div>
+);
+
+// InterestTag component for user interests
+interface InterestTagProps {
+  text: string;
+  onClick?: () => void;
+}
+
+const InterestTag = ({ text, onClick }: InterestTagProps) => (
+  <motion.div 
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 cursor-pointer transition-colors duration-300 hover:bg-white/30"
+    onClick={onClick}
+  >
+    <span className="text-sm font-medium">{text}</span>
+  </motion.div>
+);
+
 
 // NavItem component for sidebar
 interface NavItemProps {
@@ -47,12 +92,12 @@ interface NavItemProps {
 
 const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
   <button
+    onClick={onClick}
     className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left transition-all duration-200 ease-in-out group relative overflow-hidden ${
       active 
         ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-500/30 scale-[1.01]' 
         : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50/80 text-indigo-800 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.005]'
     }`}
-    onClick={onClick}
   >
     {/* Background glow effect */}
     {!active && (
@@ -76,11 +121,13 @@ const NavItem = ({ icon, text, active, badge, onClick }: NavItemProps) => (
 
 export default function UserProfile() {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
   
   // User profile data
   const [userData, setUserData] = useState({
@@ -89,33 +136,11 @@ export default function UserProfile() {
     role: "AI Researcher",
     bio: "AI researcher with a focus on computer vision and natural language processing. Passionate about developing ethical AI solutions that solve real-world problems.",
     email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
     location: "San Francisco, CA",
-    website: "johndoe.dev",
-    twitter: "johndoe",
+    portfolio: "johndoe.portfolio",
     linkedin: "johndoe",
     github: "johndoe",
-    education: [
-      { degree: "Ph.D. in Computer Science", institution: "Stanford University", year: "2018-2022" },
-      { degree: "M.S. in Artificial Intelligence", institution: "MIT", year: "2016-2018" },
-      { degree: "B.S. in Computer Science", institution: "UC Berkeley", year: "2012-2016" }
-    ],
-    experience: [
-      { position: "AI Research Scientist", company: "DeepMind", year: "2022-Present" },
-      { position: "Research Intern", company: "Google AI", year: "2021" },
-      { position: "Machine Learning Engineer", company: "OpenAI", year: "2019-2021" }
-    ],
-    skills: ["Machine Learning", "Deep Learning", "Computer Vision", "NLP", "PyTorch", "TensorFlow", "Python", "JavaScript"],
-    achievements: [
-      "Published 5 papers in top-tier AI conferences",
-      "Developed an open-source library with 5k+ stars on GitHub",
-      "Won the Best Paper Award at CVPR 2022"
-    ],
-    projects: [
-      { name: "Neural Style Transfer", description: "A PyTorch implementation of neural style transfer algorithm", url: "#" },
-      { name: "Sentiment Analysis API", description: "REST API for real-time sentiment analysis of text", url: "#" },
-      { name: "Image Captioning Model", description: "Deep learning model that generates captions for images", url: "#" }
-    ]
+    interests: ["Technology", "Startup", "Graphic Design", "UI/UX", "Editing", "Content Writing", "Game Development", "Marketing", "Animation"]
   });
 
   // Handle scroll for navbar visibility
@@ -138,6 +163,8 @@ export default function UserProfile() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY]);
+  
+
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
@@ -160,7 +187,8 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-white text-gray-900 transition-colors duration-300">
+      {/* Modern Header with Glass Effect */}
       {/* Sidebar */}
       <div className={`fixed inset-0 z-50 ${sidebarOpen ? 'block' : 'hidden'}`}>
         {/* Overlay */}
@@ -189,26 +217,31 @@ export default function UserProfile() {
           
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
-              <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" onClick={() => navigate('/dashboard')} />
+              <NavItem icon={<Home className="h-5 w-5" />} text="Dashboard" onClick={() => navigate('/dashboard')} />
               <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
-              <NavItem icon={<BookOpenIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<UsersIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
+              <NavItem icon={<BookOpen className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
+              <NavItem icon={<Users className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
+              <NavItem icon={<UserIcon className="h-5 w-5" />} text="Profile" active onClick={() => navigate('/user-profile')} />
             </div>
             
             <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
               <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-              <NavItem icon={<UserIcon className="h-5 w-5" />} text="Profile" active onClick={() => {}} />
-              <NavItem icon={<SettingsIcon className="h-5 w-5" />} text="Settings" onClick={() => navigate('/settings')} />
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Header - Modern User-Friendly Design */}
       <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-md border-b border-indigo-100 h-20 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="grid grid-cols-3 items-center h-full w-full">
             <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden p-2 mr-2 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
               <div className="cursor-pointer transition-all duration-300 flex items-center justify-center overflow-visible">
                 <img 
                   src="/lovable-uploads/orielixlogo.png" 
@@ -234,81 +267,153 @@ export default function UserProfile() {
                   <button onClick={() => navigate('/community')} className="px-5 py-2 rounded-full text-indigo-700 font-medium text-sm transition-all duration-300 hover:bg-white/80 hover:shadow-sm transform hover:-translate-y-0.5">
                     Community
                   </button>
+                  <button onClick={() => navigate('/user-profile')} className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-purple-600 transform hover:-translate-y-0.5">
+                    Profile
+                  </button>
                 </div>
               </div>
             </div>
 
             <div className="hidden md:flex items-center justify-end flex-shrink-0 gap-2 lg:gap-4 mr-3 lg:mr-5">
-              <button className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                onClick={() => navigate('/notifications')}
+              >
                 <span className="sr-only">View notifications</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                </svg>
+                <BellIcon className="h-5 w-5" />
                 <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
               </button>
               <div className="relative">
-                <button className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200">
+                <button 
+                  className="flex items-center space-x-2 p-1.5 pl-1.5 pr-4 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200"
+                >
                   <Avatar className="h-8 w-8 ring-2 ring-white shadow-sm">
                     <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium">{userData.name}</span>
+                  <span className="text-sm font-medium">John Doe</span>
                 </button>
               </div>
+            </div>
+            
+            {/* Mobile View */}
+            <div className="flex md:hidden items-center justify-end">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                onClick={() => navigate('/notifications')}
+              >
+                <BellIcon className="h-5 w-5" />
+                <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main content */}
-      <main className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Profile Header */}
-          <div className="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-100 via-purple-50 to-indigo-100 shadow-xl border border-indigo-100/50">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute h-40 w-40 -top-10 -right-10 bg-purple-300/30 rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute h-60 w-60 bottom-20 -left-20 bg-indigo-300/30 rounded-full blur-3xl animate-pulse opacity-70"></div>
-              <div className="absolute h-20 w-20 top-1/2 right-10 bg-purple-400/20 rounded-full blur-xl animate-pulse opacity-80"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] bg-[length:20px_20px] opacity-10"></div>
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-16 z-40 bg-white border-gray-200 border-b shadow-lg md:hidden"
+          >
+            <div className="px-4 py-3 space-y-1">
+              {['Dashboard', 'Events', 'Sessions', 'Community'].map((item) => (
+                <button 
+                  key={item}
+                  onClick={() => {
+                    navigate(`/${item.toLowerCase()}`);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-100 text-gray-700 hover:text-purple-700"
+                >
+                  {item}
+                </button>
+              ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className="relative p-8 flex flex-col md:flex-row items-center gap-8 z-10">
-              <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur-sm group-hover:blur transition duration-300"></div>
-                <Avatar className="h-32 w-32 ring-4 ring-white shadow-xl relative">
-                  <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="object-cover" />
-                  <AvatarFallback className="text-3xl">JD</AvatarFallback>
-                  {editMode && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Camera className="h-8 w-8 text-white" />
-                    </div>
-                  )}
-                </Avatar>
-              </div>
+      {/* Main content */}
+      <main className="pt-24 pb-12">
+        {/* Hero Section with Animated Background */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-purple-200 via-indigo-100 to-purple-100">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute h-60 w-60 -top-20 -right-20 bg-purple-300/30 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute h-80 w-80 bottom-20 -left-20 bg-indigo-300/30 rounded-full blur-3xl animate-pulse opacity-70"></div>
+            <div className="absolute h-40 w-40 top-1/2 right-20 bg-purple-400/20 rounded-full blur-xl animate-pulse opacity-80"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] bg-[length:20px_20px] opacity-10"></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+            <div className="flex flex-col lg:flex-row items-center gap-12">
+              {/* Profile Image with Animation */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="relative"
+              >
+                <div className={`absolute -inset-1 bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-500 rounded-full opacity-75 blur-md ${editMode ? 'animate-pulse' : ''}`}></div>
+                <div className="relative rounded-full p-1 bg-white shadow-xl">
+                  <div className="relative group overflow-hidden rounded-full">
+                    <Avatar className="h-40 w-40 border-4 border-white">
+                      <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="object-cover" />
+                      <AvatarFallback className="text-4xl">JD</AvatarFallback>
+                    </Avatar>
+                    {editMode && (
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer"
+                      >
+                        <Camera className="h-8 w-8 text-white" />
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Online Status Indicator */}
+                <div className="absolute bottom-3 right-3 h-5 w-5 rounded-full bg-green-500 border-4 border-white"></div>
+              </motion.div>
               
-              <div className="flex-1 text-center md:text-left">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              {/* Profile Info */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex-1 text-center lg:text-left"
+              >
+                <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                   <div>
-                    <h1 className="text-3xl font-bold text-indigo-900">{userData.name}</h1>
-                    <p className="text-indigo-700 font-medium">@{userData.username}</p>
-                    <p className="text-indigo-600 mt-1">{userData.role}</p>
+                    <h1 className="text-4xl font-bold text-indigo-900 mb-2">{userData.name}</h1>
+                    <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 sm:gap-4">
+                      <p className="text-lg font-medium text-indigo-700">@{userData.username}</p>
+                      <p className="px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-600">{userData.role}</p>
+                    </div>
                   </div>
                   
-                  <div className="flex gap-3 justify-center md:justify-end">
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 justify-center lg:justify-end">
+
+                    
                     {editMode ? (
                       <>
                         <Button 
                           variant="outline" 
-                          className="bg-white/80 hover:bg-white border-indigo-200 hover:border-indigo-300 text-indigo-700"
+                          className="rounded-full bg-white border-indigo-200 text-indigo-700 hover:bg-indigo-50"
                           onClick={toggleEditMode}
                         >
                           <X className="mr-2 h-4 w-4" />
                           Cancel
                         </Button>
                         <Button 
-                          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+                          className="rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
                           onClick={saveProfile}
                         >
                           <SaveIcon className="mr-2 h-4 w-4" />
@@ -317,7 +422,7 @@ export default function UserProfile() {
                       </>
                     ) : (
                       <Button 
-                        className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+                        className="rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
                         onClick={toggleEditMode}
                       >
                         <EditIcon className="mr-2 h-4 w-4" />
@@ -327,374 +432,230 @@ export default function UserProfile() {
                   </div>
                 </div>
                 
-                <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
-                  <Badge variant="outline" className="bg-white/80 text-indigo-700 border-indigo-200 px-3 py-1 flex items-center gap-1.5">
-                    <Mail className="h-3.5 w-3.5" />
+                {/* Contact Info Badges */}
+                <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
+                  <Badge variant="outline" className="bg-white/80 text-indigo-700 border-indigo-200 px-3 py-1.5 flex items-center gap-2 rounded-full">
+                    <Mail className="h-4 w-4" />
                     {userData.email}
                   </Badge>
-                  <Badge variant="outline" className="bg-white/80 text-indigo-700 border-indigo-200 px-3 py-1 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5" />
+                  <Badge variant="outline" className="bg-white/80 text-indigo-700 border-indigo-200 px-3 py-1.5 flex items-center gap-2 rounded-full">
+                    <MapPin className="h-4 w-4" />
                     {userData.location}
                   </Badge>
-                  <Badge variant="outline" className="bg-white/80 text-indigo-700 border-indigo-200 px-3 py-1 flex items-center gap-1.5">
-                    <Globe className="h-3.5 w-3.5" />
-                    {userData.website}
-                  </Badge>
+                </div>
+                
+
+              </motion.div>
+            </div>
+          </div>
+        </div>
+          
+        {/* Content Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Bio Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mb-12"
+          >
+            <div className="relative rounded-2xl overflow-hidden bg-white/80 backdrop-blur-md shadow-xl border border-indigo-100/50">
+              <div className="absolute inset-0 overflow-hidden opacity-10">
+                <div className="absolute h-60 w-60 -top-20 -right-20 bg-purple-300/50 rounded-full blur-3xl"></div>
+                <div className="absolute h-40 w-40 bottom-10 left-10 bg-indigo-300/50 rounded-full blur-3xl"></div>
+              </div>
+              
+              <div className="relative p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-full bg-indigo-100">
+                    <UserIcon className="h-5 w-5 text-indigo-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-indigo-800">About</h2>
+                </div>
+                
+                {editMode ? (
+                  <Textarea 
+                    value={userData.bio} 
+                    onChange={(e) => handleInputChange(e, 'bio')} 
+                    className="w-full min-h-[120px] rounded-xl bg-white border-indigo-200 text-gray-700"
+                  />
+                ) : (
+                  <p className="text-lg leading-relaxed text-gray-700">{userData.bio}</p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Interests Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mb-12"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-gradient-to-br from-purple-100 to-indigo-200">
+                  <Award className="h-5 w-5 text-pink-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-800">Interests</h2>
+              </div>
+              {editMode && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 rounded-full text-purple-600 hover:bg-purple-100"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Add
+                </Button>
+              )}
+            </div>
+            
+            <div className="p-6 rounded-2xl bg-white/90 backdrop-blur-sm border border-purple-200 shadow-sm">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {userData.interests.map((interest, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="relative px-4 py-3 rounded-xl bg-purple-50/70 hover:bg-purple-100 backdrop-blur-sm transition-all duration-300 cursor-pointer overflow-hidden group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-purple-700">{interest}</span>
+                      {editMode && (
+                        <motion.button
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                          className="h-5 w-5 rounded-full flex items-center justify-center bg-white text-gray-500 hover:bg-red-100 hover:text-red-500"
+                        >
+                          <X className="h-3 w-3" />
+                        </motion.button>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+                {editMode && (
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="px-4 py-3 rounded-xl bg-white/70 border-purple-200 hover:bg-white border-dashed border-2 cursor-pointer flex items-center justify-center"
+                  >
+                    <Plus className="h-5 w-5 text-purple-500 mr-2" />
+                    <span className="text-sm font-medium text-gray-600">New Interest</span>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Social Profiles Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-full bg-indigo-100">
+                <Globe className="h-5 w-5 text-indigo-600" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-800">Social Profiles</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Portfolio Link */}
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-white/80 border-indigo-100 border backdrop-blur-md transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg">
+                <div className="p-3 rounded-full bg-indigo-50">
+                  <Globe className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-medium text-gray-900">Portfolio</p>
+                    {editMode ? (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <Link className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  {editMode ? (
+                    <Input 
+                      value={userData.portfolio} 
+                      onChange={(e) => handleInputChange(e, 'portfolio')} 
+                      className="h-8 bg-white border-indigo-200 text-gray-700"
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500">{userData.portfolio}</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* LinkedIn Link */}
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-white/80 border-indigo-100 border backdrop-blur-md transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg">
+                <div className="p-3 rounded-full bg-blue-50">
+                  <Linkedin className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-medium text-gray-900">LinkedIn</p>
+                    {editMode ? (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <Link className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  {editMode ? (
+                    <Input 
+                      value={userData.linkedin} 
+                      onChange={(e) => handleInputChange(e, 'linkedin')} 
+                      className="h-8 bg-white border-indigo-200 text-gray-700"
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500">{userData.linkedin}</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* GitHub Link */}
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-white/80 border-indigo-100 border backdrop-blur-md transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg">
+                <div className="p-3 rounded-full bg-gray-100">
+                  <Github className="h-6 w-6 text-gray-700" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-medium text-gray-900">GitHub</p>
+                    {editMode ? (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                        <Link className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  {editMode ? (
+                    <Input 
+                      value={userData.github} 
+                      onChange={(e) => handleInputChange(e, 'github')} 
+                      className="h-8 bg-white border-indigo-200 text-gray-700"
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500">{userData.github}</p>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-          
-          {/* Tabs */}
-          <Tabs defaultValue="overview" className="mb-8" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-gradient-to-r from-indigo-50 to-purple-50 p-1 border border-indigo-100 rounded-full w-full justify-start overflow-x-auto">
-              <TabsTrigger 
-                value="overview" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="edit" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Edit Profile
-              </TabsTrigger>
-              <TabsTrigger 
-                value="achievements" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Achievements
-              </TabsTrigger>
-              <TabsTrigger 
-                value="projects" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Projects
-              </TabsTrigger>
-              <TabsTrigger 
-                value="education" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-full px-5 py-2"
-              >
-                Education & Experience
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="mt-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Bio Card */}
-                <Card className="col-span-1 lg:col-span-2 shadow-md border-indigo-100 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 pb-4">
-                    <CardTitle className="flex items-center gap-2 text-indigo-800">
-                      <UserIcon className="h-5 w-5" />
-                      Bio
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <p className="text-gray-700 leading-relaxed">{userData.bio}</p>
-                  </CardContent>
-                </Card>
-
-                {/* Skills Card */}
-                <Card className="shadow-md border-indigo-100 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 pb-4">
-                    <CardTitle className="flex items-center gap-2 text-indigo-800">
-                      <Award className="h-5 w-5" />
-                      Skills
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="flex flex-wrap gap-2">
-                      {userData.skills.map((skill, index) => (
-                        <Badge key={index} className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 hover:from-indigo-200 hover:to-purple-200 transition-colors duration-300">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Social Links */}
-                <Card className="col-span-1 lg:col-span-3 shadow-md border-indigo-100 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 pb-4">
-                    <CardTitle className="flex items-center gap-2 text-indigo-800">
-                      <Globe className="h-5 w-5" />
-                      Social Profiles
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
-                        <div className="bg-white p-2 rounded-full">
-                          <Twitter className="h-5 w-5 text-indigo-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-indigo-800">Twitter</p>
-                          <p className="text-sm text-indigo-600">@{userData.twitter}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
-                        <div className="bg-white p-2 rounded-full">
-                          <Linkedin className="h-5 w-5 text-indigo-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-indigo-800">LinkedIn</p>
-                          <p className="text-sm text-indigo-600">{userData.linkedin}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
-                        <div className="bg-white p-2 rounded-full">
-                          <Github className="h-5 w-5 text-indigo-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-indigo-800">GitHub</p>
-                          <p className="text-sm text-indigo-600">{userData.github}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            {/* Edit Profile Tab */}
-            <TabsContent value="edit" className="mt-6">
-              <Card className="shadow-md border-indigo-100">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                  <CardTitle className="text-indigo-800">Edit Your Profile</CardTitle>
-                  <CardDescription>Update your personal information and profile details</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input 
-                        id="name" 
-                        value={userData.name} 
-                        onChange={(e) => handleInputChange(e, 'name')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="username">Username</Label>
-                      <Input 
-                        id="username" 
-                        value={userData.username} 
-                        onChange={(e) => handleInputChange(e, 'username')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        value={userData.email} 
-                        onChange={(e) => handleInputChange(e, 'email')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input 
-                        id="phone" 
-                        value={userData.phone} 
-                        onChange={(e) => handleInputChange(e, 'phone')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="location">Location</Label>
-                      <Input 
-                        id="location" 
-                        value={userData.location} 
-                        onChange={(e) => handleInputChange(e, 'location')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Role/Profession</Label>
-                      <Input 
-                        id="role" 
-                        value={userData.role} 
-                        onChange={(e) => handleInputChange(e, 'role')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="bio">Bio</Label>
-                      <Textarea 
-                        id="bio" 
-                        value={userData.bio} 
-                        onChange={(e) => handleInputChange(e, 'bio')} 
-                        className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300 min-h-[120px]"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-indigo-100">
-                    <h3 className="text-lg font-medium text-indigo-800 mb-4">Social Profiles</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="website">Website</Label>
-                        <Input 
-                          id="website" 
-                          value={userData.website} 
-                          onChange={(e) => handleInputChange(e, 'website')} 
-                          className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="twitter">Twitter</Label>
-                        <Input 
-                          id="twitter" 
-                          value={userData.twitter} 
-                          onChange={(e) => handleInputChange(e, 'twitter')} 
-                          className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="linkedin">LinkedIn</Label>
-                        <Input 
-                          id="linkedin" 
-                          value={userData.linkedin} 
-                          onChange={(e) => handleInputChange(e, 'linkedin')} 
-                          className="border-indigo-200 focus:border-indigo-400 focus:ring-indigo-300"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 border-t border-indigo-100 flex justify-end gap-3">
-                  <Button variant="outline" className="border-indigo-200 text-indigo-700" onClick={() => setActiveTab('overview')}>Cancel</Button>
-                  <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700" onClick={saveProfile}>Save Changes</Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-
-            {/* Achievements Tab */}
-            <TabsContent value="achievements" className="mt-6">
-              <Card className="shadow-md border-indigo-100">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                  <CardTitle className="flex items-center gap-2 text-indigo-800">
-                    <Award className="h-5 w-5" />
-                    Achievements & Recognition
-                  </CardTitle>
-                  <CardDescription>Your notable accomplishments and recognition</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-6">
-                    {userData.achievements.map((achievement, index) => (
-                      <div key={index} className="flex gap-4 items-start p-4 rounded-lg bg-gradient-to-r from-indigo-50/50 to-purple-50/50 border border-indigo-100">
-                        <div className="bg-gradient-to-r from-indigo-100 to-purple-100 p-2 rounded-full">
-                          <Award className="h-5 w-5 text-indigo-600" />
-                        </div>
-                        <div>
-                          <p className="text-indigo-800 font-medium">{achievement}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Projects Tab */}
-            <TabsContent value="projects" className="mt-6">
-              <Card className="shadow-md border-indigo-100">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                  <CardTitle className="flex items-center gap-2 text-indigo-800">
-                    <Briefcase className="h-5 w-5" />
-                    Projects & Contributions
-                  </CardTitle>
-                  <CardDescription>Your projects and contributions to the community</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {userData.projects.map((project, index) => (
-                      <Card key={index} className="shadow-sm border-indigo-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                        <CardHeader className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 pb-3">
-                          <CardTitle className="text-lg text-indigo-800">{project.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="pt-4">
-                          <p className="text-gray-700 text-sm">{project.description}</p>
-                        </CardContent>
-                        <CardFooter className="border-t border-indigo-50 pt-3 pb-3 flex justify-end">
-                          <Button variant="outline" size="sm" className="text-indigo-600 border-indigo-200 hover:bg-indigo-50">
-                            <ChevronRight className="h-4 w-4 mr-1" />
-                            View Project
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                    <Card className="shadow-sm border-indigo-100 overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col items-center justify-center p-6 bg-gradient-to-r from-indigo-50/50 to-purple-50/50 border border-dashed border-indigo-200">
-                      <div className="bg-white p-3 rounded-full shadow-sm mb-4">
-                        <Plus className="h-6 w-6 text-indigo-500" />
-                      </div>
-                      <p className="text-indigo-700 font-medium mb-2">Add New Project</p>
-                      <p className="text-indigo-500 text-sm text-center">Showcase your latest work</p>
-                    </Card>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Education & Experience Tab */}
-            <TabsContent value="education" className="mt-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Education Card */}
-                <Card className="shadow-md border-indigo-100">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                    <CardTitle className="flex items-center gap-2 text-indigo-800">
-                      <GraduationCap className="h-5 w-5" />
-                      Education
-                    </CardTitle>
-                    <CardDescription>Your academic background and qualifications</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="space-y-6">
-                      {userData.education.map((edu, index) => (
-                        <div key={index} className="relative pl-6 pb-6 border-l-2 border-indigo-200 last:border-l-0 last:pb-0">
-                          <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 shadow-md"></div>
-                          <div className="bg-gradient-to-r from-indigo-50/70 to-purple-50/70 rounded-lg p-4 border border-indigo-100">
-                            <h4 className="text-indigo-800 font-medium">{edu.degree}</h4>
-                            <p className="text-indigo-600">{edu.institution}</p>
-                            <p className="text-indigo-500 text-sm mt-1">{edu.year}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Experience Card */}
-                <Card className="shadow-md border-indigo-100">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                    <CardTitle className="flex items-center gap-2 text-indigo-800">
-                      <Briefcase className="h-5 w-5" />
-                      Experience
-                    </CardTitle>
-                    <CardDescription>Your professional work experience</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="space-y-6">
-                      {userData.experience.map((exp, index) => (
-                        <div key={index} className="relative pl-6 pb-6 border-l-2 border-indigo-200 last:border-l-0 last:pb-0">
-                          <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 shadow-md"></div>
-                          <div className="bg-gradient-to-r from-indigo-50/70 to-purple-50/70 rounded-lg p-4 border border-indigo-100">
-                            <h4 className="text-indigo-800 font-medium">{exp.position}</h4>
-                            <p className="text-indigo-600">{exp.company}</p>
-                            <p className="text-indigo-500 text-sm mt-1">{exp.year}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+          </motion.div>
         </div>
       </main>
     </div>
