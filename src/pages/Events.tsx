@@ -3,6 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 import { 
   CalendarIcon, 
   BellIcon, 
@@ -21,9 +26,13 @@ import {
   Pencil as PencilIcon,
   Users as UserGroupIcon,
   Map as MapIcon,
-  Briefcase as BriefcaseIcon
+  Briefcase as BriefcaseIcon,
+  Search,
+  Sparkles as SparklesIcon,
+  Star as StarIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { eventData } from "@/data/eventData";
 
 // NavItem component for sidebar
 interface NavItemProps {
@@ -201,169 +210,245 @@ export default function Events() {
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <div className="relative mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 p-8 shadow-xl">
-            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-purple-300/20 blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-indigo-300/20 blur-3xl"></div>
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="relative mb-12 overflow-hidden rounded-3xl bg-white border border-indigo-100/50 shadow-2xl">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(#6366f1_0.5px,transparent_0.5px)] bg-[length:24px_24px] opacity-[0.03]"></div>
+            <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-200/20 via-purple-200/20 to-indigo-200/20 blur-3xl opacity-70"></div>
+            <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-purple-200/20 via-indigo-200/20 to-purple-200/20 blur-3xl opacity-70"></div>
+            
+            {/* Content wrapper */}
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 p-10">
               <div className="max-w-2xl">
-                <h1 className="mb-4 text-4xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
-                  Discover Amazing Events
+                {/* Subtle badge */}
+                <div className="inline-flex mb-4 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                  <span className="text-xs font-medium text-indigo-700 flex items-center">
+                    <SparklesIcon className="h-3.5 w-3.5 mr-1.5" /> Curated for you
+                  </span>
+                </div>
+                
+                {/* Modern heading with enhanced typography */}
+                <h1 className="mb-5 text-4xl md:text-5xl font-extrabold tracking-tight relative z-20 pl-1">
+                  <span className="inline-block pb-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Discover Amazing Events</span>
                 </h1>
-                <p className="mb-6 text-lg text-gray-700">
-                  Connect with creators, learn new skills, and expand your creative network through our curated events, workshops, and meetups.
+                
+                {/* Enhanced description with better typography */}
+                <p className="mb-7 text-lg leading-relaxed text-gray-600">
+                  Compete with skilled people, implement learnings practically, and expand your real network through multiple industry events.
                 </p>
+                
+                {/* Modern button with subtle animation */}
                 <div className="flex flex-wrap gap-3">
-                  <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all duration-300">
+                  <Button 
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all duration-300 px-6 py-5 rounded-xl text-base font-medium"
+                    onClick={() => {
+                      document.getElementById('perfectEvent')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
                     Browse All Events
                   </Button>
-                  <Button variant="outline" className="border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-300">
-                    Create Event
-                  </Button>
                 </div>
               </div>
+              
+              {/* Creative skills illustration */}
               <div className="relative">
-                <div className="w-64 h-64 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full flex items-center justify-center p-3 border border-indigo-200/50 backdrop-blur-sm">
-                  <div className="w-full h-full rounded-full bg-white/80 flex items-center justify-center shadow-inner">
-                    <CalendarIcon className="h-24 w-24 text-indigo-500/80" />
+                <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-xl animate-pulse-slow"></div>
+                <div className="w-72 h-72 bg-gradient-to-br from-white to-indigo-50 rounded-full flex items-center justify-center p-4 border border-indigo-100 shadow-xl relative z-10">
+                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-inner relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(99,102,241,0.05)_0%,rgba(168,85,247,0.05)_100%)] opacity-70"></div>
+                    <div className="relative z-10 w-full h-full rounded-full overflow-hidden flex items-center justify-center">
+                      <img 
+                        src="/lovable-uploads/creative-skills-icon.png" 
+                        alt="Creative Skills Icon" 
+                        className="w-[170%] h-[170%] object-contain transform scale-[1.7]"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://via.placeholder.com/200?text=Creative+Skills';
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">23</div>
               </div>
             </div>
           </div>
           
-          {/* Browse by Category */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">Browse by Category</h2>
+          {/* Ultra-Modern Event Filter with Enhanced User Appeal */}
+          <div id="perfectEvent" className="mb-20 relative">
+            {/* Subtle animated background elements */}
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-indigo-200/20 rounded-full blur-3xl animate-pulse-slow opacity-70"></div>
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-200/20 rounded-full blur-3xl animate-pulse-slow opacity-70"></div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { name: 'Photography', icon: <ImageIcon className="h-6 w-6" />, color: 'from-blue-500 to-indigo-500', count: 24 },
-                { name: 'Design', icon: <PencilIcon className="h-6 w-6" />, color: 'from-purple-500 to-pink-500', count: 18 },
-                { name: 'AI & Technology', icon: <LayoutGridIcon className="h-6 w-6" />, color: 'from-indigo-500 to-purple-500', count: 32 },
-                { name: 'Workshops', icon: <UsersIcon className="h-6 w-6" />, color: 'from-green-500 to-teal-500', count: 15 },
-                { name: 'Meetups', icon: <UserGroupIcon className="h-6 w-6" />, color: 'from-orange-500 to-amber-500', count: 9 },
-                { name: 'Online Events', icon: <MapIcon className="h-6 w-6" />, color: 'from-cyan-500 to-blue-500', count: 27 },
-                { name: 'Exhibitions', icon: <ImageIcon className="h-6 w-6" />, color: 'from-rose-500 to-red-500', count: 12 },
-                { name: 'Conferences', icon: <BriefcaseIcon className="h-6 w-6" />, color: 'from-violet-500 to-purple-500', count: 7 },
-              ].map((category) => (
-                <Card key={category.name} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden">
-                  <CardContent className="p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
-                        {category.icon}
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">{category.name}</h3>
-                        <p className="text-xs text-gray-500">{category.count} events</p>
+            <div className="relative z-10">
+              {/* Enhanced heading with animation */}
+              <div className="text-center mb-8 relative">
+                {/* Decorative background elements */}
+                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-60 h-60 bg-gradient-to-r from-indigo-200/20 to-purple-200/20 rounded-full blur-3xl opacity-70 animate-pulse-slow"></div>
+                <div className="absolute -top-8 left-1/3 transform -translate-x-1/2 w-32 h-32 bg-gradient-to-r from-purple-200/30 to-indigo-200/30 rounded-full blur-2xl opacity-60 animate-pulse-slow animation-delay-1000"></div>
+                <div className="absolute top-0 right-1/3 transform translate-x-1/2 w-40 h-40 bg-gradient-to-r from-indigo-200/20 to-purple-200/20 rounded-full blur-3xl opacity-70 animate-pulse-slow animation-delay-2000"></div>
+                
+                {/* Badge with animation */}
+                <div className="inline-flex items-center justify-center mb-3 relative z-10">
+                  <Badge variant="outline" className="px-4 py-1.5 border-indigo-200 bg-white/90 backdrop-blur-sm text-indigo-700 text-xs font-medium rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 group">
+                    <span className="mr-1.5 group-hover:animate-spin transition-all duration-300">✨</span> 
+                    <span>
+                      Events
+                    </span>
+                  </Badge>
+                </div>
+                
+                {/* Heading with enhanced gradient and animation */}
+                <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent mb-3 relative z-10">
+                  <span className="inline-block">Find</span>{" "}
+                  <span className="inline-block">Your</span>{" "}
+                  <span className="inline-block">Perfect</span>{" "}
+                  <span className="inline-block">Event</span>
+                </h2>
+              </div>
+              
+              {/* Redesigned compact filter section */}
+              <div className="max-w-[700px] mx-auto">
+                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-lg overflow-hidden border border-indigo-100/50 transition-all duration-300 hover:shadow-indigo-200/50 hover:border-indigo-200/50">
+                  <div className="p-0.5 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-indigo-500/20">
+                    <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl relative overflow-hidden">
+                      {/* Subtle decorative elements */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-100/10 to-purple-100/10 rounded-full -mr-16 -mt-16 blur-xl"></div>
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-100/10 to-indigo-100/10 rounded-full -ml-16 -mb-16 blur-xl"></div>
+                      
+                      {/* Horizontal filter layout */}
+                      <div className="flex items-center gap-4 relative z-10">
+                        {/* Category Dropdown */}
+                        <div className="flex-1">
+                          <Select>
+                            <SelectTrigger className="h-12 bg-white/90 border-indigo-100 hover:border-indigo-300 focus:border-indigo-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-gray-700 pl-12">
+                              <div className="absolute left-3 top-3 w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center shadow-md">
+                                <SparklesIcon className="w-4 h-4 text-white" />
+                              </div>
+                              <SelectValue placeholder="All Categories" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white/95 backdrop-blur-sm border-indigo-100 rounded-xl shadow-xl p-1.5 border-t border-indigo-50">
+                              <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 rounded-lg p-2 mb-2">
+                                <SelectItem value="all" className="rounded-lg hover:bg-white flex items-center gap-2 pl-2 h-9 transition-all duration-200">
+                                  <span className="text-indigo-600 font-medium">All Categories</span>
+                                </SelectItem>
+                              </div>
+                              <div className="space-y-1 px-1">
+                                <SelectItem value="orielix-officials" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Orielix Officials</span>
+                                </SelectItem>
+                                <SelectItem value="technology" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Technology</span>
+                                </SelectItem>
+                                <SelectItem value="startup" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Startup</span>
+                                </SelectItem>
+                                <SelectItem value="game-development" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Game Development</span>
+                                </SelectItem>
+                                <SelectItem value="graphic-design" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Graphic Design</span>
+                                </SelectItem>
+                                <SelectItem value="ui-ux" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">UI/UX</span>
+                                </SelectItem>
+                                <SelectItem value="animation" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Animation</span>
+                                </SelectItem>
+                                <SelectItem value="editing" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Editing</span>
+                                </SelectItem>
+                                <SelectItem value="content-writing" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Content Writing</span>
+                                </SelectItem>
+                                <SelectItem value="marketing" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Marketing</span>
+                                </SelectItem>
+                                <SelectItem value="other" className="rounded-lg hover:bg-indigo-50/70 flex items-center h-9 transition-all duration-200 text-gray-700">
+                                  <span className="ml-2">Other</span>
+                                </SelectItem>
+                              </div>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        {/* Search Button */}
+                        <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-6 h-12 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 hover:-translate-y-1 hover:scale-[1.03] font-medium whitespace-nowrap">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                            <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+                          </svg>
+                          Find Events
+                        </Button>
                       </div>
                     </div>
-                    <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors duration-300" />
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
-          {/* Featured Events */}
+          {/* All Events */}
           <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center mb-6">
               <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Events</h2>
-              <Button variant="ghost" className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50">
-                View All <ChevronRightIcon className="ml-1 h-4 w-4" />
-              </Button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Event Card 1 */}
-              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-                    alt="Photography Workshop" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
-                    May 15, 2025
-                  </div>
-                </div>
-                <CardContent className="p-5">
-                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
-                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Advanced Photography Techniques</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Learn professional photography techniques from industry experts. Perfect for intermediate photographers looking to enhance their skills.</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <Avatar className="h-6 w-6 border-2 border-white">
-                        <AvatarImage src="https://randomuser.me/api/portraits/women/32.jpg" />
-                        <AvatarFallback>SJ</AvatarFallback>
-                      </Avatar>
-                      <span className="text-xs text-gray-600">Sarah Johnson</span>
+              {eventData.map((event) => (
+                <Card 
+                  key={event.id}
+                  className={`overflow-hidden border-0 bg-gradient-to-b from-white to-${event.color}-50/30 shadow-xl hover:shadow-${event.color}-200/50 transition-all duration-500 ease-in-out group rounded-xl hover:-translate-y-1 hover:scale-[1.02]`}
+                >
+                  {/* Enhanced image container */}
+                  <div className="relative h-52 overflow-hidden">
+                    <img 
+                      src={event.image}
+                      alt={event.title} 
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    />
+                    
+                    {/* Date badge with enhanced design */}
+                    <div className={`absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-${event.color}-700 z-20 shadow-md border border-${event.color}-100/50 flex items-center`}>
+                      <CalendarIcon className={`h-3.5 w-3.5 mr-1.5 text-${event.color}-500`} />
+                      {event.date}
                     </div>
-                    <div className="text-xs text-indigo-600 font-medium">24 Attending</div>
                   </div>
-                </CardContent>
-              </Card>
-              
-              {/* Event Card 2 */}
-              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80" 
-                    alt="Design Meetup" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
-                    May 22, 2025
-                  </div>
-                </div>
-                <CardContent className="p-5">
-                  <Badge className="mb-2 bg-purple-100 text-purple-700 hover:bg-purple-200">Meetup</Badge>
-                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">Creative Design Showcase</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Join fellow designers for an evening of inspiration, networking, and showcasing your latest creative projects.</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <Avatar className="h-6 w-6 border-2 border-white">
-                        <AvatarImage src="https://randomuser.me/api/portraits/men/45.jpg" />
-                        <AvatarFallback>DL</AvatarFallback>
+                  
+                  {/* Enhanced content area */}
+                  <CardContent className="p-6">
+                    <h3 className={`text-xl font-bold mb-2 group-hover:text-${event.color}-600 transition-colors duration-500`}>{event.title}</h3>
+                    
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{event.description}</p>
+                    
+                    {/* Presenter info with enhanced styling */}
+                    <div className={`flex items-center mb-4 p-2 bg-${event.color}-50/50 rounded-lg border border-${event.color}-100/50`}>
+                      <Avatar className="h-8 w-8 border-2 border-white shadow-sm mr-2">
+                        <AvatarImage src={event.presenter.avatar} />
+                        <AvatarFallback>{event.presenter.fallback}</AvatarFallback>
                       </Avatar>
-                      <span className="text-xs text-gray-600">David Lee</span>
+                      <div>
+                        <span className="text-xs font-medium text-gray-800 block">{event.presenter.name}</span>
+                        <span className="text-xs text-gray-500">{event.presenter.role}</span>
+                      </div>
+                      <div className={`ml-auto bg-white px-2 py-1 rounded-md text-xs font-medium text-${event.color}-600 shadow-sm border border-${event.color}-100/50`}>
+                        {event.attending} Attending
+                      </div>
                     </div>
-                    <div className="text-xs text-indigo-600 font-medium">56 Attending</div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Event Card 3 */}
-              <Card className="overflow-hidden border-0 bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-                    alt="AI Art Workshop" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-indigo-700 z-20">
-                    June 5, 2025
-                  </div>
-                </div>
-                <CardContent className="p-5">
-                  <Badge className="mb-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">Workshop</Badge>
-                  <h3 className="text-lg font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">AI-Powered Art Creation</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">Explore the intersection of AI and creativity. Learn how to use cutting-edge AI tools to enhance your artistic process.</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <Avatar className="h-6 w-6 border-2 border-white">
-                        <AvatarImage src="https://randomuser.me/api/portraits/women/68.jpg" />
-                        <AvatarFallback>MP</AvatarFallback>
-                      </Avatar>
-                      <span className="text-xs text-gray-600">Maya Patel</span>
+                    
+                    {/* Action buttons */}
+                    <div className="flex gap-2 mt-4">
+                      <Button 
+                        className={`flex-1 bg-gradient-to-r from-${event.color}-600 to-${event.color === 'purple' ? 'indigo' : 'purple'}-600 hover:from-${event.color}-700 hover:to-${event.color === 'purple' ? 'indigo' : 'purple'}-700 text-white shadow-md hover:shadow-lg transition-all duration-500 ease-in-out hover:scale-[1.03]`}
+                      >
+                        Register
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className={`flex-1 border-${event.color}-200 text-${event.color}-700 hover:bg-${event.color}-50 hover:border-${event.color}-300 transition-all duration-500 ease-in-out hover:scale-[1.03]`}
+                      >
+                        View Details
+                      </Button>
                     </div>
-                    <div className="text-xs text-indigo-600 font-medium">132 Attending</div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>

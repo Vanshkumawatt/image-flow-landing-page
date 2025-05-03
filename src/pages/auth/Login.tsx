@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,13 +21,16 @@ const Login = () => {
     
     setTimeout(() => {
       setIsLoading(false);
-      // Redirect or authenticate user
+      // Navigate to dashboard after login
+      navigate('/dashboard');
     }, 1500);
   };
 
   const handleGoogleLogin = () => {
     // Handle Google login logic here
     console.log("Logging in with Google");
+    // Navigate to dashboard after Google login
+    navigate('/dashboard');
   };
 
   return (
