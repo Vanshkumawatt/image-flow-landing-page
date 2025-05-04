@@ -14,11 +14,16 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Onboarding from "./pages/auth/Onboarding";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Dashboard from "./pages/Dashboard";
+import DiscussionForum from "./pages/DiscussionForum";
 import Events from "./pages/Events";
+import PathFinder from "./pages/PathFinder";
 import Community from "./pages/Community";
 import Sessions from "./pages/Sessions";
 import UserProfile from "./pages/UserProfile";
 import Notifications from "./pages/Notifications";
+import FindJob from "./pages/FindJob";
+import CollabProjects from "./pages/CollabProjects";
+import Settings from "./pages/Settings";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -41,9 +46,14 @@ const App = () => {
               <Route path="/email-verification" element={<EmailVerification />} />
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/discussion-forum" element={<DiscussionForum />} />
               <Route path="/events" element={<Events />} />
-              <Route path="/sessions" element={<Sessions />} />
+              <Route path="/path-finder" element={<PathFinder />} />
               <Route path="/community" element={<Community />} />
+              <Route path="/sessions" element={<Sessions />} />
+              <Route path="/find-job" element={<FindJob />} />
+              <Route path="/collab-projects" element={<CollabProjects />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/user-profile" element={<UserProfile />} />
               <Route path="/notifications" element={<Notifications />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

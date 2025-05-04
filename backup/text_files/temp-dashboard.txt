@@ -1,0 +1,20 @@
+// This is a temporary file to store the updated Dashboard.tsx code
+// Add onClick handlers to the "View All" buttons for Events and Sessions
+
+// For the Events section (around line 1073):
+<Button 
+  variant="ghost" 
+  className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50"
+  onClick={() => navigate('/events')}
+>
+  View All <ChevronRightIcon className="ml-1 h-4 w-4" />
+</Button>
+
+// For the Sessions section (around line 1172):
+<Button 
+  variant="ghost" 
+  className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50"
+  onClick={() => navigate('/sessions')}
+>
+  View All <ChevronRightIcon className="ml-1 h-4 w-4" />
+</Button>

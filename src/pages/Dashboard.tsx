@@ -14,7 +14,6 @@ import {
   ChevronRightIcon,
   Plus, 
   Search, 
-  Settings, 
   User,
   TrendingUp,
   Crown,
@@ -32,7 +31,8 @@ import {
   Briefcase,
   PenSquare,
   List,
-  Map
+  Map,
+  LogOut
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { eventData } from "@/data/eventData";
@@ -453,15 +453,16 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       {/* Sidebar */}
-      <div className={`fixed inset-0 z-50 ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-50 transition-all duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         {/* Overlay */}
         <div 
-          className="absolute inset-0 bg-black/20 backdrop-blur-sm" 
+          className="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-500 ease-in-out"
+          style={{ opacity: sidebarOpen ? 1 : 0 }}
           onClick={() => setSidebarOpen(false)}
         ></div>
         
         {/* Sidebar */}
-        <div className={`absolute left-0 top-0 h-full w-[300px] bg-gradient-to-b from-indigo-100/95 via-purple-50/90 to-indigo-100/95 shadow-2xl backdrop-blur-sm transform transition-all duration-500 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} border-r border-indigo-200/30 rounded-r-3xl`}>
+        <div className={`absolute left-0 top-0 h-full w-[300px] bg-gradient-to-b from-indigo-100/95 via-purple-50/90 to-indigo-100/95 shadow-2xl backdrop-blur-sm transform transition-all duration-500 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} border-r border-indigo-200/30 rounded-r-3xl`}>
           {/* Decorative elements */}
           <div className="absolute inset-0 overflow-hidden rounded-r-3xl">
             <div className="absolute h-40 w-40 -top-10 -right-10 bg-purple-300/30 rounded-full blur-3xl animate-pulse"></div>
@@ -469,9 +470,10 @@ export default function Dashboard() {
             <div className="absolute h-20 w-20 top-1/2 right-10 bg-purple-400/20 rounded-full blur-xl animate-pulse opacity-80"></div>
           </div>
           
-          <div className="p-5 flex justify-end items-center border-b border-indigo-200/50 relative z-10">
+          <div className="p-5 flex justify-between items-center border-b border-indigo-200/50 relative z-10">
+            <h3 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Navigation</h3>
             <button 
-              className="p-2 rounded-full bg-white/80 hover:bg-white text-indigo-500 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:scale-110 hover:rotate-90 group"
+              className="p-2 rounded-full bg-white/80 hover:bg-white text-indigo-500 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:scale-105 hover:rotate-90 group"
               onClick={() => setSidebarOpen(false)}
             >
               <XIcon className="h-5 w-5 transition-all duration-300 ease-out group-hover:text-indigo-600" />
@@ -480,21 +482,49 @@ export default function Dashboard() {
           
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
-              <NavItem icon={<Home className="h-5 w-5" />} text="Dashboard" active onClick={() => navigate('/dashboard')} />
-              <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
-              <NavItem icon={<BookOpen className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<Users className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
-              <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
+              <NavItem icon={<Home className="h-5 w-5" />} text="Dashboard" active onClick={() => {
+                navigate('/dashboard');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => {
+                navigate('/events');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<BookOpen className="h-5 w-5" />} text="Sessions" onClick={() => {
+                navigate('/sessions');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<Users className="h-5 w-5" />} text="Community" onClick={() => {
+                navigate('/community');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<User className="h-5 w-5" />} text="Profile" onClick={() => {
+                navigate('/user-profile');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<Bell className="h-5 w-5" />} text="Notifications" onClick={() => {
+                navigate('/notifications');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<LogOut className="h-5 w-5" />} text="Logout" onClick={() => {
+                // In a real app, you would handle logout logic here
+                navigate('/login');
+                window.scrollTo(0, 0);
+                setSidebarOpen(false);
+              }} />
             </div>
           </div>
         </div>
       </div>
       
       {/* Header - Modern User-Friendly Design */}
-      <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-md border-b border-indigo-100 h-20 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-md border-b border-indigo-100 h-20 transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${sidebarOpen ? 'hidden md:block' : 'block'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="grid grid-cols-3 items-center h-full w-full">
             <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
@@ -552,14 +582,40 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="flex md:hidden items-center justify-end col-span-2">
+              <button 
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative mr-2"
+                onClick={() => navigate('/notifications')}
+              >
+                <span className="sr-only">View notifications</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                </svg>
+                <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
+              </button>
+              <button 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white transition-all duration-300 ease-out shadow-md hover:shadow-lg hover:scale-105 border border-indigo-100 hover:border-indigo-200"
+              >
+                <span className="sr-only">Toggle menu</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main content */}
-      <main className="py-10">
+      <main className="py-6 sm:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
             {/* Left Column */}
             <div className="col-span-2 space-y-8 flex flex-col">
               {/* Aura Points Card - Top Section */}
@@ -594,16 +650,16 @@ export default function Dashboard() {
                         <span className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
                           {rankingData[activeTab].you.points}
                         </span>
-                        <span className="text-sm font-semibold px-2 py-1 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 text-indigo-700 border border-indigo-100/50">
+                        <span className="text-sm font-semibold px-2 py-1 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 border border-indigo-100/50">
                           Aura Points
                         </span>
                       </div>
                     </div>
                     
                     {/* Toggle Tabs */}
-                    <div className="flex justify-center space-x-3 mt-4 mb-20">
+                    <div className="grid grid-cols-3 sm:flex sm:flex-nowrap gap-2 sm:space-x-3 mt-4 mb-16 sm:mb-20 px-2 sm:justify-center">
                       <button 
-                        className={`px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
+                        className={`px-2 sm:px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
                           activeTab === 'institution' 
                             ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' 
                             : 'bg-white/80 border border-purple-200 text-gray-700'
@@ -613,7 +669,7 @@ export default function Dashboard() {
                         Institution
                       </button>
                       <button 
-                        className={`px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
+                        className={`px-2 sm:px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
                           activeTab === 'state' 
                             ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' 
                             : 'bg-white/80 border border-purple-200 text-gray-700'
@@ -623,7 +679,7 @@ export default function Dashboard() {
                         State
                       </button>
                       <button 
-                        className={`px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
+                        className={`px-2 sm:px-6 py-2 transition-all duration-300 ease-out rounded-full text-sm font-medium shadow-md ${
                           activeTab === 'country' 
                             ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' 
                             : 'bg-white/80 border border-purple-200 text-gray-700'
@@ -636,14 +692,14 @@ export default function Dashboard() {
                   </div>
                   
                   {/* Bar Graph Section */}
-                  <div className="mt-0 px-8 relative pb-6">
-                    <div className="flex justify-center items-end h-60 relative gap-10 pt-14">
+                  <div className="mt-0 px-2 sm:px-8 relative pb-6">
+                    <div className="flex justify-center items-end h-60 relative gap-4 sm:gap-10 pt-14">
                       {/* Your Bar */}
                       <div className="flex flex-col items-center group">
                         <div className="relative flex flex-col items-center">
                           <div 
                             className={`
-                              w-20 bg-gradient-to-t ${currentData.you.color} 
+                              w-16 sm:w-20 bg-gradient-to-t ${currentData.you.color} 
                               hover:shadow-lg 
                               rounded-t-xl ${currentData.you.height} shadow-md 
                               transition-all duration-300 ease-out
@@ -651,7 +707,7 @@ export default function Dashboard() {
                             `}
                           >
                             <div className="absolute -top-6 left-0 right-0 flex justify-center">
-                              <div className="bg-gradient-to-r from-purple-500 to-indigo-500 shadow-md px-3 py-1 rounded-full border border-indigo-200 flex items-center gap-1">
+                              <div className="bg-gradient-to-r from-purple-500 to-indigo-500 shadow-md px-2 sm:px-3 py-1 rounded-full border border-indigo-200 flex items-center gap-1">
                                 <span className="text-xs font-semibold text-white">#</span>
                                 <span className="text-sm font-bold text-white">{currentData.you.rank}</span>
                               </div>
@@ -659,8 +715,8 @@ export default function Dashboard() {
                           </div>
                         </div>
                         <div className="flex flex-col items-center mt-3">
-                          <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className="text-sm font-semibold text-indigo-700">You</span>
+                          <div className="px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                            <span className="text-xs sm:text-sm font-semibold text-indigo-700">You</span>
                           </div>
                         </div>
                       </div>
@@ -670,7 +726,7 @@ export default function Dashboard() {
                         <div className="relative flex flex-col items-center">
                           <div 
                             className={`
-                              w-20 bg-gradient-to-t ${currentData.top.color} 
+                              w-16 sm:w-20 bg-gradient-to-t ${currentData.top.color} 
                               hover:shadow-lg 
                               rounded-t-xl ${currentData.top.height} shadow-md 
                               transition-all duration-300 ease-out
@@ -678,7 +734,7 @@ export default function Dashboard() {
                             `}
                           >
                             <div className="absolute -top-6 left-0 right-0 flex justify-center">
-                              <div className="bg-gradient-to-r from-rose-500 to-red-500 shadow-md px-3 py-1 rounded-full border border-rose-200 flex items-center gap-1">
+                              <div className="bg-gradient-to-r from-rose-500 to-red-500 shadow-md px-2 sm:px-3 py-1 rounded-full border border-rose-200 flex items-center gap-1">
                                 <Crown className="h-3 w-3 text-yellow-300" />
                                 <span className="text-sm font-bold text-white">{currentData.top.rank}</span>
                               </div>
@@ -686,8 +742,8 @@ export default function Dashboard() {
                           </div>
                         </div>
                         <div className="flex flex-col items-center mt-3">
-                          <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100 to-red-50 border border-rose-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className="text-sm font-semibold text-rose-700">{currentData.top.name}</span>
+                          <div className="px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100 to-red-50 border border-rose-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                            <span className="text-xs sm:text-sm font-semibold text-rose-700">{currentData.top.name}</span>
                           </div>
                         </div>
                       </div>
@@ -697,7 +753,7 @@ export default function Dashboard() {
                         <div className="relative flex flex-col items-center">
                           <div 
                             className={`
-                              w-20 bg-gradient-to-t ${currentData.other.color} 
+                              w-16 sm:w-20 bg-gradient-to-t ${currentData.other.color} 
                               hover:shadow-lg 
                               rounded-t-xl ${currentData.other.height} shadow-md 
                               transition-all duration-300 ease-out
@@ -705,7 +761,7 @@ export default function Dashboard() {
                             `}
                           >
                             <div className="absolute -top-6 left-0 right-0 flex justify-center">
-                              <div className="bg-gradient-to-r from-emerald-500 to-green-500 shadow-md px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+                              <div className="bg-gradient-to-r from-emerald-500 to-green-500 shadow-md px-2 sm:px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
                                 <span className="text-xs font-semibold text-white">#</span>
                                 <span className="text-sm font-bold text-white">{currentData.other.rank}</span>
                               </div>
@@ -713,8 +769,8 @@ export default function Dashboard() {
                           </div>
                         </div>
                         <div className="flex flex-col items-center mt-3">
-                          <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-100 to-green-50 border border-emerald-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                            <span className="text-sm font-semibold text-emerald-700">{currentData.other.name}</span>
+                          <div className="px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-100 to-green-50 border border-emerald-200 shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                            <span className="text-xs sm:text-sm font-semibold text-emerald-700">{currentData.other.name}</span>
                           </div>
                         </div>
                       </div>
@@ -749,18 +805,18 @@ export default function Dashboard() {
                   <CardHeader className="relative z-10 border-b border-purple-200/50 pb-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <CardTitle className="font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                        <CardTitle className="font-bold text-lg sm:text-xl bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                           Your Progress Journey
                         </CardTitle>
-                        <CardDescription className="text-gray-600 mt-1">
+                        <CardDescription className="text-gray-600 mt-1 text-sm">
                           Track your creative milestones
                         </CardDescription>
                       </div>
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="px-6 py-5 relative z-10">
-                    <div className="grid grid-cols-2 gap-6">
+                  <CardContent className="px-4 sm:px-6 py-5 relative z-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       {/* Events Participated */}
                       <div className="relative p-5 bg-gradient-to-br from-white/90 to-purple-50 rounded-2xl backdrop-blur-sm border border-purple-100 hover:border-[#58C7F3]/50 hover:shadow-[0_0_20px_rgba(88,199,243,0.2)] transition-all duration-300 overflow-hidden group">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-[#58C7F3]/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8 group-hover:bg-[#58C7F3]/20 transition-all duration-500"></div>
@@ -989,8 +1045,15 @@ export default function Dashboard() {
                         <CalendarIcon className="h-4 w-4 mr-2 text-indigo-500" />
                         Upcoming Events
                       </h4>
-                      <Button variant="ghost" size="sm" className="h-7 px-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50/50">
-                        View All
+                      <Button 
+                        variant="ghost" 
+                        className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 text-sm"
+                        onClick={() => {
+                          navigate('/events');
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        View All <ChevronRightIcon className="ml-1 h-4 w-4" />
                       </Button>
                     </div>
                     
@@ -1070,19 +1133,22 @@ export default function Dashboard() {
           </div>
           
           {/* Featured Events - Full Width Section */}
-          <div className="mt-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Upcoming Events</h2>
+          <div className="mt-8 sm:mt-12">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Upcoming Events</h2>
               <Button 
                 variant="ghost" 
-                className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50"
-                onClick={() => navigate('/events')}
+                className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 text-sm"
+                onClick={() => {
+                  navigate('/events');
+                  window.scrollTo(0, 0);
+                }}
               >
                 View All <ChevronRightIcon className="ml-1 h-4 w-4" />
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {eventData.slice(0, 3).map((event) => (
                 <Card 
                   key={event.id}
@@ -1104,14 +1170,14 @@ export default function Dashboard() {
                   </div>
                   
                   {/* Enhanced content area */}
-                  <CardContent className="p-6">
-                    <h3 className={`text-xl font-bold mb-2 group-hover:text-${event.color}-600 transition-colors duration-500`}>{event.title}</h3>
+                  <CardContent className="p-4 sm:p-6">
+                    <h3 className={`text-lg sm:text-xl font-bold mb-2 group-hover:text-${event.color}-600 transition-colors duration-500`}>{event.title}</h3>
                     
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{event.description}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-4 line-clamp-2">{event.description}</p>
                     
                     {/* Presenter info with enhanced styling */}
                     <div className={`flex items-center mb-4 p-2 bg-${event.color}-50/50 rounded-lg border border-${event.color}-100/50`}>
-                      <Avatar className="h-8 w-8 border-2 border-white shadow-sm mr-2">
+                      <Avatar className="h-6 w-6 sm:h-8 sm:w-8 border-2 border-white shadow-sm mr-2">
                         <AvatarImage src={event.presenter.avatar} />
                         <AvatarFallback>{event.presenter.fallback}</AvatarFallback>
                       </Avatar>
@@ -1145,19 +1211,22 @@ export default function Dashboard() {
           </div>
           
           {/* Featured Sessions - Full Width Section */}
-          <div className="mt-16 mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Upcoming Sessions</h2>
+          <div className="mt-8 sm:mt-16 mb-8 sm:mb-12">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Upcoming Sessions</h2>
               <Button 
                 variant="ghost" 
-                className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50"
-                onClick={() => navigate('/sessions')}
+                className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 text-sm"
+                onClick={() => {
+                  navigate('/sessions');
+                  window.scrollTo(0, 0);
+                }}
               >
                 View All <ChevronRightIcon className="ml-1 h-4 w-4" />
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {sessionData.slice(0, 3).map((session) => (
                 <Card 
                   key={session.id}
@@ -1180,16 +1249,16 @@ export default function Dashboard() {
                   </div>
                   
                   {/* Enhanced content area */}
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 sm:p-6">
 
                     
-                    <h3 className={`text-xl font-bold mb-2 group-hover:text-${session.color}-600 transition-colors duration-500`}>{session.title}</h3>
+                    <h3 className={`text-lg sm:text-xl font-bold mb-2 group-hover:text-${session.color}-600 transition-colors duration-500`}>{session.title}</h3>
                     
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{session.description}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-4 line-clamp-2">{session.description}</p>
                     
                     {/* Presenter info with enhanced styling */}
                     <div className={`flex items-center mb-4 p-2 bg-${session.color}-50/50 rounded-lg border border-${session.color}-100/50`}>
-                      <Avatar className="h-8 w-8 border-2 border-white shadow-sm mr-2">
+                      <Avatar className="h-6 w-6 sm:h-8 sm:w-8 border-2 border-white shadow-sm mr-2">
                         <AvatarImage src={session.presenter.avatar} />
                         <AvatarFallback>{session.presenter.fallback}</AvatarFallback>
                       </Avatar>

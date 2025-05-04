@@ -71,3 +71,22 @@ Yes it is!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Project Structure and Maintenance
+
+### Unused Components Documentation
+
+Some components and pages in this project are currently not actively used in the main UI flow but are preserved for future development. These components are not linked from the main navigation or dashboard.
+
+**For detailed documentation about unused components, see [UNUSED_COMPONENTS.md](./UNUSED_COMPONENTS.md)**
+
+### Recent Optimizations
+
+- Mobile view optimizations for onboarding stages 3 and 4
+- Added skip to dashboard button in onboarding stage 2
+- Improved responsive design for email verification
+- Enhanced mobile experience for FAQ section and aura counter
+
+### Code Organization
+
+Routes for unused pages have been commented out in `App.tsx` to maintain a cleaner routing structure while preserving the components for future use. If implementing features that use these components, remember to uncomment the corresponding routes.

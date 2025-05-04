@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <header className={`py-0 px-0 md:px-2 fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md h-16' : 'bg-white/80 backdrop-blur-sm shadow-sm h-20 md:h-24'}`}>
       <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-3 items-center h-full w-full">
+        <div className="grid grid-cols-2 md:grid-cols-3 items-center h-full w-full">
           <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
             <Link 
               to="/" 
@@ -110,70 +110,76 @@ export default function Navbar() {
             </Link>
           </div>
           
-          <button 
-            className="md:hidden text-gray-700 mr-4 p-4 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 touch-manipulation relative z-50 flex items-center justify-center min-w-[50px] min-h-[50px]"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleMenu();
-            }}
-            onTouchStart={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleMenu();
-            }}
-            aria-label="Toggle menu"
+          <div className="md:hidden flex justify-end col-span-1">
+            <button 
+              className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative mr-4"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMenu();
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMenu();
+              }}
+              aria-label="Toggle menu"
+            >
+              <span className="sr-only">Toggle menu</span>
+              {isMenuOpen ? 
+                <X className="h-5 w-5 pointer-events-none" /> : 
+                <Menu className="h-5 w-5 pointer-events-none" />
+              }
+              <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
+            </button>
+          </div>
+          
+          {/* Mobile Menu */}
+          <div 
+            className={`md:hidden absolute left-0 right-0 bg-white shadow-lg transition-all duration-300 ${isMenuOpen ? 'max-h-[calc(100vh-5rem)] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+            style={{ top: isScrolled ? '64px' : '80px' }}
           >
-            <div className="w-full h-full absolute inset-0" aria-hidden="true"></div>
-            {isMenuOpen ? <X className="h-8 w-8 pointer-events-none" /> : <Menu className="h-8 w-8 pointer-events-none" />}
-          </button>
-        </div>
-        
-        {/* Mobile Menu */}
-        <div 
-          className={`md:hidden absolute left-0 right-0 bg-white shadow-lg transition-all duration-300 ${isMenuOpen ? 'max-h-[calc(100vh-5rem)] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
-          style={{ top: isScrolled ? '64px' : '80px' }}
-        >
-          <nav className="flex flex-col space-y-4 px-6 py-6">
-            <Link 
-              to="/" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/about" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/about' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Community
-            </Link>
-            <Link 
-              to="/team" 
-              className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/team' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Session
-            </Link>
-            <div className="flex flex-col space-y-3 pt-4">
-              <Link to="/login" className="w-full" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" className="border-2 w-full justify-center p-6 text-base">
-                  Log in
-                </Button>
+            <nav className="flex flex-col space-y-4 px-6 py-6">
+              <Link 
+                to="/" 
+                className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
               </Link>
-              <Link to="/register" className="w-full" onClick={() => setIsMenuOpen(false)}>
-                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 w-full justify-center p-6 text-base relative overflow-hidden group border-0">
-                  <span className="relative z-10">Register</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Button>
+              <Link 
+                to="/about" 
+                className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/about' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Community
               </Link>
-            </div>
-          </nav>
+              <Link 
+                to="/team" 
+                className={`text-lg font-medium rounded-lg p-3 transition-all duration-300 w-full block ${location.pathname === '/team' ? 'bg-purple-100 text-purple-600' : 'hover:bg-purple-50 hover:text-purple-600'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Session
+              </Link>
+              <div className="flex flex-col space-y-3 pt-4">
+                <Link to="/login" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="border-2 w-full justify-center p-6 text-base">
+                    Log in
+                  </Button>
+                </Link>
+                <Link to="/register" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 w-full justify-center p-6 text-base relative overflow-hidden group border-0">
+                    <span className="relative z-10">Register</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </Button>
+                </Link>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </header>

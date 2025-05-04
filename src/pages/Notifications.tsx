@@ -6,12 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  HomeIcon,
-  CalendarIcon,
-  BookOpenIcon,
-  UsersIcon,
-  BellIcon,
-  Settings as SettingsIcon,
+  HomeIcon as Home,
+  CalendarIcon as Calendar,
+  BookOpenIcon as BookOpen,
+  UsersIcon as Users,
+  BellIcon as Bell,
   User as UserIcon,
   X,
   CheckCircle,
@@ -19,15 +18,16 @@ import {
   MessageSquare,
   Heart,
   Award,
-  Calendar,
+  Calendar as CalendarIcon,
   FileText,
   AlertCircle,
-  Bell,
+  Bell as BellIcon,
   BellOff,
   Filter,
   MoreHorizontal,
   ChevronRight,
-  Menu
+  Menu,
+  LogOut
 } from "lucide-react";
 
 // NavItem component for sidebar
@@ -296,7 +296,7 @@ export default function Notifications() {
       case "follow":
         return <UserIcon className="h-5 w-5 text-purple-500" />;
       case "event":
-        return <Calendar className="h-5 w-5 text-orange-500" />;
+        return <CalendarIcon className="h-5 w-5 text-orange-500" />;
       case "achievement":
         return <Award className="h-5 w-5 text-yellow-500" />;
       case "system":
@@ -312,15 +312,16 @@ export default function Notifications() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       {/* Sidebar */}
-      <div className={`fixed inset-0 z-50 ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-50 transition-all duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         {/* Overlay */}
         <div 
-          className="absolute inset-0 bg-black/20 backdrop-blur-sm" 
+          className="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-500 ease-in-out"
+          style={{ opacity: sidebarOpen ? 1 : 0 }}
           onClick={() => setSidebarOpen(false)}
         ></div>
         
         {/* Sidebar */}
-        <div className={`absolute left-0 top-0 h-full w-[300px] bg-gradient-to-b from-indigo-100/95 via-purple-50/90 to-indigo-100/95 shadow-2xl backdrop-blur-sm transform transition-all duration-500 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} border-r border-indigo-200/30 rounded-r-3xl`}>
+        <div className={`absolute left-0 top-0 h-full w-[300px] bg-gradient-to-b from-indigo-100/95 via-purple-50/90 to-indigo-100/95 shadow-2xl backdrop-blur-sm transform transition-all duration-500 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} border-r border-indigo-200/30 rounded-r-3xl`}>
           {/* Decorative elements */}
           <div className="absolute inset-0 overflow-hidden rounded-r-3xl">
             <div className="absolute h-40 w-40 -top-10 -right-10 bg-purple-300/30 rounded-full blur-3xl animate-pulse"></div>
@@ -328,9 +329,10 @@ export default function Notifications() {
             <div className="absolute h-20 w-20 top-1/2 right-10 bg-purple-400/20 rounded-full blur-xl animate-pulse opacity-80"></div>
           </div>
           
-          <div className="p-5 flex justify-end items-center border-b border-indigo-200/50 relative z-10">
+          <div className="p-5 flex justify-between items-center border-b border-indigo-200/50 relative z-10">
+            <h3 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Navigation</h3>
             <button 
-              className="p-2 rounded-full bg-white/80 hover:bg-white text-indigo-500 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:scale-110 hover:rotate-90 group"
+              className="p-2 rounded-full bg-white/80 hover:bg-white text-indigo-500 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:scale-105 hover:rotate-90 group"
               onClick={() => setSidebarOpen(false)}
             >
               <X className="h-5 w-5 transition-all duration-300 ease-out group-hover:text-indigo-600" />
@@ -339,33 +341,46 @@ export default function Notifications() {
           
           <div className="py-6 px-4 space-y-4 relative z-10">
             <div className="space-y-2.5">
-              <NavItem icon={<HomeIcon className="h-5 w-5" />} text="Dashboard" onClick={() => navigate('/dashboard')} />
-              <NavItem icon={<CalendarIcon className="h-5 w-5" />} text="Events" onClick={() => navigate('/events')} />
-              <NavItem icon={<BookOpenIcon className="h-5 w-5" />} text="Sessions" onClick={() => navigate('/sessions')} />
-              <NavItem icon={<UsersIcon className="h-5 w-5" />} text="Community" onClick={() => navigate('/community')} />
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-indigo-200/50 relative">
-              <div className="absolute inset-x-4 -top-px h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-              <NavItem icon={<UserIcon className="h-5 w-5" />} text="Profile" onClick={() => navigate('/user-profile')} />
-              <NavItem icon={<BellIcon className="h-5 w-5" />} text="Notifications" active badge={unreadCount > 0 ? unreadCount.toString() : undefined} onClick={() => {}} />
-              <NavItem icon={<SettingsIcon className="h-5 w-5" />} text="Settings" onClick={() => navigate('/settings')} />
+              <NavItem icon={<Home className="h-5 w-5" />} text="Dashboard" onClick={() => {
+                navigate('/dashboard');
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<Calendar className="h-5 w-5" />} text="Events" onClick={() => {
+                navigate('/events');
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<BookOpen className="h-5 w-5" />} text="Sessions" onClick={() => {
+                navigate('/sessions');
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<Users className="h-5 w-5" />} text="Community" onClick={() => {
+                navigate('/community');
+                setSidebarOpen(false);
+              }} />
+              <NavItem icon={<UserIcon className="h-5 w-5" />} text="Profile" onClick={() => {
+                navigate('/user-profile');
+                setSidebarOpen(false);
+              }} />
+              <div className="md:block hidden">
+                <NavItem icon={<BellIcon className="h-5 w-5" />} text="Notifications" active onClick={() => {
+                  setSidebarOpen(false);
+                }} />
+              </div>
+              <NavItem icon={<LogOut className="h-5 w-5" />} text="Logout" onClick={() => {
+                // In a real app, you would handle logout logic here
+                navigate('/login');
+                setSidebarOpen(false);
+              }} />
             </div>
           </div>
         </div>
       </div>
       
       {/* Header - Modern User-Friendly Design */}
-      <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-md border-b border-indigo-100 h-20 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <header className={`bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-md border-b border-indigo-100 h-20 transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${sidebarOpen ? 'hidden md:block' : 'block'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="grid grid-cols-3 items-center h-full w-full">
             <div className="flex-shrink-0 pl-2 flex items-center h-full overflow-visible">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 mr-2 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
               <div className="cursor-pointer transition-all duration-300 flex items-center justify-center overflow-visible">
                 <img 
                   src="/lovable-uploads/orielixlogo.png" 
@@ -397,7 +412,7 @@ export default function Notifications() {
 
             <div className="hidden md:flex items-center justify-end flex-shrink-0 gap-2 lg:gap-4 mr-3 lg:mr-5">
               <button 
-                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative mr-2"
                 onClick={() => navigate('/notifications')}
               >
                 <span className="sr-only">View notifications</span>
@@ -420,15 +435,27 @@ export default function Notifications() {
               </div>
             </div>
             
-            {/* Mobile View */}
-            <div className="flex md:hidden items-center justify-end">
+            {/* Mobile Menu Button */}
+            <div className="flex md:hidden items-center justify-end col-span-2">
               <button 
-                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative"
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-600 transition-all duration-300 ease-out shadow-sm hover:shadow-md hover:scale-105 border border-indigo-100 hover:border-indigo-200 relative mr-2"
               >
+                <span className="sr-only">View notifications</span>
                 <BellIcon className="h-5 w-5" />
                 {unreadCount > 0 && (
                   <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
                 )}
+              </button>
+              <button 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white transition-all duration-300 ease-out shadow-md hover:shadow-lg hover:scale-105 border border-indigo-100 hover:border-indigo-200"
+              >
+                <span className="sr-only">Toggle menu</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
               </button>
             </div>
           </div>
@@ -452,7 +479,7 @@ export default function Notifications() {
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur-sm group-hover:blur transition duration-300"></div>
                 <div className="bg-white p-4 rounded-full relative shadow-xl">
-                  <Bell className="h-12 w-12 text-indigo-600" />
+                  <BellIcon className="h-12 w-12 text-indigo-600" />
                 </div>
               </div>
               
