@@ -18,24 +18,6 @@ import { useToast } from "@/components/ui/use-toast";
 const fadeInAnimation = "transition-all duration-300 ease-in-out opacity-100 transform-none";
 const initialHiddenState = "opacity-0 transform translate-y-2";
 
-// Add to Tailwind utilities via CSS-in-JS
-const animationStyles = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-`;
-
-// Add the styles to the document head
-if (typeof document !== 'undefined') {
-  const styleElement = document.createElement('style');
-  styleElement.textContent = animationStyles;
-  document.head.appendChild(styleElement);
-}
-
 // Create a range of years for the year dropdown
 const currentYear = new Date().getFullYear();
 const startYear = 1920;
@@ -308,6 +290,12 @@ const Onboarding = () => {
     }
   };
 
+  const handleSkipToDashboard = () => {
+    // Redirect to dashboard and scroll to top
+    window.scrollTo(0, 0);
+    navigate("/dashboard");
+  };
+
   const handleSubmit = async () => {
     setIsLoading(true);
     
@@ -500,11 +488,11 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white overflow-hidden">
-      <div className="max-w-2xl w-full px-6 overflow-y-auto max-h-screen py-6">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white overflow-hidden">
+      <div className="max-w-2xl w-full px-4 sm:px-6 overflow-y-auto max-h-screen py-4 sm:py-6">
         <div className="w-full">
           <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm rounded-2xl">
-            <CardHeader className="space-y-1 text-center pb-6">
+            <CardHeader className="space-y-1 text-center pb-4 sm:pb-6">
               <div className="flex justify-center mb-2">
                 <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
@@ -516,7 +504,7 @@ const Onboarding = () => {
               <CardDescription className="text-gray-500">
               </CardDescription>
               
-              <div className="border-t border-gray-200 my-8 pt-8 w-full">
+              <div className="border-t border-gray-200 my-6 sm:my-8 pt-6 sm:pt-8 w-full">
                 <div className="relative">
                   <Progress value={(step / totalSteps) * 100} className="h-3 bg-gray-100 rounded-full overflow-hidden" />
                   <div className="absolute top-0 left-0 h-3 w-full bg-transparent">
@@ -556,12 +544,12 @@ const Onboarding = () => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4">
               {step === 1 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName" className="flex items-center">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="space-y-1 sm:space-y-2">
+                      <Label htmlFor="firstName" className="flex items-center text-sm sm:text-base">
                         First Name <span className="text-red-500 ml-1">*</span>
                       </Label>
                       <Input
@@ -570,7 +558,7 @@ const Onboarding = () => {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         required
-                        className={`h-12 px-4 rounded-xl ${errors.firstName ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        className={`h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl ${errors.firstName ? 'border-red-500 focus:ring-red-500' : ''}`}
                       />
                       {errors.firstName && (
                         <p className="text-red-500 text-xs flex items-center mt-1">
@@ -579,8 +567,8 @@ const Onboarding = () => {
                         </p>
                       )}
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName" className="flex items-center">
+                    <div className="space-y-1 sm:space-y-2">
+                      <Label htmlFor="lastName" className="flex items-center text-sm sm:text-base">
                         Last Name <span className="text-red-500 ml-1">*</span>
                       </Label>
                       <Input
@@ -589,7 +577,7 @@ const Onboarding = () => {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         required
-                        className={`h-12 px-4 rounded-xl ${errors.lastName ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        className={`h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl ${errors.lastName ? 'border-red-500 focus:ring-red-500' : ''}`}
                       />
                       {errors.lastName && (
                         <p className="text-red-500 text-xs flex items-center mt-1">
@@ -600,8 +588,8 @@ const Onboarding = () => {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="dob" className="flex items-center">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="dob" className="flex items-center text-sm sm:text-base">
                       Date of Birth <span className="text-red-500 ml-1">*</span>
                     </Label>
                     <Popover>
@@ -609,7 +597,7 @@ const Onboarding = () => {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full h-12 px-4 rounded-xl text-left font-normal justify-start",
+                            "w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl text-left font-normal justify-start",
                             !dob && "text-muted-foreground",
                             errors.dob && "border-red-500 focus:ring-red-500"
                           )}
@@ -658,19 +646,19 @@ const Onboarding = () => {
                     )}
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="phoneNumber" className="flex items-center">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="phoneNumber" className="flex items-center text-sm sm:text-base">
                       Phone Number <span className="text-red-500 ml-1">*</span>
                     </Label>
                     <div className="flex items-center gap-0 relative">
                       <div className="flex rounded-lg border border-gray-200 w-full">
                         <Popover>
                           <PopoverTrigger asChild>
-                            <button className="flex items-center px-3 h-10 border-r border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
-                              <div className="flex items-center gap-2">
-                                <span className="text-lg">{getCountryByCode(countryCode)?.flag || "🇮🇳"}</span>
-                                <span className="text-sm font-medium">{countryCode}</span>
-                                <ChevronDown className="h-3.5 w-3.5 opacity-70" />
+                            <button className="flex items-center px-2 sm:px-3 h-10 border-r border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+                              <div className="flex items-center gap-1 sm:gap-2">
+                                <span className="text-base sm:text-lg">{getCountryByCode(countryCode)?.flag || "🇮🇳"}</span>
+                                <span className="text-xs sm:text-sm font-medium">{countryCode}</span>
+                                <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-70" />
                               </div>
                             </button>
                           </PopoverTrigger>
@@ -699,7 +687,7 @@ const Onboarding = () => {
                           id="phoneNumber"
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
-                          className={`border-0 h-10 flex-1 z-10 relative ${errors.phoneNumber ? 'focus:ring-red-500' : ''}`}
+                          className={`border-0 h-10 flex-1 z-10 relative text-sm sm:text-base ${errors.phoneNumber ? 'focus:ring-red-500' : ''}`}
                           disabled={phoneVerified}
                           placeholder="Enter phone number"
                         />
@@ -710,7 +698,7 @@ const Onboarding = () => {
                           variant="outline"
                           onClick={handleSendVerificationCode}
                           disabled={!phoneNumber || phoneNumber.length < 6 || isLoading || phoneVerificationCountdown > 0}
-                          className="ml-2 h-10 px-3 rounded-lg text-xs"
+                          className="ml-2 h-10 px-2 sm:px-3 rounded-lg text-xs"
                         >
                           {phoneVerificationCountdown > 0 ? `${phoneVerificationCountdown}s` : "Verify"}
                         </Button>
@@ -730,7 +718,7 @@ const Onboarding = () => {
                             <div className="h-4 w-4 rounded-full bg-purple-100 flex items-center justify-center mr-1">
                               <span className="text-purple-600 text-[10px] font-medium">✓</span>
                             </div>
-                            <p className="text-xs font-medium text-gray-700">Code sent to {phoneNumber}</p>
+                            <p className="text-xs font-medium text-gray-700 truncate">Code sent to {phoneNumber}</p>
                           </div>
                           <Button
                             type="button"
@@ -743,7 +731,7 @@ const Onboarding = () => {
                           </Button>
                         </div>
                         
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           <div className="flex gap-1 flex-1">
                             {verificationInputs.map((input, index) => (
                               <Input
@@ -753,7 +741,7 @@ const Onboarding = () => {
                                 value={input}
                                 onChange={(e) => handleVerificationInputChange(index, e.target.value)}
                                 onKeyDown={(e) => handleVerificationKeyDown(index, e)}
-                                className={`w-9 h-9 text-center text-base font-semibold rounded-md border ${verificationError ? 'border-red-500' : ''} focus:border-purple-500 focus:ring-purple-200 focus:ring-1 transition-all duration-200 p-0`}
+                                className={`w-8 sm:w-9 h-9 text-center text-sm sm:text-base font-semibold rounded-md border ${verificationError ? 'border-red-500' : ''} focus:border-purple-500 focus:ring-purple-200 focus:ring-1 transition-all duration-200 p-0`}
                                 maxLength={1}
                                 disabled={isVerifying || phoneVerificationCountdown === 0 && verificationAttempts >= 3}
                               />
@@ -763,7 +751,7 @@ const Onboarding = () => {
                             type="button"
                             onClick={handleVerifyPhone}
                             disabled={isVerifying || verificationCode.length !== 4 || (phoneVerificationCountdown === 0 && verificationAttempts >= 3)}
-                            className="h-9 px-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-md transition-all duration-300 text-xs"
+                            className="h-9 px-2 sm:px-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-md transition-all duration-300 text-xs"
                           >
                             {isVerifying ? (
                               <Loader2 className="h-3 w-3 animate-spin" />
@@ -853,9 +841,9 @@ const Onboarding = () => {
 
               {step === 3 && (
                 <div>
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     <div>
-                      <Label htmlFor="institution" className="flex items-center mb-2">
+                      <Label htmlFor="institution" className="flex items-center mb-1 sm:mb-2 text-sm sm:text-base">
                         Institution <span className="text-red-500 ml-1">*</span>
                       </Label>
                       <Input
@@ -864,7 +852,7 @@ const Onboarding = () => {
                         value={institution}
                         onChange={(e) => setInstitution(e.target.value)}
                         required
-                        className={`h-12 px-4 rounded-xl ${errors.institution ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        className={`h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl ${errors.institution ? 'border-red-500 focus:ring-red-500' : ''}`}
                       />
                       {errors.institution && (
                         <p className="text-red-500 text-xs flex items-center mt-1">
@@ -875,23 +863,23 @@ const Onboarding = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="fieldOfStudy" className="mb-2 block">Field of Study</Label>
+                      <Label htmlFor="fieldOfStudy" className="mb-1 sm:mb-2 block text-sm sm:text-base">Field of Study</Label>
                       <Input
                         id="fieldOfStudy"
                         placeholder="E.g. Computer Science, Design, Mathematics"
                         value={fieldOfStudy}
                         onChange={(e) => setFieldOfStudy(e.target.value)}
-                        className="h-12 px-4 rounded-xl"
+                        className="h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl"
                       />
                     </div>
                     
                     <div>
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="h-8 w-1 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full"></div>
-                        <Label className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What best describes your role?</Label>
+                      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                        <div className="h-6 sm:h-8 w-1 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full"></div>
+                        <Label className="text-base sm:text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What best describes your role?</Label>
                       </div>
                       
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-2">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 mb-2">
                         {["Student", "Entrepreneur", "Developer", "Designer", "Marketer", "Other"].map((roleOption) => {
                           const isSelected = role === roleOption.toLowerCase();
                           return (
@@ -905,7 +893,7 @@ const Onboarding = () => {
                               }}
                               className={`
                                 relative overflow-hidden group transition-all duration-300 
-                                rounded-xl py-3 px-4 z-10
+                                rounded-xl sm:rounded-2xl h-auto py-2 sm:py-3 px-2 sm:px-4 z-10 text-xs sm:text-sm
                                 ${isSelected 
                                   ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 border-0" 
                                   : "border border-indigo-100"}
@@ -928,7 +916,7 @@ const Onboarding = () => {
                             placeholder="Please specify your role"
                             value={otherRole}
                             onChange={(e) => setOtherRole(e.target.value)}
-                            className="h-12 px-4 rounded-xl border-indigo-100 focus:border-purple-300 focus:ring-purple-200"
+                            className="h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base rounded-xl border-indigo-100 focus:border-purple-300 focus:ring-purple-200"
                             autoFocus
                           />
                         </div>
@@ -939,129 +927,78 @@ const Onboarding = () => {
               )}
 
               {step === 4 && (
-                <div className="space-y-8">
-                  <div className="space-y-4">
-                    <div className="flex flex-col mb-8">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="h-12 w-2 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full shadow-md"></div>
-                        <Label className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Discover Your Interests</Label>
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-8">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="h-8 sm:h-10 w-1 sm:w-1.5 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full shadow-sm"></div>
+                        <Label className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">What are you interested in?</Label>
                       </div>
-                      <p className="text-gray-500 ml-5 text-sm">Select topics that inspire you to personalize your experience</p>
-                      
-                      <div className="mt-4 ml-5 flex items-center gap-2">
-                        <div className={`relative h-2 w-32 bg-gray-200 rounded-full overflow-hidden`}>
-                          <div 
-                            className={`absolute top-0 left-0 h-full rounded-full transition-all duration-500 ease-out ${interests.length >= 3 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 w-full' : 'bg-gradient-to-r from-purple-500 to-indigo-500'}`}
-                            style={{ width: `${(interests.length / 3) * 100}%` }}
-                          ></div>
+                      <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full shadow-sm border border-indigo-100 self-start sm:self-auto">
+                        <div className={`text-xs sm:text-sm font-medium ${interests.length >= 3 ? 'text-emerald-600' : 'text-indigo-500'} transition-colors duration-300`}>
+                          {interests.length}/3 selected
                         </div>
-                        <div className={`text-sm font-medium flex items-center gap-1.5 ${interests.length >= 3 ? 'text-emerald-600' : 'text-indigo-500'} transition-colors duration-300`}>
-                          {interests.length >= 3 ? (
-                            <>
-                              <CheckCircle className="h-4 w-4 text-emerald-500" />
-                              <span>Perfect! {interests.length}/3 selected</span>
-                            </>
-                          ) : (
-                            <>
-                              <div className="h-4 w-4 rounded-full border-2 border-dashed border-indigo-300 animate-pulse"></div>
-                              <span>Select at least {3 - interests.length} more</span>
-                            </>
-                          )}
-                        </div>
+                        {interests.length >= 3 ? (
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-500" />
+                        ) : (
+                          <div className="h-3 w-3 sm:h-4 sm:w-4 rounded-full border-2 border-dashed border-indigo-300 animate-pulse"></div>
+                        )}
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-5 relative">
-                      {/* Enhanced decorative elements */}
-                      <div className="absolute -top-10 -right-10 w-60 h-60 bg-indigo-300/10 rounded-full blur-3xl z-0 animate-pulse"></div>
-                      <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-purple-300/10 rounded-full blur-3xl z-0 animate-pulse"></div>
-                      <div className="absolute top-1/3 left-1/2 w-40 h-40 bg-blue-300/10 rounded-full blur-3xl z-0 animate-pulse"></div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 relative">
+                      {/* Simple decorative elements */}
+                      <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-300/10 rounded-full blur-3xl z-0 hidden sm:block"></div>
+                      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-300/10 rounded-full blur-3xl z-0 hidden sm:block"></div>
                       
-                      {[
-                        { name: "Technology", icon: "💻" },
-                        { name: "Startup", icon: "🚀" },
-                        { name: "Graphic Design", icon: "🎨" },
-                        { name: "UI/UX", icon: "📱" },
-                        { name: "Editing", icon: "✂️" },
-                        { name: "Content Writing", icon: "✍️" },
-                        { name: "Game Development", icon: "🎮" },
-                        { name: "Marketing", icon: "📊" },
-                        { name: "Animation", icon: "🎬" },
-                        { name: "Photography", icon: "📷" },
-                        { name: "Music", icon: "🎵" },
-                        { name: "AI", icon: "🤖" }
-                      ].map((interest, index) => {
-                        const isSelected = interests.includes(interest.name);
+                      {["Technology", "Startup", "Graphic Design", "UI/UX", "Editing", "Content Writing", "Game Development", "Marketing", "Animation"].map((interest) => {
+                        const isSelected = interests.includes(interest);
                         return (
                           <Button
-                            key={interest.name}
+                            key={interest}
                             type="button"
                             variant={isSelected ? "default" : "outline"}
-                            onClick={() => handleInterestToggle(interest.name)}
+                            onClick={() => handleInterestToggle(interest)}
                             className={`
                               relative overflow-hidden group transition-all duration-300 
-                              rounded-2xl h-auto py-6 px-4 z-10
+                              rounded-xl sm:rounded-2xl h-auto py-3 sm:py-5 px-2 sm:px-4 z-10 text-xs sm:text-sm
                               ${isSelected 
-                                ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 border-0 hover:shadow-xl hover:shadow-indigo-200/40 hover:translate-y-[-3px]" 
-                                : "border border-indigo-100 hover:border-purple-300 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50/80 hover:shadow-lg hover:translate-y-[-3px]"}
-                              animate-fadeIn
+                                ? "bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 border-0" 
+                                : "border border-indigo-100"}
                             `}
-                            style={{ animationDelay: `${index * 50}ms` }}
                           >
-                            {/* Enhanced hover effect elements */}
-                            <div className="absolute inset-0 w-full h-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-2xl"></div>
-                            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/20 to-indigo-600/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                            {/* Subtle hover effect element */}
+                            <div className="absolute inset-0 w-full h-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-xl sm:rounded-2xl"></div>
                             
-                            <div className="flex flex-col items-center gap-2">
-                              <span className="text-2xl mb-1">{interest.icon}</span>
-                              <span className={`
-                                relative z-10 font-medium text-center
-                                ${isSelected ? "text-white" : "text-gray-700"}
-                                transition-all duration-300 group-hover:font-semibold
-                              `}>
-                                {interest.name}
-                              </span>
-                              {isSelected && (
-                                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-0.5 backdrop-blur-sm animate-fadeIn">
-                                  <CheckCircle className="h-3.5 w-3.5 text-white" />
-                                </div>
-                              )}
-                            </div>
+                            <span className={`
+                              relative z-10 font-medium
+                              ${isSelected ? "text-white" : "text-gray-700"}
+                              group-hover:${isSelected ? "text-white" : "text-indigo-700"}
+                              transition-all duration-300 group-hover:font-semibold
+                            `}>
+                              {interest}
+                            </span>
                           </Button>
                         );
                       })}
                     </div>
-                    
-                    {interests.length > 0 && (
-                      <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-100/50 animate-fadeIn">
-                        <h3 className="text-sm font-medium text-purple-700 mb-2">Your Selected Interests</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {interests.map(interest => (
-                            <div key={interest} className="bg-white px-3 py-1.5 rounded-full text-sm font-medium text-indigo-700 border border-purple-100 flex items-center gap-1.5 group hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors duration-200 cursor-pointer" onClick={() => handleInterestToggle(interest)}>
-                              {interest}
-                              <span className="text-indigo-400 group-hover:text-red-400">×</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
             </CardContent>
-            <CardFooter className="flex justify-between p-6">
+            <CardFooter className="flex justify-between p-4 sm:p-6">
               <Button
                 variant="outline"
-                onClick={step === 2 ? () => navigate('/dashboard') : handleBack}
+                onClick={step === 2 ? handleSkipToDashboard : handleBack}
                 disabled={step === 1}
-                className={`rounded-xl h-12 px-6 border-2 ${step === 1 ? 'opacity-50' : ''}`}
+                className={`rounded-xl h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base border-2 ${step === 1 ? 'opacity-50' : ''}`}
               >
-                {step === 2 ? 'Skip' : 'Back'}
+                {step === 2 ? "Skip" : "Back"}
               </Button>
               <Button
                 onClick={handleNext}
                 disabled={isLoading}
-                className="rounded-xl h-12 px-8 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 relative overflow-hidden group shadow-lg hover:shadow-purple-200/50 transition-all duration-300"
+                className="rounded-xl h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 relative overflow-hidden group shadow-lg hover:shadow-purple-200/50 transition-all duration-300"
               >
                 <span className="absolute inset-0 w-full h-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 <span className="relative z-10 flex items-center gap-2">

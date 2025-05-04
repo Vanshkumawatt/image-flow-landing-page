@@ -125,10 +125,10 @@ const EmailVerification = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white overflow-hidden">
-      <div className="max-w-md w-full px-6 overflow-y-auto max-h-screen py-6">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white overflow-hidden">
+      <div className="max-w-md w-full px-4 sm:px-6 overflow-y-auto max-h-screen py-4 sm:py-6">
         <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm rounded-2xl">
-          <CardHeader className="space-y-1 text-center pb-6">
+          <CardHeader className="space-y-1 text-center pb-4 sm:pb-6">
             <div className="flex justify-center mb-2">
               <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
@@ -136,13 +136,13 @@ const EmailVerification = () => {
                 </svg>
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold tracking-tight">Verify your email</CardTitle>
-            <CardDescription className="text-gray-500">
+            <CardTitle className="text-xl sm:text-2xl font-bold tracking-tight">Verify your email</CardTitle>
+            <CardDescription className="text-gray-500 text-sm sm:text-base">
               We've sent a verification code to {maskEmail(email)}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex justify-center space-x-2">
+          <CardContent className="space-y-4 sm:space-y-6">
+            <div className="flex justify-center space-x-1 sm:space-x-2">
               {inputs.map((value, index) => (
                 <Input
                   key={index}
@@ -155,7 +155,7 @@ const EmailVerification = () => {
                   value={value}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="h-14 w-14 text-center text-xl font-semibold rounded-xl focus:border-purple-500 focus:ring-purple-500"
+                  className="h-10 w-10 sm:h-14 sm:w-14 text-center text-lg sm:text-xl font-semibold rounded-xl focus:border-purple-500 focus:ring-purple-500"
                 />
               ))}
             </div>
@@ -163,10 +163,10 @@ const EmailVerification = () => {
             <Button 
               onClick={handleVerify}
               disabled={verificationCode.length !== 6 || isVerifying}
-              className="w-full py-6 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl text-base font-medium"
+              className="w-full py-5 sm:py-6 h-11 sm:h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl text-sm sm:text-base font-medium"
             >
               {isVerifying ? (
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-3 h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -174,16 +174,16 @@ const EmailVerification = () => {
             </Button>
             
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-2">Didn't receive the code?</p>
+              <p className="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2">Didn't receive the code?</p>
               <Button
                 variant="link"
                 onClick={handleResendCode}
                 disabled={countdown > 0 || isLoading}
-                className="p-0 h-auto text-purple-600 hover:text-purple-800 font-medium"
+                className="p-0 h-auto text-purple-600 hover:text-purple-800 text-sm sm:text-base font-medium"
               >
                 {isLoading ? (
                   <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>

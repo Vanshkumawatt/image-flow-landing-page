@@ -497,13 +497,13 @@ export default function FeaturesSection() {
               <div className="flex flex-col items-center justify-center mt-12 mb-16 relative">
                 
                 {/* Modern counter display with rotating boundary */}
-                <div className="relative inline-block">
-                  {/* Animated rotating boundary box */}
-                  <div className="absolute -inset-6 rounded-3xl border-[3px] border-purple-400/50 bg-gradient-to-r from-indigo-500/5 via-purple-500/10 to-indigo-500/5 transform origin-center animate-[spin_15s_linear_infinite]"></div>
-                  <div className="absolute -inset-4 rounded-2xl border-[2px] border-indigo-400/60 bg-transparent transform origin-center animate-[spin_20s_linear_infinite_reverse]"></div>
+                <div className="relative inline-block p-2 sm:p-4">
+                  {/* Animated rotating boundary box - reduced size for mobile */}
+                  <div className="absolute -inset-3 sm:-inset-5 rounded-3xl border-[2px] border-purple-400/50 bg-gradient-to-r from-indigo-500/5 via-purple-500/10 to-indigo-500/5 transform origin-center animate-[spin_15s_linear_infinite]"></div>
+                  <div className="absolute -inset-1.5 sm:-inset-3 rounded-2xl border-[1.5px] border-indigo-400/60 bg-transparent transform origin-center animate-[spin_20s_linear_infinite_reverse]"></div>
                   
                   {/* Counter content */}
-                  <div className="flex items-center gap-6 bg-gradient-to-r from-indigo-500/10 via-purple-500/15 to-indigo-500/10 py-6 px-8 rounded-2xl backdrop-blur-sm transform hover:scale-105 transition-all duration-500 z-10 relative group">
+                  <div className="flex items-center gap-3 sm:gap-6 bg-gradient-to-r from-indigo-500/10 via-purple-500/15 to-indigo-500/10 py-4 sm:py-6 px-5 sm:px-8 rounded-2xl backdrop-blur-sm transform hover:scale-105 transition-all duration-500 z-10 relative group">
                     {/* AURA Icon - larger size */}
                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 transition-transform duration-500 group-hover:-translate-y-3 group-hover:scale-110">
                       {/* Glow effect */}

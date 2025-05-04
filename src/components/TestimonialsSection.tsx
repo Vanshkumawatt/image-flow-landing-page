@@ -291,29 +291,29 @@ export default function TestimonialsSection() {
           </Carousel>
         </div>
         
-        <h3 className="text-2xl md:text-3xl font-bold mb-10 text-center">
+        <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-10 text-center">
           Frequently Asked Questions
         </h3>
         
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8 md:p-12 overflow-hidden">
+        <div className="max-w-4xl mx-auto mb-12 md:mb-16 px-4 sm:px-6 md:px-0">
+          <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-5 sm:p-8 md:p-12 overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
               {/* FAQs Column */}
               <div>
-                <h4 className="text-2xl font-bold mb-6">Questions</h4>
-                <div className="space-y-3">
+                <h4 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Questions</h4>
+                <div className="space-y-2 md:space-y-3">
                   {faqs.map((faq, index) => (
                     <div 
                       key={index}
-                      className={`p-5 rounded-2xl transition-all duration-300 cursor-pointer ${
+                      className={`p-3 sm:p-5 rounded-xl sm:rounded-2xl transition-all duration-300 cursor-pointer ${
                         faqCurrent === index ? 'bg-black text-white' : 'bg-gray-50 hover:bg-gray-100'
                       }`}
                       onClick={() => setFaqCurrent(index)}
                     >
                       <div className="flex justify-between items-center">
-                        <p className="font-medium text-base">{faq.question}</p>
+                        <p className="font-medium text-sm sm:text-base pr-2">{faq.question}</p>
                         {faqCurrent === index && (
-                          <div className={`h-3 w-3 rounded-full ${
+                          <div className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full flex-shrink-0 ${                            
                             index === 0 ? 'bg-amber-300' :
                             index === 1 ? 'bg-emerald-300' :
                             index === 2 ? 'bg-sky-300' :
@@ -324,17 +324,17 @@ export default function TestimonialsSection() {
                       </div>
                     </div>
                   ))}
-                  <div className="p-5 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 cursor-pointer">
-                    <p className="font-medium text-base">My question isn't listed here (Send us feedback)</p>
+                  <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 cursor-pointer">
+                    <p className="font-medium text-sm sm:text-base">My question isn't listed here (Send us feedback)</p>
                   </div>
                 </div>
               </div>
               
               {/* Answers Column */}
               <div>
-                <h4 className="text-2xl font-bold mb-6">Answers</h4>
+                <h4 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 mt-4 md:mt-0">Answers</h4>
                 <div 
-                  className={`p-8 rounded-2xl min-h-[220px] transition-colors duration-500 relative overflow-hidden ${
+                  className={`p-5 sm:p-8 rounded-xl sm:rounded-2xl min-h-[180px] sm:min-h-[220px] transition-colors duration-500 relative overflow-hidden ${                    
                     faqCurrent === 0 ? 'bg-amber-200' :
                     faqCurrent === 1 ? 'bg-emerald-200' :
                     faqCurrent === 2 ? 'bg-sky-200' :
@@ -346,8 +346,8 @@ export default function TestimonialsSection() {
                     backgroundSize: '100% 100%'
                   }}
                 >
-                  <div className="flex gap-2 items-center mb-4">
-                    <div className={`h-4 w-4 rounded-full transition-colors duration-500 ${
+                  <div className="flex gap-2 items-center mb-3 sm:mb-4">
+                    <div className={`h-3 w-3 sm:h-4 sm:w-4 rounded-full transition-colors duration-500 ${                      
                       faqCurrent === 0 ? 'bg-amber-50' :
                       faqCurrent === 1 ? 'bg-emerald-50' :
                       faqCurrent === 2 ? 'bg-sky-50' :
@@ -356,7 +356,7 @@ export default function TestimonialsSection() {
                     }`}></div>
                   </div>
                   <div className="transition-opacity duration-300 relative z-10">
-                    <p className="mb-5 text-black/90">{faqs[faqCurrent].answer}</p>
+                    <p className="text-sm sm:text-base mb-3 sm:mb-5 text-black/90">{faqs[faqCurrent].answer}</p>
                   </div>
                 </div>
               </div>
