@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
+import { addUser, findUserByEmail } from "@/data/userData";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -42,11 +43,25 @@ const Register = () => {
     
     setIsLoading(true);
     
-    // Here you would typically handle registration logic
-    // For demo, just simulate a loading state
+    // Check if user already exists
+    const existingUser = findUserByEmail(email);
     
     setTimeout(() => {
       setIsLoading(false);
+      
+      if (existingUser) {
+        // User already exists
+        toast({
+          title: "Registration failed",
+          description: "An account with this email already exists.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Add new user
+      const newUser = addUser(name, email, password);
+      
       // Redirect to email verification page with email as state
       navigate("/email-verification", { state: { email } });
       
@@ -55,7 +70,7 @@ const Register = () => {
         description: "Please verify your email to continue.",
         variant: "default",
       });
-    }, 1500);
+    }, 1000);
   };
 
   const handleGoogleRegister = () => {

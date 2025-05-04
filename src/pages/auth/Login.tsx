@@ -5,9 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
+import { authenticateUser } from "@/data/userData";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,14 +19,30 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Here you would typically handle login logic
-    // For demo, just simulate a loading state
+    // Authenticate user with the userData
+    const user = authenticateUser(email, password);
     
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to dashboard after login
-      navigate('/dashboard');
-    }, 1500);
+      
+      if (user) {
+        // Successful login
+        toast({
+          title: "Login successful!",
+          description: `Welcome back, ${user.name}!`,
+          variant: "default",
+        });
+        // Navigate to dashboard after login
+        navigate('/dashboard');
+      } else {
+        // Failed login
+        toast({
+          title: "Login failed",
+          description: "Invalid email or password. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }, 1000);
   };
 
   const handleGoogleLogin = () => {

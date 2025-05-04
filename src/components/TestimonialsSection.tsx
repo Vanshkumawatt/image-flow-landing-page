@@ -141,20 +141,20 @@ export default function TestimonialsSection() {
       answer: "Sign up for an account on our website, complete your profile, and you'll be guided through our personalized onboarding process."
     },
     {
-      question: "Are the courses self-paced?",
-      answer: "Yes, all learning resources are designed to be completed at your own pace, with flexible deadlines to fit your schedule."
-    },
-    {
       question: "How can I connect with other learners?",
       answer: "Join our community forums, participate in group projects, and attend our regular virtual meetups and networking events."
+    },
+    {
+      question: "Are all Session & Events paid?",
+      answer: "No, Orielix offers a mix of free and premium content. Many community events and basic sessions are completely free, while some specialized workshops and premium events may have a fee."
     },
     {
       question: "Is there a mobile app available?",
       answer: "No, Orielix is a web-based platform optimized for all devices. You can access all features directly through your browser on desktop, tablet, or mobile."
     },
     {
-      question: "What kind of support is available?",
-      answer: "We offer 24/7 technical support, peer mentoring, expert coaching sessions, and a comprehensive knowledge base."
+      question: "When will be the Community feature launching?",
+      answer: "Our Community feature is scheduled to launch in the next quarter. We're currently in the final stages of development and testing to ensure the best possible experience for our users."
     }
   ];
 
