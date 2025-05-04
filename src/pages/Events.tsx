@@ -29,10 +29,44 @@ import {
   Briefcase as BriefcaseIcon,
   Search,
   Sparkles as SparklesIcon,
-  Star as StarIcon
+  Star as StarIcon,
+  MapPin,
+  Calendar as CalendarIconSolid,
+  User,
+  Clock
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { eventData } from "@/data/eventData";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+
+// Define the Event type based on the eventData structure
+interface Presenter {
+  name: string;
+  role: string;
+  avatar: string;
+  fallback: string;
+}
+
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  image: string;
+  presenter: Presenter;
+  attending: number;
+  color: string;
+}
 
 // NavItem component for sidebar
 interface NavItemProps {
@@ -76,6 +110,9 @@ export default function Events() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
   
   useEffect(() => {
     const controlNavbar = () => {
@@ -183,8 +220,8 @@ export default function Events() {
                 onClick={() => navigate('/notifications')}
               >
                 <span className="sr-only">View notifications</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                  <path fillRule="evenodd" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
                   <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
                 </svg>
                 <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 ring-1 ring-white"></span>
@@ -440,18 +477,45 @@ export default function Events() {
                       </div>
                     </div>
                     
-                    {/* Action buttons */}
-                    <div className="flex gap-2 mt-4">
+                    {/* Action buttons with enhanced UI */}
+                    <div className="flex gap-3 mt-5 relative z-10">
                       <Button 
-                        className={`flex-1 bg-gradient-to-r from-${event.color}-600 to-${event.color === 'purple' ? 'indigo' : 'purple'}-600 hover:from-${event.color}-700 hover:to-${event.color === 'purple' ? 'indigo' : 'purple'}-700 text-white shadow-md hover:shadow-lg transition-all duration-500 ease-in-out hover:scale-[1.03]`}
+                        className={`flex-1 bg-gradient-to-r from-${event.color}-600 to-${event.color === 'purple' ? 'indigo' : 'purple'}-600 hover:from-${event.color}-700 hover:to-${event.color === 'purple' ? 'indigo' : 'purple'}-700 text-white shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out hover:scale-[1.05] rounded-xl py-6 relative overflow-hidden group`}
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          setIsRegisterDialogOpen(true);
+                        }}
                       >
-                        Register
+                        {/* Animated background effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-1000 animate-pulse-slow"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-300"></div>
+                        
+                        {/* Icon and text with micro-interactions */}
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="relative z-10 text-base font-medium group-hover:tracking-wide transition-all duration-300">Register</span>
+                          <span className="relative z-10 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 opacity-0 group-hover:opacity-100">→</span>
+                        </div>
                       </Button>
+                      
                       <Button 
                         variant="outline" 
-                        className={`flex-1 border-${event.color}-200 text-${event.color}-700 hover:bg-${event.color}-50 hover:border-${event.color}-300 transition-all duration-500 ease-in-out hover:scale-[1.03]`}
+                        className={`flex-1 border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-500 ease-in-out hover:scale-[1.05] rounded-xl py-6 relative overflow-hidden group`}
+                        onClick={() => {
+                          console.log('View details clicked for:', event.title);
+                          setSelectedEvent(event);
+                          setIsDetailsOpen(true);
+                        }}
                       >
-                        View Details
+                        {/* Subtle background animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/0 via-indigo-50/30 to-indigo-50/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse-slow"></div>
+                        
+                        {/* Icon and text with micro-interactions */}
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="relative z-10 text-base font-medium group-hover:tracking-wide transition-all duration-300">View Details</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 relative z-10 transform translate-y-0 group-hover:translate-y-[-2px] group-hover:translate-x-[2px] transition-transform duration-300 opacity-0 group-hover:opacity-100">
+                            <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                       </Button>
                     </div>
                   </CardContent>
@@ -461,6 +525,275 @@ export default function Events() {
           </div>
         </div>
       </main>
+
+      {/* Custom Event Details Modal */}
+      {isDetailsOpen && selectedEvent && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity animate-in fade-in-0"
+            onClick={() => setIsDetailsOpen(false)}
+          ></div>
+          
+          {/* Modal Content */}
+          <div 
+            className="relative z-[101] w-full max-w-[800px] max-h-[90vh] overflow-y-auto bg-white rounded-2xl border-0 shadow-2xl p-0 animate-in fade-in-0 zoom-in-95"
+            style={{ transform: 'translate(-50%, -50%)', left: '50%', top: '50%', position: 'fixed' }}
+          >
+            {/* Decorative elements */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none">
+              <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-200/20 via-purple-200/20 to-indigo-200/20 blur-3xl opacity-70"></div>
+              <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-purple-200/20 via-indigo-200/20 to-purple-200/20 blur-3xl opacity-70"></div>
+              <div className="absolute top-1/2 right-1/3 transform -translate-y-1/2 h-64 w-64 rounded-full bg-gradient-to-r from-indigo-300/10 to-purple-300/10 blur-2xl opacity-70 animate-pulse-slow"></div>
+            </div>
+            
+            {/* Hero section with image and overlay */}
+            <div className="relative h-72 w-full overflow-hidden rounded-t-2xl">
+              <img 
+                src={selectedEvent.image} 
+                alt={selectedEvent.title}
+                className="w-full h-full object-cover transition-all duration-1000 hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10"></div>
+              
+              {/* Close button */}
+              <button 
+                onClick={() => setIsDetailsOpen(false)}
+                className="absolute top-4 right-4 bg-black/20 backdrop-blur-md p-2 rounded-full text-white hover:bg-black/40 transition-all duration-300 hover:scale-110 z-50"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="p-6 pt-8">
+              {/* Event description */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
+                  About This Event
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {selectedEvent.description} This event is designed to provide hands-on experience and networking opportunities with industry professionals. Participants will gain valuable insights and practical skills they can immediately apply to their work.
+                </p>
+              </div>
+
+              {/* Event Details with enhanced cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+                    <span className="bg-gradient-to-r from-indigo-100 to-purple-100 p-1 rounded-md">
+                      <CalendarIconSolid className="h-4 w-4 text-indigo-600" />
+                    </span>
+                    Event Details
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-indigo-50/50 to-purple-50/50 rounded-lg border border-indigo-100/50 hover:border-indigo-200/70 transition-all duration-300 hover:-translate-y-0.5 group">
+                      <div className="bg-white p-2.5 rounded-full shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <CalendarIconSolid className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-800 block">Date & Time</span>
+                        <span className="text-sm text-gray-600">{selectedEvent.date}, 10:00 AM - 4:00 PM</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-indigo-50/80 to-indigo-50/30 rounded-lg border border-indigo-100/80 hover:border-indigo-200/80 transition-all duration-300 hover:-translate-y-0.5 group">
+                      <div className="bg-white p-2.5 rounded-full shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <Clock className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-800 block">Duration</span>
+                        <span className="text-sm text-gray-600">6 hours (with breaks)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+                    <span className="bg-gradient-to-r from-indigo-100 to-purple-100 p-1 rounded-md">
+                      <User className="h-4 w-4 text-purple-600" />
+                    </span>
+                    Presenter
+                  </h3>
+                  
+                  <div className="p-5 bg-gradient-to-r from-indigo-50/70 to-purple-50/70 rounded-xl border border-indigo-100/70 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group relative overflow-hidden">
+                    {/* Animated background elements */}
+                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-purple-200/30 to-indigo-200/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    
+                    <div className="flex items-center gap-4 mb-4 relative z-10">
+                      <Avatar className="h-16 w-16 border-2 border-white shadow-lg group-hover:scale-105 transition-all duration-300">
+                        <AvatarImage src={selectedEvent.presenter.avatar} />
+                        <AvatarFallback>{selectedEvent.presenter.fallback}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h4 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-700 transition-colors duration-300">{selectedEvent.presenter.name}</h4>
+                        <p className="text-sm text-gray-600">{selectedEvent.presenter.role}</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 relative z-10">
+                      An industry expert with over 10 years of experience in the field. Known for innovative approaches and practical teaching methods that make complex concepts accessible to all skill levels.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* What you'll learn section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-indigo-100 to-purple-100 p-1 rounded-md">
+                    <BookOpenIcon className="h-4 w-4 text-indigo-600" />
+                  </span>
+                  What You'll Learn
+                </h3>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {["Professional techniques and best practices", "Hands-on experience with industry tools", "Networking with like-minded professionals", "Certificate of completion"].map((item, index) => (
+                    <div key={index} className="flex items-start gap-2 p-3 bg-gradient-to-r from-indigo-50/50 to-purple-50/50 rounded-lg border border-indigo-100/50 hover:border-indigo-200/70 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
+                      <div className="mt-0.5 text-indigo-600">
+                        <CheckCircleIcon className="h-5 w-5" />
+                      </div>
+                      <span className="text-sm text-gray-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsDetailsOpen(false)}
+                  className="flex-1 border-gray-200 rounded-xl py-6 hover:bg-gray-50 transition-all duration-300 hover:border-gray-300 hover:shadow-sm group"
+                >
+                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Close</span>
+                </Button>
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl py-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] relative overflow-hidden group"
+                  onClick={() => {
+                    setIsDetailsOpen(false);
+                    setIsRegisterDialogOpen(true);
+                  }}
+                >
+                  {/* Animated background effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-1000 animate-pulse-slow"></div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-300"></div>
+                  
+                  <div className="flex items-center justify-center gap-2 relative z-10">
+                    <span className="font-medium group-hover:tracking-wide transition-all duration-300">Register Now</span>
+                    <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 opacity-0 group-hover:opacity-100">→</span>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Registration Confirmation Dialog */}
+      <AlertDialog open={isRegisterDialogOpen} onOpenChange={(open) => setIsRegisterDialogOpen(open)}>
+        <AlertDialogContent className="bg-white rounded-2xl border-0 shadow-2xl max-w-md p-0 overflow-hidden">
+          {selectedEvent && (
+            <>
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none">
+                <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-br from-indigo-200/20 via-purple-200/20 to-indigo-200/20 blur-2xl opacity-70"></div>
+                <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-gradient-to-br from-purple-200/20 via-indigo-200/20 to-purple-200/20 blur-2xl opacity-70"></div>
+              </div>
+              
+              {/* Event image banner */}
+              <div className="relative h-32 w-full overflow-hidden">
+                <img 
+                  src={selectedEvent.image} 
+                  alt={selectedEvent.title}
+                  className="w-full h-full object-cover blur-sm scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/70 to-purple-600/70 mix-blend-multiply"></div>
+                
+                {/* Centered event icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="bg-white/90 backdrop-blur-md p-3 rounded-full shadow-lg">
+                    <CalendarIconSolid className="h-10 w-10 text-indigo-600" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="p-6 pt-5 relative z-10">
+                <AlertDialogHeader className="mb-4">
+                  <AlertDialogTitle className="text-2xl font-bold text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Register for Event
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-center mt-2">
+                    You're registering for <span className="font-semibold text-gray-800">{selectedEvent.title}</span> on {selectedEvent.date}.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                {/* Event details summary */}
+                <div className="mb-6 space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-indigo-50/80 to-purple-50/80 rounded-xl border border-indigo-100/80 shadow-sm relative overflow-hidden group hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+                    {/* Animated background elements */}
+                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="flex items-center gap-3 relative z-10">
+                      <div className="bg-white p-2 rounded-full shadow-sm">
+                        <UsersIcon className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600">Join <span className="font-medium text-indigo-700">{selectedEvent.attending}</span> others who have already registered!</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-gradient-to-r from-indigo-50/80 to-indigo-50/30 rounded-xl border border-indigo-100/80 shadow-sm relative overflow-hidden group hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+                    {/* Animated background elements */}
+                    <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-indigo-200/20 to-purple-200/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="flex items-center gap-3 relative z-10">
+                      <div className="bg-white p-2 rounded-full shadow-sm">
+                        <CalendarIconSolid className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600">{selectedEvent.date}, 10:00 AM - 4:00 PM</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Confirmation message */}
+                <div className="text-center mb-6">
+                  <p className="text-sm text-gray-600">A confirmation email will be sent with all event details and your registration code.</p>
+                </div>
+
+                <AlertDialogFooter className="flex flex-col sm:flex-row gap-3 pt-3 border-t border-gray-100">
+                  <AlertDialogCancel className="mt-0 border-gray-200 text-gray-700 rounded-xl py-5 hover:bg-gray-50 transition-all duration-300 hover:border-gray-300 hover:shadow-sm group">
+                    <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Cancel</span>
+                  </AlertDialogCancel>
+                  <AlertDialogAction 
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl py-5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] relative overflow-hidden group"
+                    onClick={() => {
+                      // Here you would typically handle the registration process
+                      // For now, we'll just close the dialog
+                      setIsRegisterDialogOpen(false);
+                      
+                      // Show a success message
+                      alert(`Successfully registered for ${selectedEvent.title}!`);
+                    }}
+                  >
+                    {/* Animated background effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-1000 animate-pulse-slow"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-300"></div>
+                    
+                    <div className="flex items-center justify-center gap-2 relative z-10">
+                      <span className="font-medium group-hover:tracking-wide transition-all duration-300">Confirm Registration</span>
+                      <CheckCircleIcon className="h-5 w-5 transform scale-0 group-hover:scale-100 transition-transform duration-300" />
+                    </div>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </div>
+            </>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
