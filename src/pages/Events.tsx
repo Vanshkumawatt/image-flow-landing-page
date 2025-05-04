@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -249,12 +249,19 @@ export default function Events() {
                 </div>
               </div>
               
-              {/* Creative skills illustration */}
-              <div className="relative">
+              {/* Creative skills illustration with enhanced animations */}
+              <div className="relative group">
                 <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-xl animate-pulse-slow"></div>
-                <div className="w-72 h-72 bg-gradient-to-br from-white to-indigo-50 rounded-full flex items-center justify-center p-4 border border-indigo-100 shadow-xl relative z-10">
+                <div className="w-72 h-72 bg-gradient-to-br from-white to-indigo-50 rounded-full flex items-center justify-center p-4 border border-indigo-100 shadow-xl relative z-10 transition-all duration-500 group-hover:shadow-purple-200/50">
+                  {/* Animated rotating boundary */}
+                  <div className="absolute -inset-4 border-2 border-dashed border-purple-300/50 rounded-full animate-[spin_40s_linear_infinite]"></div>
+                  
                   <div className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-inner relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(99,102,241,0.05)_0%,rgba(168,85,247,0.05)_100%)] opacity-70"></div>
+                    {/* Gradient overlays with animations */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-indigo-500/10 rounded-full animate-pulse"></div>
+                    <div className="absolute inset-0 bg-gradient-to-bl from-pink-500/10 to-purple-500/10 rounded-full animate-pulse delay-1000"></div>
+                    <div className="absolute inset-0 border-[3px] border-purple-200/50 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    
                     <div className="relative z-10 w-full h-full rounded-full overflow-hidden flex items-center justify-center">
                       <img 
                         src="/lovable-uploads/creative-skills-icon.png" 
@@ -264,6 +271,7 @@ export default function Events() {
                           e.currentTarget.src = 'https://via.placeholder.com/200?text=Creative+Skills';
                         }}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-transparent rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                   </div>
                 </div>
